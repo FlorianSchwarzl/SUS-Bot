@@ -1,5 +1,5 @@
-const { Client, Collection, Intents, MessageEmbed } = require('discord.js');
-const fs = require('fs');
+const { Client, Intents } = require('discord.js');
+require("dotenv").config();
 
 const client = new Client({
     intents: [
@@ -11,8 +11,17 @@ const client = new Client({
     ]
 });
 
+const config = {
+    token: process.env.TOKEN || "",
+    prefix: process.env.PREFIX || "!",
+}
+
+client.config = config;
+
 client.on("messageCreate", (message) => {
     if(message.content === "leon") {
         message.channel.send("halts maul");
     }
 });
+
+client.login(client.config.token);
