@@ -1,2 +1,1 @@
 # SUS-Bot
-niggers
