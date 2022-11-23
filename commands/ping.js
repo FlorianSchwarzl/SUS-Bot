@@ -5,22 +5,21 @@ module.exports = {
 
     run: (client, message, args) => {
         const StartDate = Date.now();
-        const Wait = new MessageEmbed()
-            .setColor(`#fff`)
-            .setDescription(`Please Wait...`);
         
-        message.channel.send(Wait).then(Msg => { 
+        message.channel.send({embeds:[new MessageEmbed()
+            .setColor(`#fff`)
+            .setDescription(`Please Wait...`)]}).then(Msg => { 
             const EndDate = Date.now();
             
             const embed = new MessageEmbed()
-                .setColor(Color)
+                .setColor("DARK_RED")
                 .setTitle(`Pong!`)
                 .addFields({name:"Message Latency", value:`${Math.floor(EndDate - StartDate)}ms`},
                     {name:"API Latency", value:`${Math.round(client.ws.ping)}ms`})
                 .setTimestamp(new Date);
             
             Msg.delete();
-            message.channel.send(embed);
+            message.channel.send({embeds:[embed]});
         });
     }
 }
