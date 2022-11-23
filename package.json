@@ -1,0 +1,26 @@
+{
+  "name": "sus-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plastik-flasche/SUS-Bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plastik-flasche/SUS-Bot/issues"
+  },
+  "homepage": "https://github.com/plastik-flasche/SUS-Bot#readme",
+  "dependencies": {
+    "discord.js": "^13.12.0",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "sussyutilbyraphaelbader": "^1.8.0-alpha.1"
+  }
+}
