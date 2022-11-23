@@ -1,3 +1,3 @@
 module.exports = (client) => {
-    console.log("Time for Leon HATE");
+    console.log("TIME FOR LEON HATE");
 }

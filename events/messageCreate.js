@@ -1,6 +1,5 @@
-const leonDetector = require("../function/leonDetector");
-const christmasDetector = require("../function/christmasDetector");
 const { Random } = require("sussyutilbyraphaelbader");
+const leonDetector = require("../function/leonDetector");
 
 const patreon = [
     'Please subscribe to our patreon.', 
@@ -11,17 +10,19 @@ const patreon = [
 
 module.exports = (client, message) => {
     if(leonDetector(message)) return message.channel.send("Halts maul");
-    if(christmasDetector(message)) return message.delete();
-    if(!message.content.startsWith(client.config.prefix)) return;
+    const prefix = client.config.prefix;
 
-    const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+    if(!message.content.startsWith(prefix)) return;
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
-    const cmd = client.commands.get(command) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+    const cmd = client.commands.get(command);
 
-    const troll = (new Random()).randomInt(0, 10);
+    const troll = Random.randomInt(0, 10);
     if(troll > 7) {
         message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     }
     if (!cmd) return;
+    cmd.run(client, message, args);
 }

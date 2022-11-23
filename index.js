@@ -1,30 +1,27 @@
-﻿//Importing all needed Commands
-const Discord = require("discord.js"); //this is the official discord.js wrapper for the Discord Api, which we use!
-const colors = require("colors"); //this Package is used, to change the colors of our Console! (optional and doesnt effect performance)
-const fs = require("fs"); //this package is for reading files and getting their inputs
+const { Client, Collection, Intents } = require('discord.js');
+const fs = require("fs");
+require('dotenv').config();
 
-//Creating the Discord.js Client for This Bot with some default settings ;) and with partials, so you can fetch OLD messages
-const client = new Discord.Client({
-  messageCacheLifetime: 60,
-  fetchAllMembers: false,
-  messageCacheMaxSize: 10,
-  restTimeOffset: 0,
-  restWsBridgetimeout: 100,
-  disableEveryone: true,
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+const client = new Client({
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_VOICE_STATES
+    ]
 });
 
-//Client variables to use everywhere
-client.commands = new Discord.Collection(); //an collection (like a digital map(database)) for all your commands
-client.aliases = new Discord.Collection(); //an collection for all your command-aliases
-client.categories = fs.readdirSync("./commands/"); //categories
-client.cooldowns = new Discord.Collection(); //an collection for cooldown commands of each user
+client.commands = new Collection();
+client.config = require('./config');
 
-//Loading files, with the client variable like Command Handler, Event Handler, ...
-["command", "events"].forEach(handler => {
-    require(`./handlers/${handler}`)(client);
+fs.readdirSync("./commands").filter(f => f.endsWith(".js")).forEach(e => {
+    const command = require(`./commands/${e}`);
+    if(!command.name.length) return;
+    client.commands.set(command.name, command);
 });
-//login into the bot
-client.login(require("./botconfig/config.json").token);
 
-/** Template by Tomato#6966 | https://github.com/Tomato6966/Discord-Js-Handler-Template */
+fs.readdirSync("./events").filter(f => f.endsWith(".js")).forEach((e) => {
+    client.on(e.split(".")[0], require(`./events/${e}`).bind(null, client));
+});
+
+client.login(process.env.TOKEN);
