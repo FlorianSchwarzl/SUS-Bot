@@ -2,6 +2,6 @@
  * Config file for nonsensitive data
  */
 
-module.exports.christamsShit = [ "christmas", "Weihnachten" ];
+module.exports.christmasShit = ["christmas", "Weihnachten"];
 module.exports.prefix = "!";
-module.exports.allowedChannelsIDS = [];
+module.exports.allowedChannelsIDs = [907009478610792519];
