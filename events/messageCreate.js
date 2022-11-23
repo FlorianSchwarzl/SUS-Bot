@@ -1,5 +1,6 @@
 const { Random } = require("sussyutilbyraphaelbader");
 const leonDetector = require("../function/leonDetector");
+const counter = require("../functions/counter.js");
 const checkChannelID = require("../function/checkChannelID");
 const { allowedChannelsIDs } = require("../config");
 
@@ -11,6 +12,7 @@ const patreon = [
 ];
 
 module.exports = (client, message) => {
+    if (counter(message, 1045091931501383821)) return;
     if (leonDetector(message)) return message.channel.send("Halts maul");
     if (message.author.bot) return;
     if (message.content.toLowerCase().includes("patreon")) return message.channel.send(Random(patreon));
