@@ -1,22 +1,14 @@
 {
-  "name": "sus-bot",
+  "name": "discord-js-handler-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord.js Command and Event Handler Template with example Command usages!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/plastik-flasche/SUS-Bot.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "Tomato#6966 (author of this template)",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/plastik-flasche/SUS-Bot/issues"
-  },
-  "homepage": "https://github.com/plastik-flasche/SUS-Bot#readme",
   "dependencies": {
     "discord.js": "^13.12.0",
     "dotenv": "^16.0.3",
