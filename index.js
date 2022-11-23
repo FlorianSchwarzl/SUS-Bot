@@ -12,6 +12,7 @@ const client = new Client({
 });
 
 client.commands = new Collection();
+client.queue = new Collection();
 client.config = require('./config');
 
 fs.readdirSync("./commands").filter(f => f.endsWith(".js")).forEach(e => {

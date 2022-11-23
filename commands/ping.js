@@ -6,11 +6,8 @@ module.exports = {
     run: (client, message, args) => {
         const StartDate = Date.now();
         
-        message.channel.send({embeds:[new MessageEmbed()
-            .setColor(`#fff`)
-            .setDescription(`Please Wait...`)]}).then(Msg => { 
+        message.channel.send({embeds:[new MessageEmbed().setColor(`#fff`).setDescription(`Please Wait...`)]}).then(msg => { 
             const EndDate = Date.now();
-            
             const embed = new MessageEmbed()
                 .setColor("DARK_RED")
                 .setTitle(`Pong!`)
@@ -18,7 +15,7 @@ module.exports = {
                     {name:"API Latency", value:`${Math.round(client.ws.ping)}ms`})
                 .setTimestamp(new Date);
             
-            Msg.delete();
+            msg.delete();
             message.channel.send({embeds:[embed]});
         });
     }
