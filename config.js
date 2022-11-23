@@ -4,4 +4,4 @@
 
 module.exports.christamsShit = [ "christmas", "Weihnachten" ];
 module.exports.prefix = "!";
-module.exports.allowedChannels = [];
+module.exports.allowedChannelsIDS = [];
