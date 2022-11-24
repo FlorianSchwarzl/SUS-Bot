@@ -1,8 +1,8 @@
 {
     "counter": 0,
     "allowedChannels": [
-        907009478610792519
+        "907009478610792519"
     ],
-    "counterChannel": 1045091931501383821,
-    "welcomeChannel": 1045278482629922847
+    "counterChannel": "1045091931501383821",
+    "welcomeChannel": "1045278482629922847"
 }
