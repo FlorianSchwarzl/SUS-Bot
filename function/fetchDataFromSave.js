@@ -13,6 +13,6 @@ module.exports = {
         data[key] = value;
     },
     write: () => {
-        fs.writeFileSync("./data.json", JSON.stringify(data));
+        fs.writeFileSync("../data.json", JSON.stringify(data));
     }
 }
