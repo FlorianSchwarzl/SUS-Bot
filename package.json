@@ -19,6 +19,7 @@
   "homepage": "https://github.com/plastik-flasche/SUS-Bot#readme",
   "dependencies": {
     "@discordjs/voice": "^0.13.0",
+    "canvas": "^2.10.2",
     "discord.js": "13.12.0",
     "dotenv": "^16.0.3",
     "fs": "^0.0.1-security",

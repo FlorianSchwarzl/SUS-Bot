@@ -1,4 +1,4 @@
-const { createAudioPlayer, createAudioResource , joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
 const { stream:AudioStream, video_basic_info, search } = require('play-dl');
 const { validateURL } = require("../function/isValidYoutubeURL");
 const { MessageEmbed } = require("discord.js");
@@ -11,7 +11,10 @@ const video_player = async (client, track, guildId) => {
     guildInfo.player.play(resource);
     
     guildInfo.player.on("error", (err) => {
-        track.message_channel.send("An error occurred while playing the track.")
+        track.message_channel.send("An error occurred while playing the track.");
+        try {
+            guildInfo.connection.destroy();
+        } catch(e) {}
     });
 
     guildInfo.player.on(AudioPlayerStatus.Idle, () => {
@@ -23,7 +26,9 @@ const video_player = async (client, track, guildId) => {
             if(index>=0) {
                 client.queue.remove(index);
             }
-            return guildInfo.connection.destroy();
+            try {
+                return guildInfo.connection.destroy();
+            } catch (e) {return}
         }
 
         video_player(client, queueElm, guildId);

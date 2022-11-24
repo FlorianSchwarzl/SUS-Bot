@@ -11,3 +11,4 @@ module.exports.goodbyeMessages = ["left the server", "was banished", "got lost a
 module.exports.allowedChannelsIDs = fetchDataFromSave.get("allowedChannels");
 module.exports.counterChannelID = fetchDataFromSave.get("counterChannel");
 module.exports.welcomeChannelID = fetchDataFromSave.get("welcomeChannel");
+module.exports.goodbyeChannel = fetchDataFromSave.get("goodbyeChannel");
