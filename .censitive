@@ -1,1 +1,1 @@
-.env:TOKEN
+*.env:TOKEN
