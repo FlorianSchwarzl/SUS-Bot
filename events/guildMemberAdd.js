@@ -1,6 +1,6 @@
 const { welcomeMessages, welcomeChannelID } = require("../config");
 
 module.exports = (client, member) => {
-    const channel = client.channel.get(welcomeChannelID);
-    channel.send(welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
+    const channel = client.channels.cache.get(welcomeChannelID);
+    channel.send(member.user.username + " " + welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
 }
