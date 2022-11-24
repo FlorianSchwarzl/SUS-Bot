@@ -5,6 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 const video_player = async (client, track, guildId) => {
     const guildInfo = client.queue.find(guild => guild.guildId === guildId);
+    guildInfo.current = track;
 
     const stream = await AudioStream(track.url);
     const resource = createAudioResource(stream.stream, { inputType: stream.type });
@@ -122,6 +123,7 @@ module.exports = {
                 guildId: message.guild.id,
                 connection: connection,
                 player: player,
+                current: null,
                 queue: [],
             });
 

@@ -10,13 +10,20 @@ module.exports = {
             message.reply("ok");
         }
 
-        const queue  = client.queue.find(e => e.guildId === message.guild.id);
+        const queue = client.queue.find(e => e.guildId === message.guild.id);
 
         if(!queue) {
             return channel.send("There is no queue");
         }
 
-        let resultString = "**Queue:** \n";
+        let resultString = `Current: **${(await video_basic_info(queue.current.url)).video_details.title}**\n`;
+
+        if(queue.queue.length === 0) {
+            return channel.send(resultString);
+        }
+
+        resultString += "**Queue:** \n";
+
         let index = 0;
         for (const elm of queue.queue) {
             const info = (await video_basic_info(elm.url)).video_details;
