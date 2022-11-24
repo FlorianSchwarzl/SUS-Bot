@@ -106,7 +106,7 @@ module.exports = {
 
             video_player(client, { url:url, message_channel:message.channel }, message.guild.id);
         }
-	},
+    },
 
     player:video_player
 }
