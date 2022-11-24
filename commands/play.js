@@ -3,30 +3,54 @@ const { stream:AudioStream, video_basic_info, search } = require('play-dl');
 const { validateURL } = require("../function/isValidYoutubeURL");
 const { MessageEmbed } = require("discord.js");
 
-const video_player = async (client, guildId) => {
+const video_player = async (client, track, guildId) => {
     const guildInfo = client.queue.find(guild => guild.guildId === guildId);
-    const queueElm = guildInfo.queue.shift();
-    
-    if(!queueElm) {
-        guildInfo.connection.destroy();    
-    }
 
-    const stream = await AudioStream(queueElm.url);
+    const stream = await AudioStream(track.url);
     const resource = createAudioResource(stream.stream, { inputType: stream.type });
-    
-    
     guildInfo.player.play(resource);
     
     guildInfo.player.on("error", (err) => {
-        queueElm.message_channel.send("An error occurred while playing the track.")
+        track.message_channel.send("An error occurred while playing the track.")
     });
 
     guildInfo.player.on(AudioPlayerStatus.Idle, () => {
-        video_player(client, guildId);
+        const queueElm = guildInfo.queue.shift();
+        
+        if(!queueElm) {
+            track.message_channel.send("Played all tracks leaving the channel.");
+            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
+            if(index>=0) {
+                client.queue.remove(index);
+            }
+            return guildInfo.connection.destroy();
+        }
+
+        video_player(client, queueElm, guildId);
 	});
 
-    queueElm.message_channel.send(`Now playing **${(await video_basic_info(queueElm.url)).video_details.title}**`);
+    track.message_channel.send(`Now playing **${(await video_basic_info(track.url)).video_details.title}**`);
 };
+
+const createEmbed = async(url, type) => {
+    const info = await video_basic_info(url);
+    const embed = new MessageEmbed()
+        .setURL(url)
+        .setColor("DARK_AQUA");
+
+    if(info.video_details.title) {
+        embed.setTitle(`${type} track ${info.video_details.title}`);
+    }
+
+    if(info.video_details.thumbnails) {
+        const thumbail = info.video_details.thumbnails[info.video_details.thumbnails.length - 1];
+        if(thumbail) {
+            embed.setImage(thumbail.url);
+        }
+    }
+
+    return embed;
+}
 
 module.exports = {
 	name: 'play',
@@ -36,6 +60,10 @@ module.exports = {
         const queue = client.queue.find(e => e.guildId === message.guild.id);
 
         if(queue) {
+            if(queue.voice_channel !== message.member.voice.channel.id) {
+                return message.channel.send("You have to be in the same voice channel as the bot to add new tracks.");
+            }
+
             let url;
 
             if (!validateURL(args.join(" "))) {
@@ -46,14 +74,7 @@ module.exports = {
             }
 
             queue.queue.push({ url:url, message_channel:message.channel });
-            message.channel.send({embeds: [
-                new MessageEmbed()
-                .setAuthor(message.author.username)
-                .setTitle(`Added track ${(await video_basic_info(url)).video_details.title}`)
-                .setURL(url)
-                .setColor("DARK_AQUA")
-                .setImage((await video_basic_info(url)).video_details.thumbnails[0].url)
-            ]});
+            message.channel.send({embeds: [ await createEmbed(url, "Added") ]});
         } else {
             const connection = joinVoiceChannel({
                 channelId: message.member.voice.channel.id,
@@ -78,19 +99,14 @@ module.exports = {
                 guildId: message.guild.id,
                 connection: connection,
                 player: player,
-                queue: [{ url:url, message_channel:message.channel }],
+                queue: [],
             });
 
-            message.channel.send({embeds: [
-                new MessageEmbed()
-                .setAuthor(message.author.username)
-                .setTitle(`Playing track ${(await video_basic_info(url)).video_details.title}`)
-                .setURL(url)
-                .setColor("DARK_AQUA")
-                .setImage((await video_basic_info(url)).video_details.thumbnails[0].url)
-            ]});
+            message.channel.send({embeds: [ await createEmbed(url, "Playing") ]});
 
-            video_player(client, message.guild.id);
+            video_player(client, { url:url, message_channel:message.channel }, message.guild.id);
         }
-	}
+	},
+
+    player:video_player
 }
