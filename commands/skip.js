@@ -17,11 +17,6 @@ module.exports = {
         message.channel.send("Skipped track.");
 
         if(!queueElm) {
-            message.channel.send("Played all tracks leaving the channel.");
-            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
-            if(index>=0) {
-                client.queue.remove(index);
-            }
             return guildInfo.connection.destroy();
         }
 

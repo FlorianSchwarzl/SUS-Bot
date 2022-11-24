@@ -1,4 +1,4 @@
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { stream:AudioStream, video_basic_info, search } = require('play-dl');
 const { validateURL } = require("../function/isValidYoutubeURL");
 const { MessageEmbed } = require("discord.js");
@@ -22,10 +22,6 @@ const video_player = async (client, track, guildId) => {
         
         if(!queueElm) {
             track.message_channel.send("Played all tracks leaving the channel.");
-            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
-            if(index>=0) {
-                client.queue.remove(index);
-            }
             try {
                 return guildInfo.connection.destroy();
             } catch (e) {return}
@@ -71,7 +67,7 @@ module.exports = {
     ],
 
 	async run (client, message, args, interaction = false) {
-        const channel = interaction? client.channels.cache.get(message.channelId):message.channel
+        const channel = interaction? client.channels.cache.get(message.channelId):message.channel;
         if(interaction) { 
             message.deferReply();
         }
@@ -112,6 +108,14 @@ module.exports = {
 
             const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause }});
             connection.subscribe(player);
+
+            connection.on(VoiceConnectionStatus.Destroyed, (oldS, newS) => {
+                channel.send("Played all tracks leaving the channel.");
+                const index = client.queue.findIndex((e) => e.guildId === message.guild.id);
+                if(index>=0) {
+                    client.queue.remove(index);
+                }
+            });
 
             client.queue.push({
                 voice_channel: message.member.voice.channel.id,
