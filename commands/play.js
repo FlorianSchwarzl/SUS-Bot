@@ -19,7 +19,10 @@ const video_player = async (client, track, guildId) => {
         
         if(!queueElm) {
             track.message_channel.send("Played all tracks leaving the channel.");
-            client.queue.remove(client.queue.findIndex((e) => e.guildId === guildInfo.guildId));
+            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
+            if(index>=0) {
+                client.queue.remove(index);
+            }
             return guildInfo.connection.destroy();
         }
 

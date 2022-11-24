@@ -17,7 +17,10 @@ module.exports = {
 
         if(!queueElm) {
             message.channel.send("Played all tracks leaving the channel.");
-            client.queue.remove(client.queue.findIndex((e) => e.guildId === guildInfo.guildId));
+            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
+            if(index>=0) {
+                client.queue.remove(index);
+            }
             return guildInfo.connection.destroy();
         }
 
