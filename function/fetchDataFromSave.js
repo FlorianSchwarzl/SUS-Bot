@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let data = require("./data.json");
+let data = require("../data.json");
 
 module.exports = {
     all: () => {

@@ -1,6 +1,6 @@
 const { createAudioPlayer, createAudioResource , joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
 const { stream:AudioStream, video_basic_info, search } = require('play-dl');
-const { isValidUrl } = require("is-youtube-url");
+const { validateURL } = require("../function/isValidYoutubeURL");
 const { MessageEmbed } = require("discord.js");
 
 const video_player = async (client, guildId) => {
@@ -38,14 +38,14 @@ module.exports = {
         if(queue) {
             let url;
 
-            if (isValidUrl(args.join(" "))) {
+            if (!validateURL(args.join(" "))) {
                 const yt_info = await search(args.join(" "), {limit: 1});
                 url = yt_info[0].url;
             } else {
                 url = args.join(" ");
             }
 
-            queue.queue.push({ url:url, message_channel:message.channelId });
+            queue.queue.push({ url:url, message_channel:message.channel });
             message.channel.send({embeds: [
                 new MessageEmbed()
                 .setAuthor(message.author.username)
@@ -63,7 +63,7 @@ module.exports = {
 
             let url;
 
-            if (isValidUrl(args.join(" "))) {
+            if (!validateURL(args.join(" "))) {
                 const yt_info = await search(args.join(" "), {limit: 1});
                 url = yt_info[0].url;
             } else {
