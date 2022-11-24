@@ -59,14 +59,28 @@ const createEmbed = async(url, type) => {
 
 module.exports = {
 	name: 'play',
+    description: "Play or Queue a new video",
 
-	async run (client, message, args) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+    options: [
+        {
+            name: "query",
+            type: "STRING",
+            description: "link / name of track to play",
+            required: true
+        }
+    ],
+
+	async run (client, message, args, interaction = false) {
+        const channel = interaction? client.channels.cache.get(message.channelId):message.channel
+        if(interaction) { 
+            message.deferReply();
+        }
+        if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
         const queue = client.queue.find(e => e.guildId === message.guild.id);
 
         if(queue) {
             if(queue.voice_channel !== message.member.voice.channel.id) {
-                return message.channel.send("You have to be in the same voice channel as the bot to add new tracks.");
+                return channel.send("You have to be in the same voice channel as the bot to add new tracks.");
             }
 
             let url;
@@ -78,8 +92,8 @@ module.exports = {
                 url = args.join(" ");
             }
 
-            queue.queue.push({ url:url, message_channel:message.channel });
-            message.channel.send({embeds: [ await createEmbed(url, "Added") ]});
+            queue.queue.push({ url:url, message_channel:channel });
+            channel.send({embeds: [ await createEmbed(url, "Added") ]});
         } else {
             const connection = joinVoiceChannel({
                 channelId: message.member.voice.channel.id,
@@ -107,10 +121,11 @@ module.exports = {
                 queue: [],
             });
 
-            message.channel.send({embeds: [ await createEmbed(url, "Playing") ]});
-
-            video_player(client, { url:url, message_channel:message.channel }, message.guild.id);
+            channel.send({embeds: [ await createEmbed(url, "Playing") ]});
+            video_player(client, { url:url, message_channel:channel }, message.guild.id);
         }
+
+        if(interaction) message.followUp("OK");
     },
 
     player:video_player

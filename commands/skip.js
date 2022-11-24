@@ -1,7 +1,8 @@
 module.exports = {
     name: "skip",
+    description: "skip current track",
 
-    run: (client, message, args) => {
+    run: (client, message, args, interaction) => {
         if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
 
         const guildInfo = client.queue.find(guild => guild.guildId === message.guild.id);
@@ -25,5 +26,6 @@ module.exports = {
         }
 
         require("./play").player(client, queueElm, message.guild.id);
+        if(interaction) message.reply("OK"); 
     }
 }
