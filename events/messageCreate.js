@@ -12,25 +12,26 @@ const patreon = [
 ];
 
 module.exports = (client, message) => {
+    if (message.author.bot) return;
     if (counter(message, counterChannelID)) return;
     if (leonDetector(message)) return message.channel.send("Halts maul");
-    if (message.author.bot) return;
     if (message.content.toLowerCase().includes("patreon")) return message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     if (message.content.toLowerCase().includes("onlyfans")) return message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
-    if (checkChannelID(message, allowedChannelsIDs)) return;
+    if (!checkChannelID(message, allowedChannelsIDs)) return;
+    
     const prefix = client.config.prefix;
 
     if (!message.content.startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-
     const cmd = client.commands.get(command);
 
     const troll = Random.randomInt(0, 10);
     if (troll > 7) {
         message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     }
+    
     if (!cmd) return;
     cmd.run(client, message, args);
 }
