@@ -8,7 +8,7 @@ module.exports = {
             message.reply("ok");
         }
 
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
 
         const queue = client.queue.find(e => e.guildId === message.guild.id);
 
