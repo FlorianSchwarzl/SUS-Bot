@@ -10,8 +10,6 @@ module.exports = {
             message.reply("ok");
         }
 
-        console.log(message.guild.roles.guild.roles);
-
         const sEmbed = new MessageEmbed()
             .setColor("DARK_BLUE")
             .setTitle("Server Info")
