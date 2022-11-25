@@ -1,7 +1,7 @@
 const { Console } = require('console');
 const fs = require('fs');
 
-let data = require("../data.json");
+const data = require("../data.json");
 
 module.exports = {
     all: () => {

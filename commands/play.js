@@ -1,10 +1,11 @@
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { stream:AudioStream, video_basic_info, search } = require('play-dl');
 const { validateURL } = require("../function/isValidYoutubeURL");
 const { MessageEmbed } = require("discord.js");
 
 const video_player = async (client, track, guildId) => {
     const guildInfo = client.queue.find(guild => guild.guildId === guildId);
+    guildInfo.current = track;
 
     const stream = await AudioStream(track.url);
     const resource = createAudioResource(stream.stream, { inputType: stream.type });
@@ -22,10 +23,6 @@ const video_player = async (client, track, guildId) => {
         
         if(!queueElm) {
             track.message_channel.send("Played all tracks leaving the channel.");
-            const index = client.queue.findIndex((e) => e.guildId === guildInfo.guildId);
-            if(index>=0) {
-                client.queue.remove(index);
-            }
             try {
                 return guildInfo.connection.destroy();
             } catch (e) {return}
@@ -71,12 +68,17 @@ module.exports = {
     ],
 
 	async run (client, message, args, interaction = false) {
-        const channel = interaction? client.channels.cache.get(message.channelId):message.channel
+        const channel = interaction? client.channels.cache.get(message.channelId):message.channel;
         if(interaction) { 
             message.deferReply();
         }
+
         if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
         const queue = client.queue.find(e => e.guildId === message.guild.id);
+
+        if(args.length === 0) {
+            return channel.send("Please input the link or name of the track you want to play.");
+        }
 
         if(queue) {
             if(queue.voice_channel !== message.member.voice.channel.id) {
@@ -113,11 +115,19 @@ module.exports = {
             const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause }});
             connection.subscribe(player);
 
+            connection.on(VoiceConnectionStatus.Destroyed, (oldS, newS) => {
+                const index = client.queue.findIndex((e) => e.guildId === message.guild.id);
+                if(index>=0) {
+                    client.queue.remove(index);
+                }
+            });
+
             client.queue.push({
                 voice_channel: message.member.voice.channel.id,
                 guildId: message.guild.id,
                 connection: connection,
                 player: player,
+                current: null,
                 queue: [],
             });
 
