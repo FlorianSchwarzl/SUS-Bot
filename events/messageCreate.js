@@ -14,11 +14,11 @@ const patreon = [
 module.exports = (client, message) => {
     if (message.author.bot) return;
     if (counter(message, counterChannelID)) return;
-    if (leonDetector(message)) return message.channel.send("Halts maul");
+    if (leonDetector(message)) message.channel.send("Halts maul");
     if (message.content.toLowerCase().includes("patreon")) return message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     if (message.content.toLowerCase().includes("onlyfans")) return message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     if (!checkChannelID(message, allowedChannelsIDs)) return;
-    
+
     const prefix = client.config.prefix;
 
     if (!message.content.startsWith(prefix)) return;
@@ -31,7 +31,7 @@ module.exports = (client, message) => {
     if (troll > 7) {
         message.channel.send(patreon[Math.floor(Math.random() * patreon.length)]);
     }
-    
+
     if (!cmd) return;
     cmd.run(client, message, args);
 }
