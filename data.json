@@ -1,9 +1,1 @@
-{
-    "counter": 0,
-    "allowedChannels": [
-        "907009478610792519"
-    ],
-    "counterChannel": "1045091931501383821",
-    "welcomeChannel": "1045278482629922847",
-    "goodbyeChannel":"1045337288583946330"
-}
+{"counter":{"current":13,"lastUser":"341685792185516035"},"allowedChannels":["907009478610792519"],"counterChannel":"1045091931501383821","welcomeChannel":"1045278482629922847","goodbyeChannel":"1045337288583946330"}
