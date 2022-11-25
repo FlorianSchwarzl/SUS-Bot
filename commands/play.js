@@ -72,8 +72,13 @@ module.exports = {
         if(interaction) { 
             message.deferReply();
         }
+
         if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
         const queue = client.queue.find(e => e.guildId === message.guild.id);
+
+        if(args.length === 0) {
+            return channel.send("Please input the link or name of the track you want to play.");
+        }
 
         if(queue) {
             if(queue.voice_channel !== message.member.voice.channel.id) {
@@ -111,7 +116,6 @@ module.exports = {
             connection.subscribe(player);
 
             connection.on(VoiceConnectionStatus.Destroyed, (oldS, newS) => {
-                channel.send("Played all tracks leaving the channel.");
                 const index = client.queue.findIndex((e) => e.guildId === message.guild.id);
                 if(index>=0) {
                     client.queue.remove(index);

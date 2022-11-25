@@ -22,6 +22,7 @@ module.exports = {
         channel.send("Skipped track.");
 
         if(!queueElm) {
+            channel.send("Skipped last track. Leaving channel.");
             return guildInfo.connection.destroy();
         }
 

@@ -19,6 +19,7 @@ module.exports = {
         if(queue.voice_channel !== message.member.voice.channel.id) 
             return channel.send("You have to be in the same voice channel as the bot to make it leave.");
 
+        channel.send("Leaving the Voice Channel.");
         queue.connection.destroy();
     }
 }
