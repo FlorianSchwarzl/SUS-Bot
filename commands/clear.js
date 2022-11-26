@@ -1,4 +1,5 @@
 const { ManageMessages } = require("../enums/permissonBitField");
+const { ManageMessages: manageMsgs } = require("../enums/permissionStrings");
 
 module.exports = {
     name: "clear",
@@ -13,7 +14,7 @@ module.exports = {
         }
     ],
 
-    default_member_permissions: "0x0000000000002000",
+    default_member_permissions: manageMsgs,
 
     run: async (client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
