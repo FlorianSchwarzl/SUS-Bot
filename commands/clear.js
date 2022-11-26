@@ -30,7 +30,7 @@ module.exports = {
 
         if(isNaN(number)) return channel.send("Please provide a number as the first argument.");
 
-        if(number < 0) return channel.send("Number must be a positive integer.");
+        if(number <= 0) return channel.send("Number must be a positive integer.");
 
         let temp = number;
         while(temp > 100) {
