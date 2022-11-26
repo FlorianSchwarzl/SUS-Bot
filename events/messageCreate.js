@@ -19,7 +19,8 @@ module.exports = (client, message) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);          // Get the arguments
     const command = args.shift().toLowerCase();                                     // Get the command name
-    const cmd = client.commands.get(command) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));                                       // Get the command from the commands collection
+    const cmd = client.commands.get(command) ||                                     // Get the command from the commands collection
+          client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));                                      
     if (!cmd) return;                                                               // Ignore commands that don't exist
 
     if (Random.randomInt(0, 9) === 0)                                               // 1/10 chance to send a self-promo message                         
