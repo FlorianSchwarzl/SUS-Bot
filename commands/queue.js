@@ -7,7 +7,7 @@ module.exports = {
     run: async(client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
         if(slash) {
-            message.reply("ok");
+            message.reply({ content: 'ok', ephemeral: true });
         }
 
         const queue = client.queue.find(e => e.guildId === message.guild.id);
