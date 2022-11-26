@@ -36,10 +36,11 @@ P.P.S. The prefix for the hosted Version is `!`
 ## Commands
 
 `###` means coming soon!
+`%%%` means WIP!
 
 ### General
 
-- ###`help` - Shows the Help Page
+- %%%`help` - Shows the Help Page
 - `ping` - Shows the Ping of the Bot
 - `invite` - Creates an Invite Link for the Server
 - `inviteBot` - Shows the Invite Link for the Bot
@@ -68,8 +69,8 @@ P.P.S. The prefix for the hosted Version is `!`
 - `stop` - Stops the Music
 - `leave` - Leaves the Voice Channel
 - `queue` - Shows the Queue
-- ###`nowplaying` - Shows the current Song
+- `nowPlaying` - Shows the current Song
 - ###`pause` - Pauses the Music
 - ###`resume` - Resumes the Music
 - ###`loop` - Loops the Queue
-- ###`shuffle` - Shuffles the Queue
+- `shuffle` - Shuffles the Queue
