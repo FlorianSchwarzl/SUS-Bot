@@ -22,7 +22,11 @@ PREFIX= # The Prefix you want to use. For example: !
 
 ### Invite the Bot
 
+<<<<<<< HEAD
 Disclaimer! The Bot is currently under heavy development so it might not be online all the time.
+=======
+Disclaimer! The Bot is currently under heavy development so it won't be online all the time.
+>>>>>>> 033eeda9a92baa9570be5d1c2d87a5eb4fc64e7f
 
 1. Go to the [Invite Page](https://discord.com/api/oauth2/authorize?client_id=1043594673614225429&permissions=8&scope=bot)
 2. Select your Server
