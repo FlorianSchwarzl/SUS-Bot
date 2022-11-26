@@ -1,10 +1,11 @@
 module.exports = {
-    name: "leave",
+    name: "stop",
     descrition: "make the bot leave the voice channel",
+    alisases: ["disconnect", "leave"],
 
-    run: async(client, message, args, slash) => {
-        const channel = slash? client.channels.cache.get(message.channelId):message.channel;
-        if(slash) {
+    run: async (client, message, args, slash) => {
+        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
+        if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
@@ -12,11 +13,11 @@ module.exports = {
 
         const queue = client.queue.find(e => e.guildId === message.guild.id);
 
-        if(!queue) {
+        if (!queue) {
             return channel.send("Currently not playing.");
         }
 
-        if(queue.voice_channel !== message.member.voice.channel.id) 
+        if (queue.voice_channel !== message.member.voice.channel.id)
             return channel.send("You have to be in the same voice channel as the bot to make it leave.");
 
         channel.send("Leaving the Voice Channel.");
