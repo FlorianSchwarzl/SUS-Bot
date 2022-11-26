@@ -1,6 +1,6 @@
 module.exports = {
-    "name": "leave",
-    "descrition": "make the bot leave the voice channel",
+    name: "leave",
+    descrition: "make the bot leave the voice channel",
 
     run: async(client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
