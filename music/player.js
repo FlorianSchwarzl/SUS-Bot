@@ -82,4 +82,10 @@ module.exports = class {
             message.channel.send({embeds: [ await this.#createEmbed(url, "Playing") ]});
         }
     }
+
+    #handleVoiceStateChange(oldState, newState) {
+        const queue = this.queues.get(oldState.guild.id);
+        if (!queue || !queue.connection)
+            return;
+    }
 }
