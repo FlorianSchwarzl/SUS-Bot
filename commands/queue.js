@@ -1,8 +1,8 @@
 const { video_basic_info } = require('play-dl');
  
 module.exports = {
-    "name": "queue",
-    "description": "",
+    name: "queue",
+    description: "Shows the bots queue",
 
     run: async(client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
