@@ -20,7 +20,7 @@ module.exports = {
         if (queue.voice_channel !== message.member.voice.channel.id)
             return channel.send("You have to be in the same voice channel as the bot to shuffle the queue.");
 
-        const shuffle = require("../function/shuffle.js");
+        const shuffle = require("../functions/shuffle.js");
         queue.queue = shuffle(queue.queue);
 
         channel.send("Shuffled the queue.");
