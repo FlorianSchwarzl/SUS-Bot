@@ -1,6 +1,6 @@
 module.exports = {
     name: "clear",
-    description: "",
+    description: "clear channel up to the specified number of messages",
 
     options: [
         {

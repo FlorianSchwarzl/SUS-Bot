@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     "name": "uptime",
-    "description": "",
+    "description": "Shows you the uptime of the bot",
 
     run: async (client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
