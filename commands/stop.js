@@ -1,7 +1,7 @@
 module.exports = {
     name: "stop",
     descrition: "make the bot leave the voice channel",
-    alisases: ["disconnect", "leave"],
+    aliases: ["disconnect", "leave"],
 
     run: async (client, message, args, slash) => {
         const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
