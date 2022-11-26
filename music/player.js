@@ -15,7 +15,7 @@ module.exports = class {
     }
 
     getQueueForGuild(guildId) {
-        return this.#queue.get(guildId);
+        return this.#queue.get(guildId)?.queue;
     }
 
     play(guildId) {
@@ -24,6 +24,10 @@ module.exports = class {
         }
 
         const queue = this.#queue.get(guildId);
+
+        if(queue.queue.length === 0) {
+            
+        }
     }
 
     addTrack(message, args) {
