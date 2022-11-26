@@ -53,7 +53,7 @@ P.P.S. The prefix for the hosted Version is `!`
 - ###`unban` - Unbans a Member
 - ###`mute` - Mutes a Member
 - ###`unmute` - Unmutes a Member
-- ###`clear` - Deletes a certain amount of Messages
+- `clear` - Deletes a certain amount of Messages
 - ###`slowmode` - Sets the Slowmode of a Channel
 - ###`lock` - Locks a Channel
 - ###`unlock` - Unlocks a Channel
