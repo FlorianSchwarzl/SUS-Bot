@@ -1,13 +1,13 @@
 const { video_basic_info } = require('play-dl');
  
 module.exports = {
-    "name": "queue",
-    "description": "",
+    name: "queue",
+    description: "Shows the bots queue",
 
     run: async(client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
         if(slash) {
-            message.reply("ok");
+            message.reply({ content: 'ok', ephemeral: true });
         }
 
         const queue = client.queue.find(e => e.guildId === message.guild.id);

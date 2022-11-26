@@ -5,7 +5,7 @@ module.exports = {
     run: (client, message, args, slash) => {
         const channel = slash? client.channels.cache.get(message.channelId):message.channel;
         if(slash) {
-            message.reply("ok");
+            message.reply({ content: 'ok', ephemeral: true });
         }
 
         if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
