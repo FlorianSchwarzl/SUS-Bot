@@ -48,7 +48,6 @@ P.P.S. The prefix for the hosted Version is `!`
 
 ### Moderation
 
-- ###`kick` - Kicks a Member
 - ###`tempban` - Temporarily Bans a Member
 - ###`unban` - Unbans a Member
 - ###`mute` - Mutes a Member

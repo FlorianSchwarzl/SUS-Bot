@@ -8,7 +8,6 @@ module.exports = {
     run: async (client, message, args, slash) => {
         if (slash) {                                                                            // if the command was sent as a slash command
             message.reply({ content: 'ok', ephemeral: true });                                  // send a reply to the interaction
-            message.channel = client.channels.cache.get(message.channelId);                     // set the channel to the channel the interaction was sent in
         }
 
         if (!client.player.getQueue(message.guild.id)) {                                        // if there is no queue for the guild
