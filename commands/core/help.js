@@ -1,4 +1,6 @@
+const { StringUtil } = require("sussyutilbyraphaelbader");
 const { MessageEmbed } = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
     name: 'help',
@@ -19,9 +21,6 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        const core = message.client.commands.filter(x => x.category == 'core').map((x) => '`' + x.name + '`').join(', ');
-        const music = message.client.commands.filter(x => x.category == 'music').map((x) => '`' + x.name + '`').join(', ');
-
         const command_name = args[0];
         const embed = new MessageEmbed()
             .setTimestamp(new Date())
@@ -30,9 +29,14 @@ module.exports = {
 
         if (!command_name || command_name.length === 0) {
             embed
-                .setDescription(`To see more information type **${client.config.prefix}help {command name}**`)
-                .addFields({ name: 'Core', value: core },
-                    { name: "Music", value: music });
+                .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
+
+            fs.readdirSync(`${__dirname}/../`).forEach((d) => {
+                embed.addFields({
+                    name: StringUtil.capitalize(d),
+                    value: client.commands.filter(x => x.category == d).map((x) => '`' + x.name + '`').join(', ')
+                })
+            });;
         } else {
             const cmd = client.commands.get(command_name) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command_name));
