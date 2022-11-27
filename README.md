@@ -74,3 +74,4 @@ P.P.S. The prefix for the hosted Version is `!`
 - ###`resume` - Resumes the Music
 - `loop` - Loops the Queue
 - `shuffle` - Shuffles the Queue
+- `clear-queue` - Clears the queue
