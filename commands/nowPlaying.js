@@ -16,6 +16,12 @@ module.exports = {
             return channel.send("There is no queue");
         }
 
-        channel.send(`Now Playing: **${client.player.getCurrent(message.guild.id).title}**\n`);
+        const current = client.player.getCurrent(message.guild.id);
+
+        if(!current) {
+            return channel.send("Currently not playing");
+        }
+
+        channel.send(`Now Playing: **${current.title}**\n`);
     }
 }
