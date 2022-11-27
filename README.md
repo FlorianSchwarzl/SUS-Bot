@@ -72,5 +72,5 @@ P.P.S. The prefix for the hosted Version is `!`
 - `nowPlaying` - Shows the current Song
 - ###`pause` - Pauses the Music
 - ###`resume` - Resumes the Music
-- ###`loop` - Loops the Queue
+- `loop` - Loops the Queue
 - `shuffle` - Shuffles the Queue

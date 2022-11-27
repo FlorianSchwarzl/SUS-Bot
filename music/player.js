@@ -27,6 +27,7 @@ module.exports = class {
             voice_channel: null,
             player: null,
             current: null,
+            loop: false,
             queue: new ImprovedArray()
         });
     }
@@ -53,6 +54,7 @@ module.exports = class {
         });
 
         guildInfo.player.on(AudioPlayerStatus.Idle, () => {
+            if(guildInfo.loop) guildInfo.queue.push(track);
             const queueElm = guildInfo.queue.shift();
             if (!queueElm) {
                 track.channel.send("Played all tracks leaving the channel.");
@@ -147,14 +149,14 @@ module.exports = class {
 
         const queueElm = queue.queue.shift();
 
-        if (!queueElm) {
+        if (!queueElm && !(queue.loop)) {
             message.channel.send("Skipped last track. Leaving channel.");
             return this.#destroyQueue(message.guild.id);
         } else {
             message.channel.send("Skipped track.");
         }
 
-        this.play(message.guild.id, queueElm);
+        this.play(message.guild.id, queueElm || queue.current);
     }
 
     stop(message) {
@@ -212,5 +214,17 @@ module.exports = class {
         if(!queue) return;
         queue.queue.clear();
         this.play(message.guild.id, { url:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
+    }
+
+    toggleLoop(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if (!queue) return message.channel.send("No queue for guild.");
+
+        if (queue.voice_channel !== message.member.voice.channel.id)
+            return message.channel.send("You have to be in the same voice channel as the bot to toggle looping.");
+        
+        queue.loop = !queue.loop;
+        message.channel.send(`Loop has been ${queue.loop? "":"de"}activated.`);
     }
 }
