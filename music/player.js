@@ -239,4 +239,36 @@ module.exports = class {
             message.channel.send("Looping is now disabled.");
         }
     }
+
+    pause(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if (!queue) return message.channel.send("No queue for guild.");
+
+        if (queue.voice_channel !== message.member.voice.channel.id)
+            return message.channel.send("You have to be in the same voice channel as the bot to pause.");
+
+        if(queue.player.state.status == "playing") {
+            queue.player.pause();
+            message.channel.send("Pausing the track");
+        } else if(queue.player.state.status == "paused") {
+            message.channel.send("The track is already paused.");
+        }
+    }
+
+    resume(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if (!queue) return message.channel.send("No queue for guild.");
+
+        if (queue.voice_channel !== message.member.voice.channel.id)
+            return message.channel.send("You have to be in the same voice channel as the bot to pause.");
+
+        if(queue.player.state.status == "paused") {
+            queue.player.unpause();
+            message.channel.send("Resuming the track");
+        } else if(queue.player.state.status == "playing") {
+            message.channel.send("The track is already playing.");
+        }
+    }
 }

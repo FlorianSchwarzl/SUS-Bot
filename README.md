@@ -70,8 +70,8 @@ P.P.S. The prefix for the hosted Version is `!`
 - `leave` - Leaves the Voice Channel
 - `queue` - Shows the Queue
 - `nowPlaying` - Shows the current Song
-- ###`pause` - Pauses the Music
-- ###`resume` - Resumes the Music
+- `pause` - Pauses the Music
+- `resume` - Resumes the Music
 - `loop` - Loops the Queue
 - `shuffle` - Shuffles the Queue
 - `clear-queue` - Clears the queue
