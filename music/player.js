@@ -29,7 +29,7 @@ module.exports = class {
     #newQueue(guildId) {
         this.#queue.set(guildId, {
             connection: null,
-            voice_channel: null,
+            voiceChannel: null,
             player: null,
             current: null,
             loop: false,
@@ -94,7 +94,7 @@ module.exports = class {
 
             queue.connection = connection;
             queue.player = player;
-            queue.voice_channel = message.member.voice.channel.id;
+            queue.voiceChannel = message.member.voice.channel.id;
 
             let url = args.map(e => e.trim()).join(" ").trim();
 
@@ -128,7 +128,7 @@ module.exports = class {
 
         const queue = this.#queue.get(message.guild.id);
 
-        if (queue.voice_channel !== message.member.voice.channel.id) {
+        if (queue.voiceChannel !== message.member.voice.channel.id) {
             return message.channel.send("You have to be in the same voice channel as the bot to add new tracks.");
         }
 
@@ -151,7 +151,7 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to skip tracks.");
 
         const queueElm = queue.queue.shift();
@@ -171,7 +171,7 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to stop the bot.");
 
         message.channel.send("Leaving channel.");
@@ -183,7 +183,7 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to shuffle the queue.");
 
         queue.queue.shuffle();
@@ -203,7 +203,7 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue || queue.queue.length == 0) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to clear the queue.");
 
         queue.queue.clear();
@@ -229,7 +229,7 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to toggle looping.");
 
         queue.loop = !queue.loop;
@@ -245,13 +245,13 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to pause.");
 
-        if(queue.player.state.status == "playing") {
+        if (queue.player.state.status == "playing") {
             queue.player.pause();
             message.channel.send("Pausing the track");
-        } else if(queue.player.state.status == "paused") {
+        } else if (queue.player.state.status == "paused") {
             message.channel.send("The track is already paused.");
         }
     }
@@ -261,13 +261,13 @@ module.exports = class {
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
-        if (queue.voice_channel !== message.member.voice.channel.id)
+        if (queue.voiceChannel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to pause.");
 
-        if(queue.player.state.status == "paused") {
+        if (queue.player.state.status == "paused") {
             queue.player.unpause();
             message.channel.send("Resuming the track");
-        } else if(queue.player.state.status == "playing") {
+        } else if (queue.player.state.status == "playing") {
             message.channel.send("The track is already playing.");
         }
     }
