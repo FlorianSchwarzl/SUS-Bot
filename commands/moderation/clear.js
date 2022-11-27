@@ -1,4 +1,4 @@
-const { ManageMessages } = require("../../enums/permissonBitField");
+const { ManageMessages } = require("../../enums/permissionBitField");
 const { ManageMessages: manageMsgs } = require("../../enums/permissionStrings");
 
 module.exports = {
@@ -38,6 +38,6 @@ module.exports = {
         }
         message.channel.bulkDelete(temp, true).catch(err => message.channel.send("An error occurred."));
 
-        message.channel.send(`Deletet ${number} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
+        message.channel.send(`Deleted ${number} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 }

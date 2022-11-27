@@ -4,7 +4,7 @@ const { ImprovedArray } = require("sussyutilbyraphaelbader");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = class {
-    // TODO: CHAGE VARIBALE NAME FROM QUEUE TO QUEUES
+    // TODO: CHANGE VARIABLE NAME FROM QUEUE TO QUEUES
 
     #queue = new Map();
     #client;
@@ -15,15 +15,15 @@ module.exports = class {
 
     progressBar(value, maxValue, size) {
         const percentage = value / maxValue;
-        const progress = Math.round(size * percentage); // Calculate the number of square caracters to fill the progress side.
-        const emptyProgress = size - progress; // Calculate the number of dash caracters to fill the empty progress side.
+        const progress = Math.round(size * percentage);             // Calculate the number of square characters to fill the progress side.
+        const emptyProgress = size - progress;                      // Calculate the number of dash characters to fill the empty progress side.
 
-        const progressText = "▇".repeat(progress); // Repeat is creating a string with progress * caracters in it
-        const emptyProgressText = "—".repeat(emptyProgress); // Repeat is creating a string with empty progress * caracters in it
-        const percentageText = Math.round(percentage * 100) + "%"; // Displaying the percentage of the bar
+        const progressText = "▇".repeat(progress);                 // Repeat is creating a string with progress * characters in it
+        const emptyProgressText = "—".repeat(emptyProgress);        // Repeat is creating a string with empty progress * characters in it
+        const percentageText = Math.round(percentage * 100) + "%";  // Displaying the percentage of the bar
 
-        const Bar = progressText + emptyProgressText; // Creating the bar
-        return { Bar, percentageText };
+        const Bar = progressText + emptyProgressText;               // Creating the bar
+        return { Bar, percentageText };                             // Return the bar and the percentage text
     };
 
     #newQueue(guildId) {
@@ -51,9 +51,9 @@ module.exports = class {
 
         const stream = await AudioStream(track.url);
         const resource = createAudioResource(stream.stream, { inputType: stream.type });
-        
+
         guildInfo.player.play(resource);
-        track.channel.send(`Now playing **${track.title}**`);        
+        track.channel.send(`Now playing **${track.title}**`);
     }
 
     async #createEmbed(info, type) {
@@ -68,9 +68,9 @@ module.exports = class {
         }
 
         if (info.thumbnails) {
-            const thumbail = info.thumbnails[info.thumbnails.length - 1];
-            if (thumbail) {
-                embed.setImage(thumbail.url);
+            const thumbnail = info.thumbnails[info.thumbnails.length - 1];
+            if (thumbnail) {
+                embed.setImage(thumbnail.url);
             }
         }
 
@@ -109,9 +109,9 @@ module.exports = class {
                 message.channel.send("An error occurred while playing the track.");
                 this.#destroyQueue(message.guild.id);
             });
-    
+
             queue.player.on(AudioPlayerStatus.Idle, () => {
-                if(queue.loop) queue.queue.push(queue.current);
+                if (queue.loop) queue.queue.push(queue.current);
                 const queueElm = queue.queue.shift();
                 if (!queueElm) {
                     message.channel.send("Played all tracks leaving the channel.");
@@ -218,9 +218,10 @@ module.exports = class {
 
     troll(message) {
         const queue = this.#queue.get(message.guild.id);
-        if(!queue) return;
+        if (!queue) return;
         queue.queue.clear();
-        this.play(message.guild.id, { url:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
+        /* Playing Never Gonna Give You Up bc we do miniscule amounts of trolling */
+        this.play(message.guild.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
     }
 
     toggleLoop(message) {
@@ -230,8 +231,12 @@ module.exports = class {
 
         if (queue.voice_channel !== message.member.voice.channel.id)
             return message.channel.send("You have to be in the same voice channel as the bot to toggle looping.");
-        
+
         queue.loop = !queue.loop;
-        message.channel.send(`Loop has been ${queue.loop? "":"de"}activated.`);
+        if (queue.loop) {
+            message.channel.send("Looping is now enabled.");
+        } else {
+            message.channel.send("Looping is now disabled.");
+        }
     }
 }
