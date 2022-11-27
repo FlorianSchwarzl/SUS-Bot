@@ -22,7 +22,7 @@ fs.readdirSync("./commands").forEach(dir => {
         const command = require(`./commands/${dir}/${e}`);
         if (!command.name.length) return;
         command.category = dir;
-        client.commands.set(command.name, command);    
+        client.commands.set(command.name, command);
     })
 });
 
