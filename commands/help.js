@@ -14,8 +14,8 @@ module.exports = {
     ],
 
     run(client, message, args, slash) {
-        const channel = slash? client.channels.cache.get(message.channelId):message.channel;
-        if(slash) {
+        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
+        if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
@@ -24,7 +24,7 @@ module.exports = {
             .setTimestamp(new Date())
             .setFooter(client.config.embedFooter(client));
 
-        if(!command_name || command_name.length === 0) {
+        if (!command_name || command_name.length === 0) {
             embed.setTitle('Help panel')
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`)
                 .addFields({ name: 'Commands', value: client.commands.map((x) => '`' + x.name + '`').join(', ') });
@@ -32,6 +32,6 @@ module.exports = {
             embed;
         }
 
-        channel.send({ embeds:[embed] });
+        channel.send({ embeds: [embed] });
     }
 }

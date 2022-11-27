@@ -1,5 +1,6 @@
 const { Client, Collection, Intents } = require('discord.js');
 const { ImprovedArray } = require('sussyutilbyraphaelbader');
+const Player = require('./music/player');
 const fs = require("fs");
 require('dotenv').config();
 
@@ -13,12 +14,12 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-client.queue = new ImprovedArray();
+client.player = new Player();
 client.config = require('./config');
 
 fs.readdirSync("./commands").filter(f => f.endsWith(".js")).forEach(e => {
     const command = require(`./commands/${e}`);
-    if(!command.name.length) return;
+    if (!command.name.length) return;
     client.commands.set(command.name, command);
 });
 

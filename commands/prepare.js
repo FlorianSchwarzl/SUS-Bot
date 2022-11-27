@@ -9,7 +9,7 @@ const registering = (client, second) => {
         .setTitle("Success")
 
     client.commands.forEach(command => {
-        if(command.name === "prepare") return;
+        if (command.name === "prepare") return;
         second.guild.commands?.create(command).catch(error => {
             return new MessageEmbed()
                 .setTitle("Failed to create slash-commands")
