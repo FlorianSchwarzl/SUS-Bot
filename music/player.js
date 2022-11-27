@@ -110,7 +110,7 @@ module.exports = class {
             });
     
             queue.player.on(AudioPlayerStatus.Idle, () => {
-                if(queue.loop) queue.queue.push(track);
+                if(queue.loop) queue.queue.push(queue.current);
                 const queueElm = queue.queue.shift();
                 if (!queueElm) {
                     message.channel.send("Played all tracks leaving the channel.");
