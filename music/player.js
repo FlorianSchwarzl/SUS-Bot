@@ -206,4 +206,11 @@ module.exports = class {
         if (!queue || !queue.connection)
             return;
     }
+
+    troll(message) {
+        const queue = this.#queue.get(message.guild.id);
+        if(!queue) return;
+        queue.queue.clear();
+        this.play(message.guild.id, { url:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
+    }
 }
