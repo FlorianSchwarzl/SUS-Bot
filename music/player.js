@@ -114,7 +114,7 @@ module.exports = class {
                 const queueElm = queue.queue.shift();
                 if (!queueElm) {
                     message.channel.send("Played all tracks leaving the channel.");
-                    return this.#destroyQueue(guildId);
+                    return this.#destroyQueue(message.guild.id);
                 }
                 this.play(message.guild.id, queueElm);
             });
