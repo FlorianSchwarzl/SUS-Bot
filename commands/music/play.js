@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'play',
+    name: 'play',
     description: "Play or Queue a new video",
 
     options: [
@@ -11,11 +11,11 @@ module.exports = {
         }
     ],
 
-	async run (client, message, args, interaction = false) {
-        if(interaction) { 
+    async run(client, message, args, slash) {
+        if (slash) {
             message.reply("ok");
         }
 
-        client.player.addTrack(client, message, args);
+        client.player.addTrack(client, message, args);                      // call the addTrack function from the player
     }
 }

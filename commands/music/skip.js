@@ -3,9 +3,9 @@ module.exports = {
     description: "skip current track",
 
     run: (client, message, args, slash) => {
-        if(slash) {
+        if (slash) {
             slash.reply("ok");
         }
-        client.player.skip(client, message);
+        client.player.skip(message);                                        // call the skip function from the player
     }
 }

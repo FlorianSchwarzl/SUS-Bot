@@ -5,28 +5,25 @@ module.exports = {
     description: "Shows the bots queue",
 
     run: async (client, message, args, slash) => {
-        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
-        if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+        if (slash) {                                                        // if the command was sent as a slash command
+            message.reply({ content: 'ok', ephemeral: true });              // send a reply to the interaction
+            message.channel = client.channels.cache.get(message.channelId); // and set the channel to the channel the interaction was sent in
         }
 
-        const queue = client.player.getQueue(message.guild.id);
+        const playerInfo = client.player.getQueue(message.guild.id);        // get the playerInfo for the guild
 
-        if (!queue) {
-            return channel.send("There is no queue");
+        if (!playerInfo) {                                                  // if there is no queue for the guild
+            return message.channel.send("There is no queue");               // send an error message
         }
 
-        let resultString = `Current: **${queue.current.title}**\n`;
+        let currentString = `Current: **${playerInfo.current.title}**\n`;   // create a string with the current song
+        let queueString = "";                                               // create a string for the queue
 
-        if (queue.queue.length === 0) {
-            return channel.send(resultString);
+        for (let i = 0; i < playerInfo.queue.length; i++) {                 // loop through the queue
+            const track = playerInfo.queue[i];                              // get the track
+            queueString += `${i + 1}. **${track.title}**\n`;                // add the title of the song to the queue string
         }
 
-        let index = 0;
-        for (const elm of queue.queue) {
-            resultString += `${++index}. **${elm.title}**\n`;
-        }
-        
-        channel.send(resultString);
+        message.channel.send(currentString + queueString);                  // send the current song and the queue
     }
 }
