@@ -7,7 +7,6 @@ module.exports = {
     run: async (client, message, args, slash) => {
         if (slash) {                                                        // if the command was sent as a slash command
             message.reply({ content: 'ok', ephemeral: true });              // send a reply to the interaction
-            message.channel = client.channels.cache.get(message.channelId); // and set the channel to the channel the interaction was sent in
         }
 
         const playerInfo = client.player.getQueue(message.guild.id);        // get the playerInfo for the guild
