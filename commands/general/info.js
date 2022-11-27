@@ -16,7 +16,7 @@ module.exports = {
                 .addField('Discord.js', `${discordjsVersion}`, true)
                 .addField('Guild Count', `${client.guilds.cache.size} guilds`, true)
                 .addField(`User Count`, `${client.users.cache.size} users`, true)
-                .addField('Commands', `${client.commands.size} cmds`, true)
+                .addField('Commands', `${client.commands.size} commands`, true)
                 .addField('Memory', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB Heap`, true)
                 .addField('Cached Data', `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`, true)
                 .addField('Node', `${process.version} on ${process.platform} ${process.arch}`, true)
