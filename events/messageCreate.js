@@ -7,7 +7,7 @@ const selfPromo = fetchData.get("messages").selfPromo;
 module.exports = (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
     const counter = require("../function/counter.js");
-    if (counter(message, channels.counter)) return;                                 // Check if the message is in the counter channel, if so, run the counter function
+    // if (counter(message, channels.counter)) return;                                 // Check if the message is in the counter channel, if so, run the counter function
 
     const leonDetector = require("../function/leonDetector.js");
     if (leonDetector(message)) message.channel.send("Halts maul");                  // We do a lil trolling
