@@ -51,23 +51,9 @@ module.exports = class {
 
         const stream = await AudioStream(track.url);
         const resource = createAudioResource(stream.stream, { inputType: stream.type });
+        
         guildInfo.player.play(resource);
-
-        guildInfo.player.on("error", (err) => {
-            track.channel.send("An error occurred while playing the track.");
-            this.#destroyQueue(guildId);
-        });
-
-        guildInfo.player.on(AudioPlayerStatus.Idle, () => {
-            if(guildInfo.loop) guildInfo.queue.push(track);
-            const queueElm = guildInfo.queue.shift();
-            if (!queueElm) {
-                track.channel.send("Played all tracks leaving the channel.");
-                return this.#destroyQueue(guildId);
-            }
-            this.play(guildId, queueElm);
-        });
-        track.channel.send(`Now playing **${track.title}**`);
+        track.channel.send(`Now playing **${track.title}**`);        
     }
 
     #createEmbed(info, type) {
@@ -117,6 +103,21 @@ module.exports = class {
                 const yt_info = await search(args.join(" "), { limit: 1 });
                 url = yt_info[0].url;
             }
+
+            queue.player.on("error", (err) => {
+                message.channel.send("An error occurred while playing the track.");
+                this.#destroyQueue(message.guild.id);
+            });
+    
+            queue.player.on(AudioPlayerStatus.Idle, () => {
+                if(queue.loop) queue.queue.push(track);
+                const queueElm = queue.queue.shift();
+                if (!queueElm) {
+                    message.channel.send("Played all tracks leaving the channel.");
+                    return this.#destroyQueue(guildId);
+                }
+                this.play(message.guild.id, queueElm);
+            });
 
             const info = (await video_basic_info(url)).video_details;
             message.channel.send({ embeds: [this.#createEmbed(info, "Playing")] });
