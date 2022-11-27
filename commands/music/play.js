@@ -14,7 +14,6 @@ module.exports = {
 	async run (client, message, args, interaction = false) {
         if(interaction) { 
             message.reply("ok");
-            message.channel = client.channels.cache.get(message.channelId);
         }
 
         client.player.addTrack(client, message, args);
