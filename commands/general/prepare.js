@@ -22,9 +22,9 @@ const registering = (client, second) => {
 
 module.exports = {
     name: 'prepare',
-    description: 'Create\'s slash commands which have been been specified beforehand.',
+    description: 'Create\'s slash commands in server.',
 
-    async run(client, message, args, slash = false) {
+    async run(client, message, args, slash) {
         const embed = registering(client, message);
         if (slash) message.reply({ embeds: [embed] });
         else message.channel.send({ embeds: [embed] });

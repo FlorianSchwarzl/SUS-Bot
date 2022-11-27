@@ -3,7 +3,7 @@ const ms = require('@parade/pretty-ms');
 
 module.exports = {
     name: "info",
-    description: "sus",
+    description: "Displays information about the bot.",
 
     run(client, message, args) {
         message.channel.send({
