@@ -63,20 +63,19 @@ module.exports = class {
         track.channel.send(`Now playing **${track.title}**`);
     }
 
-    async #createEmbed(client, url, type) {
-        const info = await video_basic_info(url);
+    #createEmbed(client, info, type) {
         const embed = new MessageEmbed()
-            .setURL(url)
+            .setURL(info.url)
             .setColor("DARK_AQUA")
             .setTimestamp(new Date())
             .setFooter(require("../config").embedFooter(client));
     
         if(info.video_details.title) {
-            embed.setTitle(`${type} track ${info.video_details.title}`);
+            embed.setTitle(`${type} track ${info.title}`);
         }
     
-        if(info.video_details.thumbnails) {
-            const thumbail = info.video_details.thumbnails[info.video_details.thumbnails.length - 1];
+        if(info.thumbnails) {
+            const thumbail = info.thumbnails[info.thumbnails.length - 1];
             if(thumbail) {
                 embed.setImage(thumbail.url);
             }
@@ -112,8 +111,9 @@ module.exports = class {
                 url = yt_info[0].url;
             }
 
-            message.channel.send({embeds: [ await this.#createEmbed(client, url, "Playing") ]});
-            this.play(message.guild.id, { url:url, channel:message.channel, title: (await video_basic_info(url)).video_details.title });
+            const info = (await video_basic_info(url)).video_details;
+            message.channel.send({embeds: [ this.#createEmbed(client, info, "Playing") ]});
+            this.play(message.guild.id, { url:url, channel:message.channel, title: info.title, duration: info.durationRaw  });
             return;
         }
 
@@ -132,8 +132,9 @@ module.exports = class {
             url = yt_info[0].url;
         }
 
-        queue.queue.push({ url:url, channel:message.channel, title: (await video_basic_info(url)).video_details.title });
-        message.channel.send({embeds: [ await this.#createEmbed(client, url, "Added") ]});
+        const info = (await video_basic_info(url)).video_details;
+        queue.queue.push({ url:url, channel:message.channel, title: info.title, duration: info.durationRaw });
+        message.channel.send({embeds: [ this.#createEmbed(client, info, "Added") ]});
     }
 
     skip(client, message) {
