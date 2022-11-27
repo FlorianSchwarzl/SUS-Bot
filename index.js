@@ -12,8 +12,8 @@ const client = new Client({
     ]
 });
 
+client.player = new Player(client);
 client.commands = new Collection();
-client.player = new Player();
 client.config = require('./config');
 
 /* Loading all the commands. */

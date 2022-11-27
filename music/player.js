@@ -7,6 +7,11 @@ module.exports = class {
     // TODO: CHAGE VARIBALE NAME FROM QUEUE TO QUEUES
 
     #queue = new Map();
+    #client;
+
+    constructor(client) {
+        this.#client = client;
+    }
 
     progressBar(value, maxValue, size) {
         const percentage = value / maxValue;
@@ -65,12 +70,12 @@ module.exports = class {
         track.channel.send(`Now playing **${track.title}**`);
     }
 
-    #createEmbed(client, info, type) {
+    #createEmbed(info, type) {
         const embed = new MessageEmbed()
             .setURL(info.url)
             .setColor("DARK_AQUA")
             .setTimestamp(new Date())
-            .setFooter(require("../config").embedFooter(client));
+            .setFooter(require("../config").embedFooter(this.#client));
 
         if (info.title) {
             embed.setTitle(`${type} track ${info.title}`);
@@ -86,7 +91,7 @@ module.exports = class {
         return embed;
     }
 
-    async addTrack(client, message, args) {
+    async addTrack(message, args) {
         if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
 
         if (!this.#queue.has(message.guild.id)) {
@@ -114,7 +119,7 @@ module.exports = class {
             }
 
             const info = (await video_basic_info(url)).video_details;
-            message.channel.send({ embeds: [this.#createEmbed(client, info, "Playing")] });
+            message.channel.send({ embeds: [this.#createEmbed(info, "Playing")] });
             this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
             return;
         }
@@ -136,7 +141,7 @@ module.exports = class {
 
         const info = (await video_basic_info(url)).video_details;
         queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
-        message.channel.send({ embeds: [this.#createEmbed(client, info, "Added")] });
+        message.channel.send({ embeds: [this.#createEmbed(info, "Added")] });
     }
 
     skip(message) {
