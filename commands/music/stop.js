@@ -1,6 +1,6 @@
 module.exports = {
     name: "stop",
-    descrition: "make the bot leave the voice channel",
+    description: "Makes the bot leave the voice channel",
     aliases: ["disconnect", "leave"],
 
     run: async (client, message, args, slash) => {
