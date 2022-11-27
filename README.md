@@ -59,8 +59,8 @@ P.P.S. The prefix for the hosted Version is `!`
 - ###`unlock` - Unlocks a Channel
 - ###`warn` - Warns a Member
 - ###`warnings` - Shows the Warnings of a Member
-- ###`removewarning` - Removes a Warning from a Member
-- ###`resetwarnings` - Resets the Warnings of a Member
+- ###`removeWarning` - Removes a Warning from a Member
+- ###`resetWarnings` - Resets the Warnings of a Member
 
 ### Music
 
