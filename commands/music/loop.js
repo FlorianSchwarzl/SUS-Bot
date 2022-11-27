@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['repeat'],
 
     run(client, message, args, slash) {
-        if(slash) message.reply("ok");
+        if (slash) message.reply("ok");
         client.player.toggleLoop(message);
     },
 };
