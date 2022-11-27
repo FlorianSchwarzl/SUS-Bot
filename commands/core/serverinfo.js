@@ -5,7 +5,6 @@ module.exports = {
     description: "displays information about the server in an Embed",
 
     async run(client, message, args, slash) {
-        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
         if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
@@ -20,6 +19,6 @@ module.exports = {
                 { name: "***Member Count:***", value: `${message.guild.memberCount}`, inline: true })
             .setTimestamp(new Date());
 
-        channel.send({ embeds: [sEmbed] });
+        message.channel.send({ embeds: [sEmbed] });
     }
 }

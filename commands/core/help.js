@@ -15,7 +15,6 @@ module.exports = {
     ],
 
     run(client, message, args, slash) {
-        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
         if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
@@ -39,7 +38,7 @@ module.exports = {
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command_name));
 
             if (!cmd) {
-                return channel.send("No command found for: `" + command_name + "`");
+                return message.channel.send("No command found for: `" + command_name + "`");
             }
 
             embed.addFields(
@@ -50,6 +49,6 @@ module.exports = {
             );
         }
 
-        channel.send({ embeds: [embed] });
+        message.channel.send({ embeds: [embed] });
     }
 }

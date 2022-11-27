@@ -5,7 +5,7 @@ module.exports = {
     name: "info",
     description: "sus",
 
-    run(client, message, args, slash) {
+    run(client, message, args) {
         message.channel.send({
             embeds: [new MessageEmbed()
                 .setColor("BLUE")
