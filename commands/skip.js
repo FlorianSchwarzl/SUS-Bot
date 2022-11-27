@@ -7,7 +7,6 @@ module.exports = {
             slash.reply("ok");
             message.channel = client.channels.cache.get(message.channelId);
         }
-
         client.player.skip(client, message);
     }
 }

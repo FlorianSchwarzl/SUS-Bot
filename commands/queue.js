@@ -10,25 +10,23 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        const queue = client.queue.find(e => e.guildId === message.guild.id);
+        const queue = client.player.getQueue(message.guild.id);
 
-        if(!queue) {
+        if (!queue) {
             return channel.send("There is no queue");
         }
 
-        let resultString = `Current: **${(await video_basic_info(queue.current.url)).video_details.title}**\n`;
+        let resultString = `Current: **${queue.current.title}**\n`;
 
-        if(queue.queue.length === 0) {
+        if (queue.queue.length === 0) {
             return channel.send(resultString);
         }
 
-        resultString += "**Queue:** \n";
-
         let index = 0;
         for (const elm of queue.queue) {
-            const info = (await video_basic_info(elm.url)).video_details;
-            resultString += `${++index}. **${info.title}**\n`;
+            resultString += `${++index}. **${elm.title}**\n`;
         }
+        
         channel.send(resultString);
     }
 }

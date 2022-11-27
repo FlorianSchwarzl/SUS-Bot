@@ -1,8 +1,11 @@
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { stream:AudioStream, video_basic_info, search, yt_validate } = require('play-dl');
-const { MessageEmbed, InviteGuild } = require("discord.js");
+const { ImprovedArray } = require("sussyutilbyraphaelbader");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = class {
+    // TODO: CHAGE VARIBALE NAME FROM QUEUE TO QUEUES
+
     #queue = new Map();
 
     progressBar(value, maxValue, size) {
@@ -18,18 +21,14 @@ module.exports = class {
         return { Bar, percentageText };
     };
 
-    newQueue(guildId) {
+    #newQueue(guildId) {
         this.#queue.set(guildId, {
             connection: null, 
             voice_channel: null,
             player: null,
             current: null,
-            queue: []
+            queue: new ImprovedArray()
         });
-    }
-
-    getQueueForGuild(guildId) {
-        return this.#queue.get(guildId)?.queue;
     }
 
     #destroyQueue(guildId) {
@@ -41,6 +40,7 @@ module.exports = class {
 
     async play(guildId, track) {
         const guildInfo = this.#queue.get(guildId);
+        if(!guildInfo) return;
         guildInfo.current = track;
         
         const stream = await AudioStream(track.url);
@@ -53,14 +53,12 @@ module.exports = class {
         });
         
         guildInfo.player.on(AudioPlayerStatus.Idle, () => {
-            const queueElm = guildInfo.queue.shift();
-            
+            const queueElm = guildInfo.queue.shift();            
             if(!queueElm) {
                 track.channel.send("Played all tracks leaving the channel.");
-                this.#destroyQueue(guildId);
+                return this.#destroyQueue(guildId);
             }
-        
-            video_player(client, queueElm, guildId);
+            this.play(guildId, queueElm);
         });
         track.channel.send(`Now playing **${track.title}**`);
     }
@@ -91,7 +89,7 @@ module.exports = class {
         if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
 
         if(!this.#queue.has(message.guild.id)) {
-            this.newQueue(message.guild.id);
+            this.#newQueue(message.guild.id);
             const queue = this.#queue.get(message.guild.id);
             const connection = joinVoiceChannel({
                 channelId: message.member.voice.channel.id,
@@ -150,12 +148,40 @@ module.exports = class {
 
         if(!queueElm) {
             message.channel.send("Skipped last track. Leaving channel.");
-            return this.#destroyQueue(messages.guild.id);
+            return this.#destroyQueue(message.guild.id);
         } else {
             message.channel.send("Skipped track.");
         }
 
         this.play(message.guild.id, queueElm);
+    }
+
+    stop(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if(!queue) return message.channel.send("No queue for guild.");
+
+        if(queue.voice_channel !== message.member.voice.channel.id) 
+            return message.channel.send("You have to be in the same voice channel as the bot to stop the bot.");
+        
+        message.channel.send("Leaving channel.");
+        this.#destroyQueue(message.guild.id);
+    }
+
+    shuffle(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if(!queue) return message.channel.send("No queue for guild.");
+
+        if(queue.voice_channel !== message.member.voice.channel.id) 
+            return message.channel.send("You have to be in the same voice channel as the bot to shuffle the queue.");
+
+        queue.queue.shuffle();
+        message.channel.send("Shuffled the Queue.");
+    }
+
+    getQueue(guildId) {
+        return this.#queue.get(guildId);
     }
 
     #handleVoiceStateChange(oldState, newState) {
