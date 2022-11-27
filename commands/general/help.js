@@ -21,13 +21,13 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        const command_name = args[0];
+        const commandName = args[0];
         const embed = new MessageEmbed()
             .setTimestamp(new Date())
             .setTitle('Help panel')
             .setFooter(client.config.embedFooter(client));
 
-        if (!command_name || command_name.length === 0) {
+        if (!commandName || commandName.length === 0) {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
@@ -38,11 +38,11 @@ module.exports = {
                 })
             });;
         } else {
-            const cmd = client.commands.get(command_name) ||
-                client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command_name));
+            const cmd = client.commands.get(commandName) ||
+                client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
             if (!cmd) {
-                return message.channel.send("No command found for: `" + command_name + "`");
+                return message.channel.send("No command found for: `" + commandName + "`");
             }
 
             embed.addFields(
