@@ -35,7 +35,7 @@ P.P.S. The prefix for the hosted Version is `!`
 
 ## Commands
 
-`###` means coming soon!<br>
+`###` means coming soon!
 `%%%` means work in progress!
 
 ### General
