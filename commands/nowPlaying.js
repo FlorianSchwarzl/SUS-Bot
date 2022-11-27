@@ -11,14 +11,11 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        const queue = client.queue.find(e => e.guildId === message.guild.id);
-
+        const queue = client.player.getQueue(message.guild.id);
         if (!queue) {
-            return channel.send("There is nothing playing");
+            return channel.send("There is no queue");
         }
 
-        let resultString = `Now Playing: **${(await video_basic_info(queue.current.url)).video_details.title}**\n`;
-
-        channel.send(resultString);
+        channel.send(`Now Playing: **${client.player.getCurrent().title}**\n`);
     }
 }

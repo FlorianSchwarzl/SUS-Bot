@@ -185,6 +185,10 @@ module.exports = class {
         return this.#queue.get(guildId);
     }
 
+    getCurrent(guildId) {
+        return this.#queue.get(guildId)?.current;
+    }
+
     #handleVoiceStateChange(oldState, newState) {
         const queue = this.queues.get(oldState.guild.id);
         if (!queue || !queue.connection)
