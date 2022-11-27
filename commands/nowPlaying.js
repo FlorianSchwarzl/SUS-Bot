@@ -16,6 +16,6 @@ module.exports = {
             return channel.send("There is no queue");
         }
 
-        channel.send(`Now Playing: **${client.player.getCurrent().title}**\n`);
+        channel.send(`Now Playing: **${client.player.getCurrent(message.guild.id).title}**\n`);
     }
 }
