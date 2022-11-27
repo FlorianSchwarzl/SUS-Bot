@@ -44,7 +44,7 @@ P.P.S. The prefix for the hosted Version is `!`
 - `ping` - Shows the Ping of the Bot
 - `invite` - Creates an Invite Link for the Server
 - `inviteBot` - Shows the Invite Link for the Bot
-- ###`info` - Shows some Information about the Bot
+- `info` - Shows some Information about the Bot
 
 ### Moderation
 
