@@ -5,7 +5,6 @@ module.exports = {
     "description": "Shows you the uptime of the bot",
 
     run: async (client, message, args, slash) => {
-        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
         if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
@@ -22,6 +21,6 @@ module.exports = {
                 { name: "**Stunden:**", value: `${hours}` },
                 { name: "**Minuten:**", value: `${minutes}` },
                 { name: "**Sekunden:**", value: `${seconds}` });
-        channel.send({ embeds: [uptime] });
+        message.channel.send({ embeds: [uptime] });
     }
 }
