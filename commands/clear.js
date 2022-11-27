@@ -17,10 +17,10 @@ module.exports = {
     default_member_permissions: manageMsgs,
 
     run: async (client, message, args, slash) => {
-        const channel = slash? client.channels.cache.get(message.channelId):message.channel;
+        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
 
-        if(!slash) {
-            if(!message.member.permissions.has(ManageMessages)) {
+        if (!slash) {
+            if (!message.member.permissions.has(ManageMessages)) {
                 return channel.send("You don't the required permissions to use this command.");
             }
         } else {
@@ -29,16 +29,16 @@ module.exports = {
 
         const number = parseInt(args[0]);
 
-        if(isNaN(number)) return channel.send("Please provide a number as the first argument.");
+        if (isNaN(number)) return channel.send("Please provide a number as the first argument.");
 
-        if(number <= 0) return channel.send("Number must be a positive integer.");
+        if (number <= 0) return channel.send("Number must be a positive integer.");
 
         let temp = number;
-        while(temp > 100) {
-            channel.bulkDelete(100,true).catch(err => channel.send("An error occurred."));
-            temp -= 100; 
+        while (temp > 100) {
+            channel.bulkDelete(100, true).catch(err => channel.send("An error occurred."));
+            temp -= 100;
         }
-        channel.bulkDelete(temp,true).catch(err => channel.send("An error occurred."));
+        channel.bulkDelete(temp, true).catch(err => channel.send("An error occurred."));
 
         channel.send(`Deletet ${number} messages from <#${channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
