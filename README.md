@@ -46,6 +46,7 @@ P.P.S. The prefix for the hosted Version is `!`
 - `inviteBot` - Shows the Invite Link for the Bot
 - `info` - Shows some Information about the Bot
 - `uptime` - Shows the uptime of the bot
+- `serverinfo` - Shows some information about the server
 
 ### Moderation
 
