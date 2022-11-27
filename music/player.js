@@ -70,7 +70,7 @@ module.exports = class {
             .setTimestamp(new Date())
             .setFooter(require("../config").embedFooter(client));
     
-        if(info.video_details.title) {
+        if(info.title) {
             embed.setTitle(`${type} track ${info.title}`);
         }
     
