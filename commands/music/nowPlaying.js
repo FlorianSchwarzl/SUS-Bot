@@ -1,5 +1,3 @@
-const { video_basic_info } = require('play-dl');
-
 module.exports = {
     name: "nowplaying",
     description: "Shows the current song",

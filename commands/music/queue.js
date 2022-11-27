@@ -1,5 +1,3 @@
-const { video_basic_info } = require('play-dl');
-
 module.exports = {
     name: "queue",
     description: "Shows the bots queue",
