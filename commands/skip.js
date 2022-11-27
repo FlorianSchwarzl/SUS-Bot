@@ -3,8 +3,8 @@ module.exports = {
     description: "skip current track",
 
     run: (client, message, args, slash) => {
-        const channel = slash? client.channels.cache.get(message.channelId):message.channel;
-        if(slash) {
+        const channel = slash ? client.channels.cache.get(message.channelId) : message.channel;
+        if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
@@ -12,16 +12,16 @@ module.exports = {
 
         const guildInfo = client.queue.find(guild => guild.guildId === message.guild.id);
 
-        if(!guildInfo) return channel.send("No queue for guild.");
+        if (!guildInfo) return channel.send("No queue for guild.");
 
         const queueElm = guildInfo.queue.shift();
 
-        if(guildInfo.voice_channel !== message.member.voice.channel.id) 
+        if (guildInfo.voice_channel !== message.member.voice.channel.id)
             return channel.send("You have to be in the same voice channel as the bot to skip tracks.");
-        
+
         channel.send("Skipped track.");
 
-        if(!queueElm) {
+        if (!queueElm) {
             channel.send("Skipped last track. Leaving channel.");
             return guildInfo.connection.destroy();
         }
