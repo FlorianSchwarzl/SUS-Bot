@@ -78,7 +78,7 @@ module.exports = class {
     }
 
     async addTrack(message, args) {
-        if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
 
         if (!this.#queue.has(message.guild.id)) {
             this.#newQueue(message.guild.id);
@@ -147,7 +147,7 @@ module.exports = class {
     }
 
     skip(message) {
-        if (!message.member.voice?.channel) return channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 

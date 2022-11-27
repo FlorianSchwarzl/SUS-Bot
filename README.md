@@ -45,6 +45,8 @@ P.P.S. The prefix for the hosted Version is `!`
 - `invite` - Creates an Invite Link for the Server
 - `inviteBot` - Shows the Invite Link for the Bot
 - `info` - Shows some Information about the Bot
+- `uptime` - Shows the uptime of the bot
+- `serverinfo` - Shows some information about the server
 
 ### Moderation
 
@@ -55,8 +57,8 @@ P.P.S. The prefix for the hosted Version is `!`
 - ###`unmute` - Unmutes a Member
 - `clear` - Deletes a certain amount of Messages
 - ###`slowmode` - Sets the Slowmode of a Channel
-- ###`lock` - Locks a Channel
-- ###`unlock` - Unlocks a Channel
+- `lock` - Locks a Channel
+- `unlock` - Unlocks a Channel
 - ###`warn` - Warns a Member
 - ###`warnings` - Shows the Warnings of a Member
 - ###`removeWarning` - Removes a Warning from a Member
