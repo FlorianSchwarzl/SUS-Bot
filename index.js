@@ -1,5 +1,4 @@
 const { Client, Collection, Intents } = require('discord.js');
-const { ImprovedArray } = require('sussyutilbyraphaelbader');
 const Player = require('./music/player');
 const fs = require("fs");
 require('dotenv').config();
@@ -17,6 +16,7 @@ client.commands = new Collection();
 client.player = new Player();
 client.config = require('./config');
 
+/* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
     fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
         const command = require(`./commands/${dir}/${e}`);
@@ -26,8 +26,10 @@ fs.readdirSync("./commands").forEach(dir => {
     })
 });
 
+/* Loading all the events. */
 fs.readdirSync("./events").filter(f => f.endsWith(".js")).forEach((e) => {
     client.on(e.split(".")[0], require(`./events/${e}`).bind(null, client));
 });
 
+/* Logging the bot in. */
 client.login(process.env.TOKEN);
