@@ -189,6 +189,18 @@ module.exports = class {
         return this.#queue.get(guildId)?.current;
     }
 
+    clearQueue(message) {
+        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        const queue = this.#queue.get(message.guild.id);
+        if (!queue || queue.queue.length == 0) return message.channel.send("No queue for guild.");
+
+        if (queue.voice_channel !== message.member.voice.channel.id)
+            return message.channel.send("You have to be in the same voice channel as the bot to clear the queue.");
+
+        queue.queue.clear();
+        message.channel.send("Cleared queue.");
+    }
+
     #handleVoiceStateChange(oldState, newState) {
         const queue = this.queues.get(oldState.guild.id);
         if (!queue || !queue.connection)
