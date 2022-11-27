@@ -33,11 +33,11 @@ module.exports = {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`)
                 .addFields({ name: 'Core', value: core },
-                {name:"Music", value: music});
+                    { name: "Music", value: music });
         } else {
             const cmd = client.commands.get(command_name) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command_name));
-            
+
             if (!cmd) {
                 return channel.send("No command found for: `" + command_name + "`");
             }
@@ -46,7 +46,7 @@ module.exports = {
                 { name: 'Name', value: cmd.name, inline: true },
                 { name: 'Description', value: cmd.description, inline: true },
                 { name: 'Category', value: cmd.category, inline: true },
-                { name: 'Aliase(s)', value: cmd.aliases?.length > 0 ? cmd.aliases.join(', ') : 'None' , inline: true },
+                { name: 'Aliase(s)', value: cmd.aliases?.length > 0 ? cmd.aliases.join(', ') : 'None', inline: true },
             );
         }
 
