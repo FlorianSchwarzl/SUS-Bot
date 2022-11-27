@@ -9,7 +9,7 @@ module.exports = {
         message.channel.send({
             embeds: [new MessageEmbed()
                 .setColor("BLUE")
-                .setTitle(`${client.user.username} v${require("../package.json")["version"]}`)
+                .setTitle(`${client.user.username} v${require("../../package.json")["version"]}`)
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
                 .addField('Uptime', `${ms(client.uptime)}`, true)
                 .addField('WebSocket Ping', `${client.ws.ping}ms`, true)

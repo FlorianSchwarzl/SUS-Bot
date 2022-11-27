@@ -1,5 +1,5 @@
-const { ManageMessages } = require("../enums/permissonBitField");
-const { ManageMessages: manageMsgs } = require("../enums/permissionStrings");
+const { ManageMessages } = require("../../enums/permissonBitField");
+const { ManageMessages: manageMsgs } = require("../../enums/permissionStrings");
 
 module.exports = {
     name: "clear",

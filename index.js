@@ -17,10 +17,13 @@ client.commands = new Collection();
 client.player = new Player();
 client.config = require('./config');
 
-fs.readdirSync("./commands").filter(f => f.endsWith(".js")).forEach(e => {
-    const command = require(`./commands/${e}`);
-    if (!command.name.length) return;
-    client.commands.set(command.name, command);
+fs.readdirSync("./commands").forEach(dir => {
+    fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
+        const command = require(`./commands/${dir}/${e}`);
+        if (!command.name.length) return;
+        command.category = dir;
+        client.commands.set(command.name, command);    
+    })
 });
 
 fs.readdirSync("./events").filter(f => f.endsWith(".js")).forEach((e) => {
