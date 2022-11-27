@@ -56,7 +56,7 @@ module.exports = class {
         track.channel.send(`Now playing **${track.title}**`);        
     }
 
-    #createEmbed(info, type) {
+    async #createEmbed(info, type) {
         const embed = new MessageEmbed()
             .setURL(info.url)
             .setColor("DARK_AQUA")
@@ -88,6 +88,7 @@ module.exports = class {
                 guildId: message.guild.id,
                 adapterCreator: message.guild.voiceAdapterCreator
             });
+
             const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause } });
             connection.subscribe(player);
 
@@ -120,7 +121,7 @@ module.exports = class {
             });
 
             const info = (await video_basic_info(url)).video_details;
-            message.channel.send({ embeds: [this.#createEmbed(info, "Playing")] });
+            message.channel.send({ embeds: [await this.#createEmbed(info, "Playing")] });
             this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
             return;
         }
@@ -142,7 +143,7 @@ module.exports = class {
 
         const info = (await video_basic_info(url)).video_details;
         queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
-        message.channel.send({ embeds: [this.#createEmbed(info, "Added")] });
+        message.channel.send({ embeds: [await this.#createEmbed(info, "Added")] });
     }
 
     skip(message) {
