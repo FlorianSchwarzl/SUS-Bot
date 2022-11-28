@@ -3,6 +3,21 @@ module.exports = {
     aliases: ['nick'],
     description: 'Nicks a user',
 
+    options: [
+        {
+            name: "user",
+            type:"USER",
+            description: "user you want to change the nickname of",
+            required: true,
+        },
+        {
+            name: "nickname",
+            type:"string",
+            description: "nickname to change to",
+            required: true,
+        }
+    ],
+
     async run(client, message, args){
         const mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         const nickName = args.slice(1).join(" ");
