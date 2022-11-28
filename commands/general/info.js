@@ -11,6 +11,7 @@ module.exports = {
                 .setColor("BLUE")
                 .setTitle(`${client.user.username} v${require("../../package.json")["version"]}`)
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+                .setURL("https://github.com/plastik-flasche/SUS-Bot")
                 .addField('Uptime', `${ms(client.uptime)}`, true)
                 .addField('WebSocket Ping', `${client.ws.ping}ms`, true)
                 .addField('Discord.js', `${discordjsVersion}`, true)
