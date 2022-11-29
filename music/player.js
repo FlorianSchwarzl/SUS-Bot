@@ -33,6 +33,7 @@ module.exports = class {
             player: null,
             current: null,
             loop: false,
+            guildId: null,
             queue: new ImprovedArray()
         });
     }
@@ -95,6 +96,7 @@ module.exports = class {
             queue.connection = connection;
             queue.player = player;
             queue.voiceChannel = message.member.voice.channel.id;
+            queue.guildId = message.guild.id;
 
             let url = args.map(e => e.trim()).join(" ").trim();
 
@@ -104,6 +106,10 @@ module.exports = class {
                 const yt_info = await search(args.join(" "), { limit: 1 });
                 url = yt_info[0].url;
             }
+
+            queue.connection.on(VoiceConnectionStatus.Disconnected, (oldState, newState) => {
+                this.#destroyQueue(queue.guildId);
+            });
 
             queue.player.on("error", (err) => {
                 message.channel.send("An error occurred while playing the track.");
