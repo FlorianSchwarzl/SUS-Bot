@@ -1,4 +1,4 @@
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { stream: AudioStream, video_basic_info, search, yt_validate } = require('play-dl');
 const { ImprovedArray } = require("sussyutilbyraphaelbader");
 const { MessageEmbed } = require("discord.js");
@@ -11,20 +11,31 @@ module.exports = class {
 
     constructor(client) {
         this.#client = client;
+
+        this.#client.on("voiceStateUpdate", (oldState, newState) => {
+            const queue = this.getQueue(newState.guild.id);
+            if(!queue || !oldState.channelId) {
+                return;
+            }
+
+            if(oldState.id !== this.#client.user.id) {
+                if(this.#channelEmpty()) {
+                    queue.current.channel.send("Leaving channel because it is empty.");
+                    this.#destroyQueue(newState.guild.id);
+                }
+                return;
+            }
+
+            if(!newState.channelId) {
+                queue.current.channel.send("I have been kicked from the channel.");
+                this.#destroyQueue(newState.guild.id);
+            }
+
+            if(oldState.channelId !== newState.channelId) {
+                queue.voiceChannel = newState.channelId;
+            }
+        });
     }
-
-    progressBar(value, maxValue, size) {
-        const percentage = value / maxValue;
-        const progress = Math.round(size * percentage);             // Calculate the number of square characters to fill the progress side.
-        const emptyProgress = size - progress;                      // Calculate the number of dash characters to fill the empty progress side.
-
-        const progressText = "▇".repeat(progress);                 // Repeat is creating a string with progress * characters in it
-        const emptyProgressText = "—".repeat(emptyProgress);        // Repeat is creating a string with empty progress * characters in it
-        const percentageText = Math.round(percentage * 100) + "%";  // Displaying the percentage of the bar
-
-        const Bar = progressText + emptyProgressText;               // Creating the bar
-        return { Bar, percentageText };                             // Return the bar and the percentage text
-    };
 
     #newQueue(guildId) {
         this.#queue.set(guildId, {
@@ -107,8 +118,16 @@ module.exports = class {
                 url = yt_info[0].url;
             }
 
-            queue.connection.on(VoiceConnectionStatus.Disconnected, (oldState, newState) => {
-                this.#destroyQueue(queue.guildId);
+            queue.connection.on(VoiceConnectionStatus.Disconnected, async () => {
+                try {
+                    await Promise.race([
+                        entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
+                        entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
+                    ]);
+                } catch (error) {
+                    message.channel.send("There was an error connecting to the voice channel.");
+                    this.#destroyQueue(queue.guildId);
+                }
             });
 
             queue.player.on("error", (err) => {
@@ -216,10 +235,8 @@ module.exports = class {
         message.channel.send("Cleared queue.");
     }
 
-    #handleVoiceStateChange(oldState, newState) {
-        const queue = this.queues.get(oldState.guild.id);
-        if (!queue || !queue.connection)
-            return;
+    #channelEmpty(guildId) {
+        return this.#queue.get(guildId)?.connection?.channel.members.filter((member) => !member.user.bot).size === 0;
     }
 
     troll(message) {
