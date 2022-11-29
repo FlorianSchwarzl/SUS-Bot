@@ -14,18 +14,18 @@ module.exports = class {
 
         this.#client.on("voiceStateUpdate", (oldState, newState) => {
             const queue = this.getQueue(newState.guild.id);
+
             if(!queue || !oldState.channelId) {
                 return;
             }
 
             if(oldState.id !== this.#client.user.id) {
-                if(this.#channelEmpty()) {
+                if(this.#channelEmpty(oldState.channelId)) {
                     queue.current.channel.send("Leaving channel because it is empty.");
                     this.#destroyQueue(newState.guild.id);
                 }
                 return;
             }
-
             if(!newState.channelId) {
                 queue.current.channel.send("I have been kicked from the channel.");
                 this.#destroyQueue(newState.guild.id);
@@ -235,8 +235,8 @@ module.exports = class {
         message.channel.send("Cleared queue.");
     }
 
-    #channelEmpty(guildId) {
-        return this.#queue.get(guildId)?.connection?.channel.members.filter((member) => !member.user.bot).size === 0;
+    #channelEmpty(channelId) {
+        return this.#client.channels.cache.get(channelId).members.filter((member) => !member.user.bot).size === 0;
     }
 
     troll(message) {
