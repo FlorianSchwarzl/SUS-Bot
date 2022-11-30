@@ -64,6 +64,7 @@ P.P.S. The prefix for the hosted Version is `!`
 - ###`removeWarning` - Removes a Warning from a Member
 - ###`resetWarnings` - Resets the Warnings of a Member
 - `nickname` - Set the Nickname of a Member
+- `remove-nickname` - Removes the Nickname from a Member
 
 ### Music
 

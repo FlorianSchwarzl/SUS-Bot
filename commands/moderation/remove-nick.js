@@ -1,6 +1,9 @@
+const { ManageNicknames } = require("../../enums/permissionBitField");
+const { ManageNicknames: mngNick } = require("../../enums/permissionStrings");
+
 module.exports = {
-    name: 'remove-nick',
-    aliases: ['rem-nick', 'reset-nick'],
+    name: 'remove-nickname',
+    aliases: ['remove-nick', 'reset-nick'],
     description: 'Remove a users nickname.',
 
     options: [
@@ -12,7 +15,17 @@ module.exports = {
         }
     ],
 
-    async run(client, message, args) {
+    default_member_permissions: mngNick,
+
+    async run(client, message, args, slash) {
+        if (!slash) {
+            if (!message.member.permissions.has(ManageNicknames)) {
+                return message.channel.send("You don't the required permissions to use this command.");
+            }
+        } else {
+            message.reply({ content: 'ok', ephemeral: true });
+        }
+
         const mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         
         if (!args[0]) return message.channel.send('You did not mention a user for me to change there nickname!');
