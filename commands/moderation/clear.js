@@ -34,7 +34,7 @@ module.exports = {
         let temp = 0;
         while (0 < number) {
             const sus = await message.channel.bulkDelete(100, true).catch(err => message.channel.send("An error occurred."));
-            if(sus.size === 0) {
+            if(!sus || (sus.size === 0)) {
                 break;
             }
             temp += sus.size;

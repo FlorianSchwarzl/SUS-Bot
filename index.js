@@ -20,7 +20,7 @@ client.config = require('./config');
 fs.readdirSync("./commands").forEach(dir => {
     fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
         const command = require(`./commands/${dir}/${e}`);
-        if (!command.name.length) return;
+        if (!command.name?.length) return;
         command.category = dir;
         client.commands.set(command.name, command);
     })

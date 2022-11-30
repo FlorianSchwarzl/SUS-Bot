@@ -45,6 +45,8 @@ module.exports = {
                 return message.channel.send("No command found for: `" + commandName + "`");
             }
 
+            // TODO: Add more information
+
             embed.addFields(
                 { name: 'Name', value: cmd.name, inline: true },
                 { name: 'Description', value: cmd.description, inline: true },
