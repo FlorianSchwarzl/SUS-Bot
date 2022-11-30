@@ -31,13 +31,18 @@ module.exports = {
 
         if (number <= 0) return message.channel.send("Number must be a positive integer.");
 
-        let temp = number;
-        while (temp > 100) {
-            message.channel.bulkDelete(100, true).catch(err => message.channel.send("An error occurred."));
-            temp -= 100;
+        let temp = 0;
+        while (0 < number) {
+            const sus = await message.channel.bulkDelete(100, true).catch(err => message.channel.send("An error occurred."));
+            if(sus.size === 0) {
+                break;
+            }
+            temp += sus.size;
         }
-        message.channel.bulkDelete(temp, true).catch(err => message.channel.send("An error occurred."));
 
-        message.channel.send(`Deleted ${number} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
+        message.channel.send(`Deleted ${temp} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
+        if(temp === 0) {
+            message.channel.send("I can't delete messages which are older than two weeks.")
+        }
     }
 }
