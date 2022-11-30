@@ -50,8 +50,8 @@ P.P.S. The prefix for the hosted Version is `!`
 
 ### Moderation
 
-- ###`tempban` - Temporarily Bans a Member
-- ###`unban` - Unbans a Member
+- %%%`tempban` - Temporarily Bans a Member
+- `unban` - Unbans a Member
 - ###`mute` - Mutes a Member
 - ###`tempmute` - Temporarily Mutes a Member
 - ###`unmute` - Unmutes a Member
