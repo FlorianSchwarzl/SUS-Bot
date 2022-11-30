@@ -31,7 +31,7 @@ module.exports = {
             await mentionedMember.setNickname(nickName);
             message.channel.send(`Set nickname of ${username} to ${nickName}.`);
         } catch (err) {
-            message.channel.send(`I do not have the required permissions to to set ${mentionedMember.nickname || mentionedMember.user.username} username.`);
+            message.channel.send(`I do not have the required permissions to to set ${mentionedMember.nickname || mentionedMember.user.username}'s username.`);
         }
     }
 }
