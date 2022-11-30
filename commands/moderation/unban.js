@@ -36,8 +36,6 @@ module.exports = {
         if (!member)
             return message.channel.send("Please Give Valid Member ID Or Member Is Not Banned!");
 
-        let Reason = args.slice(1).join(" ") || "No Reason Provided!";
-
         try {
             await message.guild.members.unban(member.user.id, Reason);
             message.channel.send(`Unbanned <@!${args[0]}>. With reason: ${args.slice(1) || "No Reason Provided!"}`);
