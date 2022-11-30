@@ -12,3 +12,4 @@ currently being supported with security updates.
 ## Reporting a Vulnerability
 
 Please reach out to me on Discord: plastik_flasche#0232
+Or send a report via "Private vulnerability reporting"
