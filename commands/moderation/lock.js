@@ -7,6 +7,15 @@ module.exports = {
     description: 'Lock down a channel',
     aliases: ['lockdown'],
 
+    options: [
+        {
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel you want to lock down.",
+            required: true
+        }
+    ],
+
     default_member_permissions: ManageChannel,
 
     run(client, message, args, slash) {
@@ -19,14 +28,17 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        if(!message.channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
+        const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
+        if(!channel) return message.channel.send("Please specify the channel you want to lock.");
+
+        if(!channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
             return message.channel.send("Channel is already locked.");
         
-        message.channel.permissionOverwrites.edit(message.guild.roles.everyone, { SEND_MESSAGES:false });
+        channel.permissionOverwrites.edit(message.guild.roles.everyone, { SEND_MESSAGES:false });
         
         const embed = new MessageEmbed()
             .setTitle("Channel Updates")
-            .setDescription(`<#${message.channel.id}> in now locked.`)
+            .setDescription(`<#${channel.id}> in now locked.`)
             .setColor("ORANGE")
             .setFooter(client.config.embedFooter(client))
             .setTimestamp(new Date())

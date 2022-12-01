@@ -8,6 +8,12 @@ module.exports = {
 
     option: [
         {
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel you want to lock down.",
+            required: true
+        },
+        {
             name: "timeout",
             type: "NUMBER",
             description: "the timeout you want in seconds",
@@ -26,14 +32,17 @@ module.exports = {
         } else {
             message.reply({ content: 'ok', ephemeral: true });
         }
+        
+        const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
+        if(!channel) return message.channel.send("Please specify the channel you want to set the slowmode of.");
 
-        if(!args[0]) {
-            message.channel.setRateLimitPerUser(0);
-            return message.channel.send("The slowmode was removed.");
+        if(!args[1]) {
+            channel.setRateLimitPerUser(0);
+            return message.channel.send(`The slowmode of ${channel.toString()} was removed.`);
         }
 
-        if(!IsSomething.isNumber(args[0] + "")) return message.channel.send("Please enter a number for the slowmode.");
-        message.channel.setRateLimitPerUser(+args[0]);
-        return message.channel.send(`Set the slowmode to ${args[0]}seconds.`);
+        if(!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");
+        channel.setRateLimitPerUser(+args[1]);
+        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);
     }
 }
