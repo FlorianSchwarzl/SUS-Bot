@@ -17,10 +17,7 @@ client.commands = new Collection();
 client.config = require('./config');
 
 /* Loading all the functions. */
-let functions = require("./functions/functions.js");
-functions = getFiles('./functions', "functions.js");
-
-console.log(functions);
+client.functions = require("./functions/getFiles")('./functions', "functions.js");
 
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
@@ -39,17 +36,3 @@ fs.readdirSync("./events").filter(f => f.endsWith(".js")).forEach((e) => {
 
 /* Logging the bot in. */
 client.login(process.env.TOKEN);
-
-function getFiles(dir, exclude = null) {
-    let output = [];
-    fs.readdirSync(dir).forEach(path => {
-        console.log(path + " " + fs.lstatSync(dir + "/" + path).isDirectory());
-        if (fs.lstatSync(dir + "/" + path).isDirectory()) {
-            output[path] = getFiles(dir + "/" + path, exclude);
-        } else {
-            const func = require(dir + "/" + path);
-            output[path.replace(".js", "")] = func;
-        }
-    });
-    return output;
-}
