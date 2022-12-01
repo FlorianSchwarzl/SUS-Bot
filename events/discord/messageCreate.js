@@ -1,5 +1,5 @@
 const { Random } = require("sussyutilbyraphaelbader");
-const fetchData = require("../config.js").fetchData;
+const fetchData = require("../../config.js").fetchData;
 const channels = fetchData.get("channels");
 
 const selfPromo = fetchData.get("messages").selfPromo;
@@ -7,12 +7,12 @@ const selfPromo = fetchData.get("messages").selfPromo;
 module.exports = (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
 
-    const counter = require("../functions/counter.js");
+    const counter = require("../../functions/counter.js");
     if (counter(message)) return;                                                   // Check if the message is in the counter channel, if so, run the counter function
 
-    const leonDetector = require("../functions/leonDetector.js");
+    const leonDetector = require("../../functions/leonDetector.js");
     if (leonDetector(message)) message.channel.send("Halts maul");                  // We do a lil trolling
-    const isBotChannel = require("../functions/checkChannelID.js");
+    const isBotChannel = require("../../functions/checkChannelID.js");
     if (!isBotChannel(message)) return;                         // Ignore messages not in allowed channels
 
     const prefix = client.config.prefix;                                            // Get the prefix from the .env file

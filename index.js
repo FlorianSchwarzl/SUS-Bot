@@ -1,5 +1,6 @@
 const { Client, Collection, Intents } = require('discord.js');
 const Player = require('./music/player');
+const mongoose = require('mongoose');
 const fs = require("fs");
 require('dotenv').config();
 
@@ -15,6 +16,7 @@ const client = new Client({
 client.player = new Player(client);
 client.commands = new Collection();
 client.config = require('./config');
+client.connection = mongoose.connection;
 
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")('./functions', "functions.js");
@@ -29,10 +31,20 @@ fs.readdirSync("./commands").forEach(dir => {
     })
 });
 
-/* Loading all the events. */
-fs.readdirSync("./events").filter(f => f.endsWith(".js")).forEach((e) => {
-    client.on(e.split(".")[0], require(`./events/${e}`).bind(null, client));
+const eventToClientMap = {
+    discord: client,
+    mongodb: mongoose.connection,
+};
+
+fs.readdirSync("./events").forEach((e) => {
+    console.log(`Loading ${e} events.`);
+    fs.readdirSync(`./events/${e}`).filter(e => e.endsWith(".js")).forEach(event => {
+        eventToClientMap[e].on(event.split(".")[0], require(`./events/${e}/${event}`).bind(null, client));
+    })
 });
 
 /* Logging the bot in. */
 client.login(process.env.TOKEN);
+(async () => {
+    await mongoose.connect(process.env.MONGODB);
+});

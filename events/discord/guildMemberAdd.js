@@ -1,8 +1,8 @@
-const fetchData = require("../config.js").fetchData;
+const fetchData = require("../../config.js").fetchData;
 const welcomeChannel = fetchData.get("channels").welcome;
 const welcomeMessages = fetchData.get("messages").welcome;
 
-const replaceUser = require("../functions/replaceUser.js");
+const replaceUser = require("../../functions/replaceUser.js");
 
 module.exports = (client, member) => {
     const channel = client.channels.cache.get(welcomeChannel);
