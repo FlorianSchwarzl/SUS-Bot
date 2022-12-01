@@ -36,11 +36,11 @@ const eventToClientMap = {
     mongodb: connection,
 };
 
-fs.readdirSync("./events").forEach((e) => {
-    console.log(`Loading ${e} events.`);
-    fs.readdirSync(`./events/${e}`).filter(e => e.endsWith(".js")).forEach(event => {
-        eventToClientMap[e].on(event.split(".")[0], require(`./events/${e}/${event}`).bind(null, client));
-    })
+fs.readdirSync("./events").forEach((dir) => {
+    console.log(`Loading ${dir} events.`);
+    fs.readdirSync(`./events/${dir}`).filter(e => e.endsWith(".js")).forEach(event => {
+        eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
+    });
 });
 
 /* Logging the bot in. */

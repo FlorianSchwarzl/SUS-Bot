@@ -13,7 +13,7 @@ module.exports = (client, message) => {
     const leonDetector = require("../../functions/leonDetector.js");
     if (leonDetector(message)) message.channel.send("Halts maul");                  // We do a lil trolling
     const isBotChannel = require("../../functions/checkChannelID.js");
-    if (!isBotChannel(message)) return;                         // Ignore messages not in allowed channels
+    if (!isBotChannel(message)) return;                                             // Ignore messages not in allowed channels
 
     const prefix = client.config.prefix;                                            // Get the prefix from the .env file
 
