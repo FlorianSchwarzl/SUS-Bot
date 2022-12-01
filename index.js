@@ -1,6 +1,6 @@
 const { Client, Collection, Intents } = require('discord.js');
+const { connect, connection } = require('mongoose');
 const Player = require('./music/player');
-const mongoose = require('mongoose');
 const fs = require("fs");
 require('dotenv').config();
 
@@ -16,7 +16,7 @@ const client = new Client({
 client.player = new Player(client);
 client.commands = new Collection();
 client.config = require('./config');
-client.connection = mongoose.connection;
+client.connection = connection;
 
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")('./functions', "functions.js");
@@ -33,7 +33,7 @@ fs.readdirSync("./commands").forEach(dir => {
 
 const eventToClientMap = {
     discord: client,
-    mongodb: mongoose.connection,
+    mongodb: connection,
 };
 
 fs.readdirSync("./events").forEach((e) => {
@@ -45,6 +45,5 @@ fs.readdirSync("./events").forEach((e) => {
 
 /* Logging the bot in. */
 client.login(process.env.TOKEN);
-(async () => {
-    await mongoose.connect(process.env.MONGODB);
-});
+/* Connect to the mongodb database */
+connect(process.env.MONGODB);
