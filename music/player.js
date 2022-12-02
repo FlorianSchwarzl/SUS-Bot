@@ -3,7 +3,7 @@ const { stream: AudioStream, video_basic_info, search, yt_validate } = require('
 const { ImprovedArray } = require("sussyutilbyraphaelbader");
 const { MessageEmbed } = require("discord.js");
 
-module.exports = class {
+module.exports = class Player {
     // TODO: CHANGE VARIABLE NAME FROM QUEUE TO QUEUES
 
     #queue = new Map();
