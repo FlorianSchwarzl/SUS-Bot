@@ -52,21 +52,21 @@ P.P.S. The prefix for the hosted Version is `!`
 
 ### Moderation
 
-- %%%`tempban` - Temporarily Bans a Member
 - `unban` - Unbans a Member
-- ###`mute` - Mutes a Member
-- ###`tempmute` - Temporarily Mutes a Member
-- ###`unmute` - Unmutes a Member
 - `clear` - Deletes a certain amount of Messages
 - `slowmode` - Sets the Slowmode of a Channel
 - `lock` - Locks a Channel
 - `unlock` - Unlocks a Channel
+- `nickname` - Set the Nickname of a Member
+- `remove-nickname` - Removes the Nickname from a Member
+- %%%`tempban` - Temporarily Bans a Member
+- ###`mute` - Mutes a Member
+- ###`tempmute` - Temporarily Mutes a Member
+- ###`unmute` - Unmutes a Member
 - ###`warn` - Warns a Member
 - ###`warnings` - Shows the Warnings of a Member
 - ###`removeWarning` - Removes a Warning from a Member
 - ###`resetWarnings` - Resets the Warnings of a Member
-- `nickname` - Set the Nickname of a Member
-- `remove-nickname` - Removes the Nickname from a Member
 
 ### Music
 
