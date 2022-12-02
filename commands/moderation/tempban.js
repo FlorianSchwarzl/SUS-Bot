@@ -5,7 +5,7 @@ module.exports = {
     description: "",
     aliases: ["temporarlyban", ""],
 
-    run: (client, message, args, slash) => {
+    run: (client, message, args, guildInfo, slash) => {
 
     }
 }

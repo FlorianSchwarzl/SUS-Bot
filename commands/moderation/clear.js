@@ -16,7 +16,7 @@ module.exports = {
 
     default_member_permissions: manageMsgs,
 
-    run: async (client, message, args, slash) => {
+    run: async (client, message, args, a, slash) => {
         if (!slash) {
             if (!message.member.permissions.has(ManageMessages)) {
                 return message.channel.send("You don't the required permissions to use this command.");

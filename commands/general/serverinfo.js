@@ -4,7 +4,7 @@ module.exports = {
     name: "serverinfo",
     description: "displays information about the server in an Embed",
 
-    async run(client, message, args, slash) {
+    async run(client, message, args, a, slash) {
         if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }

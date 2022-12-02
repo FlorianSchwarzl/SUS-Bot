@@ -18,7 +18,7 @@ module.exports = {
     
     default_member_permissions: ManageChannel,
 
-    run(client, message, args, slash) {
+    run(client, message, args, guildInfo, slash) {
         if (!slash) {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();

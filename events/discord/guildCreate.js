@@ -7,25 +7,7 @@ module.exports = async (client, guild) => {
 
     console.log("Creating MongoDB entry for guild " + guild.name);
 
-    (new guildModel({
-        _id: mongoose.Types.ObjectId(),
-        guildId: guild.id,
-
-        channels: {
-            welcome: undefined,
-            goodbye: undefined,
-   
-            allowed: []
-        },
-
-        counter: {
-            current: 0,
-            lastId: undefined,
-        },
-        
-        warns:[],
-        tempBans:[],
-    })).save();
+    addGuildDocument(guild);
 
     client.commands.forEach(command => {
         if (command.name === "prepare") return;

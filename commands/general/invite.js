@@ -2,7 +2,7 @@ module.exports = {
     name: "invite",
     description: "Send the invite link of the bot",
 
-    run: async (client, message, args, slash) => {
+    run: async (client, message, args, a, slash) => {
         if (slash) {
             message.reply({ content: 'Here you go: ', ephemeral: true });
         }

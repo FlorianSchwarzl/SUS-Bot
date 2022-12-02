@@ -3,7 +3,7 @@ module.exports = {
     description: "Makes the bot leave the voice channel",
     aliases: ["disconnect", "leave"],
 
-    run: async (client, message, args, slash) => {
+    run: async (client, message, args, a, slash) => {
         if (slash) {
             message.reply({ content: 'ok', ephemeral: true });
         }

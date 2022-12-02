@@ -4,7 +4,7 @@ module.exports = {
     category: 'Music',
     description: "A wild troll appeared.",
 
-    run(client, message, args, slash) {
+    run(client, message, args, a, slash) {
         if (slash) message.reply({ content: 'trollololoolololo', ephemeral: true });
         else message.delete();
 

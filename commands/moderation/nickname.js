@@ -23,7 +23,7 @@ module.exports = {
 
     default_member_permissions: mngNick,
 
-    async run(client, message, args, slash) {
+    async run(client, message, args, a, slash) {
         if (!slash) {
             if (!message.member.permissions.has(ManageNicknames)) {
                 return message.channel.send("You don't the required permissions to use this command.");

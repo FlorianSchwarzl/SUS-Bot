@@ -11,7 +11,7 @@ module.exports = {
         }
     ],
 
-    async run(client, message, args, slash) {
+    async run(client, message, args, a, slash) {
         if (slash) {
             message.reply("ok");
         }
