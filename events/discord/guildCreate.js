@@ -24,7 +24,6 @@ module.exports = async (client, guild) => {
         },
         
         warns:[],
-        mutes:[],
         tempBans:[],
     })).save();
 

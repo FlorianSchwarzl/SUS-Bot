@@ -19,10 +19,6 @@ const guildSchema = new Schema({
         lastId: String
     },
     
-    warns: [
-        { userId: String, count: Number }
-    ],
-    
     mutes: [
         { userId: String, endDate: Date }
     ],
