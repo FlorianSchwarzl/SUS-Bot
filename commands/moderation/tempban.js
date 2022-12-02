@@ -3,7 +3,7 @@
 module.exports = {
     // name: "tempban", // uncomment when ready
     description: "",
-    aliases: ["temporarlyban", ""],
+    aliases: ["temporarlyban"],
 
     run: (client, message, args, guildInfo, slash) => {
 

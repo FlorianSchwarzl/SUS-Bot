@@ -1,5 +1,6 @@
 const { ManageChannels, SendMessages } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
+const getChannelFromMention = require('../../functions/getChannelFromMention');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -28,7 +29,7 @@ module.exports = {
             message.reply({ content: 'ok', ephemeral: true });
         }
 
-        const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
+        const channel = getChannelFromMention(message.guild, args[0]);
         if(!channel) return message.channel.send("Please specify the channel you want to unlock.");
 
         if(channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
