@@ -23,8 +23,13 @@ module.exports = async (client, guild) => {
             lastId: undefined,
         },
         
-        wars:[],
+        warns:[],
         mutes:[],
         tempBans:[],
     })).save();
+
+    client.commands.forEach(command => {
+        if (command.name === "prepare") return;
+        guild.commands?.create(command).catch(e => e);
+    });
 }

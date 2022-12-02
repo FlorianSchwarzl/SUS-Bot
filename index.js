@@ -23,6 +23,7 @@ client.functions = require("./functions/getFiles")('./functions', "functions.js"
 
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
+    if(!fs.lstatSync("./commands/" + dir).isDirectory()) return;
     fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
         const command = require(`./commands/${dir}/${e}`);
         if (!command.name?.length) return;
@@ -47,3 +48,5 @@ fs.readdirSync("./events").forEach((dir) => {
 client.login(process.env.TOKEN);
 /* Connect to the mongodb database */
 connect(process.env.MONGODB);
+/* Starting the Webserver */
+require("./www/index").startServer(client, process.env.PORT, () => console.log("Webserver started."));
