@@ -5,7 +5,7 @@ const guilds = require('../../schemas/guild');
 
 module.exports = {
     name: 'set-counter-channel',
-    description: "Set the counter channel for",
+    description: "Set the counter channel for the current server.",
     aliases: ["scc"],
 
     options: [
@@ -35,5 +35,6 @@ module.exports = {
         current.counter = channel.id;
 
         guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => {});
+        message.channel.send(`Set counter channel to ${channel.toString()}`);
     }
 }

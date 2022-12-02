@@ -5,7 +5,7 @@ const guilds = require('../../schemas/guild');
 
 module.exports = {
     name: 'set-goodbye-channel',
-    description: "Set the counter channel for",
+    description: "Set the goodbye channel for the current server.",
     aliases: ["sgc"],
 
     options: [
@@ -35,5 +35,6 @@ module.exports = {
         current.goodbye = channel.id;
 
         guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => {});
+        message.channel.send(`Set goodbye channel to ${channel.toString()}`);
     }
 }

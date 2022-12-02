@@ -5,7 +5,7 @@ const guilds = require('../../schemas/guild');
 
 module.exports = {
     name: 'set-welcome-channel',
-    description: "Set the counter channel for",
+    description: "Set the welcome channel for the current server.",
     aliases: ["swc"],
 
     options: [
@@ -35,5 +35,6 @@ module.exports = {
         current.welcome = channel.id;
 
         guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => {});
+        message.channel.send(`Set welcome channel to ${channel.toString()}`);
     }
 }

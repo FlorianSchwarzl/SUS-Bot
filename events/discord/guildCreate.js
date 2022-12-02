@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const addGuildDocument = require("../../functions/addGuildDocument");
 const guildModel = require("../../schemas/guild");
 
 module.exports = async (client, guild) => {
