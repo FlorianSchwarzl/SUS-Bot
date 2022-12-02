@@ -21,6 +21,8 @@ client.connection = connection;
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")('./functions', "functions.js");
 
+module.exports = client;
+
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
     if(!fs.lstatSync("./commands/" + dir).isDirectory()) return;

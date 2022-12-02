@@ -3,7 +3,7 @@ const { BanMembers: banMbs } = require("../../enums/permissionStrings");
 
 module.exports = {
     name: 'unban',
-    description: "",
+    description: "Unban a user",
 
     options: [
         {

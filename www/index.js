@@ -12,14 +12,11 @@ for (const file of files) {
 }
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send(fs.readFileSync(`${__dirname}\\static\\main_page.html`, "utf-8"));
 });
-
-let client;
 
 module.exports = {
     startServer: (_client, port, callback) => {
         app.listen(port, callback);
-        client = _client;
     }
 }

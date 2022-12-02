@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vh;
+        }
+
+        nav {
+            height: 10vh;
+            width: 100vw;
+            background-color: rgb(40, 40, 40);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        nav > .logo {
+            margin-left: .5vw;
+            height: 100%;
+        }
+
+        nav > .logo > img {
+            height: 90%;
+        }
+
+        nav > .links {
+            width: 70%;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            padding-right: 2%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+        }
+
+        nav > .links > a {
+            margin-left: 2vw;
+            color: white;
+            text-decoration: none;
+            height: 50%;
+            text-transform: uppercase;
+            line-height: 5.5vh;
+            font-size: 2.5vh;
+        }
+
+        .content {
+            height: 90vh;
+            position: absolute;
+            width: 100vw;
+            top: 10vh;
+            left: 0;
+            background-color: rgb(61, 61, 61);
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            overflow-y: scroll;
+            scrollbar-width: 0;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .content > .line {
+            width: 100%;
+            background-color: rgb(164, 164, 164);
+            height: 1px;
+            border-radius: 50%;
+            box-shadow: 0px 0px .5vh rgb(164, 164, 164);
+        }
+
+        .content > .command {
+            text-transform: capitalize;
+            width: 70%;
+            color: white;
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-decoration: none;
+        }
+
+    </style>
+
+    <title>SUS-Bot</title>
+</head>
+<body>
+    <nav>
+        <a class="logo" href="./logo"><img src="" alt="" id="logo"></a>
+        <div class="links">
+            <a href="./commands">Commands</a>
+            <a>Login</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <span class="line"></span>
+    </div>
+
+    <script>
+        axios.get('../logo').then(e => document.querySelector("#logo").src = e.data).catch(e => console.log(e));
+        axios.get('http://localhost/commands/allcommands').then(e => {
+            const commands = e.data;
+            console.log(commands)
+            const content = document.querySelector(".content");
+            commands.forEach(cmd => {
+                const command = document.createElement("a");
+                command.setAttribute("id", cmd.name);
+                command.href = "http://localhost/commands/" + cmd.name;
+                command.classList.add("command");
+                const nameSpan = document.createElement("span");
+                nameSpan.id = "name" + cmd.name;
+                nameSpan.innerText = cmd.name;
+                const descriptionSpan = document.createElement("span");
+                descriptionSpan.id = "description" + cmd.name;
+                descriptionSpan.innerText = cmd.description;
+                command.appendChild(nameSpan);
+                command.appendChild(descriptionSpan);
+                const line = document.createElement("span");
+                line.classList.add("line");
+                content.appendChild(command);
+                content.appendChild(line);
+            });
+        }).catch(e => console.log(e));
+    </script>
+</body>
+</html>
