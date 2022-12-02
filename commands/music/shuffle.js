@@ -5,7 +5,7 @@ module.exports = {
 
     run: async (client, message, args, a, slash) => {
         if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
         client.player.shuffle(message);
     }

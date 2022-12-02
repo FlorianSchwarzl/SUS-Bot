@@ -1,16 +1,16 @@
 module.exports = {
     name: "queue",
-    description: "Shows the bots queue",
+    description: "Shows the song queue",
 
     run: async (client, message, args, a, slash) => {
         if (slash) {                                                        // if the command was sent as a slash command
-            message.reply({ content: 'ok', ephemeral: true });              // send a reply to the interaction
+            message.reply({ content: "ok", ephemeral: true });              // send a reply to the interaction
         }
 
         const playerInfo = client.player.getQueue(message.guild.id);        // get the playerInfo for the guild
 
         if (!playerInfo) {                                                  // if there is no queue for the guild
-            return message.channel.send("There is no queue");               // send an error message
+            return message.channel.send("There are no songs");              // send an error message
         }
 
         let currentString = `Current: **${playerInfo.current.title}**\n`;   // create a string with the current song

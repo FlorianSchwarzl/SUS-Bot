@@ -1,11 +1,11 @@
 module.exports = {
     name: "stop",
-    description: "Makes the bot leave the voice channel",
+    description: "Stops the music and clears the queue",
     aliases: ["disconnect", "leave"],
 
     run: async (client, message, args, a, slash) => {
         if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         client.player.stop(message);

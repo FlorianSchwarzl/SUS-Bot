@@ -1,5 +1,5 @@
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
-const { stream: AudioStream, video_basic_info, search, yt_validate } = require('play-dl');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
+const { stream: AudioStream, video_basic_info, search, yt_validate } = require("play-dl");
 const { ImprovedArray } = require("sussyutilbyraphaelbader");
 const { MessageEmbed } = require("discord.js");
 
@@ -15,23 +15,23 @@ module.exports = class Player {
         this.#client.on("voiceStateUpdate", (oldState, newState) => {
             const queue = this.getQueue(newState.guild.id);
 
-            if(!queue || !oldState.channelId) {
+            if (!queue || !oldState.channelId) {
                 return;
             }
 
-            if(oldState.id !== this.#client.user.id) {
-                if(this.#channelEmpty(oldState.channelId)) {
+            if (oldState.id !== this.#client.user.id) {
+                if (this.#channelEmpty(oldState.channelId)) {
                     queue.current.channel.send("Leaving channel because it is empty.");
                     this.#destroyQueue(newState.guild.id);
                 }
                 return;
             }
-            if(!newState.channelId) {
+            if (!newState.channelId) {
                 queue.current.channel.send("I have been kicked from the channel.");
                 this.#destroyQueue(newState.guild.id);
             }
 
-            if(oldState.channelId !== newState.channelId) {
+            if (oldState.channelId !== newState.channelId) {
                 queue.voiceChannel = newState.channelId;
             }
         });
@@ -90,7 +90,7 @@ module.exports = class Player {
     }
 
     async addTrack(message, args) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
 
         if (!this.#queue.has(message.guild.id)) {
             this.#newQueue(message.guild.id);
@@ -113,7 +113,7 @@ module.exports = class Player {
 
             if (url === "") return message.channel.send("Please enter the link/name of the track");
 
-            if (!(url.startsWith('https') && yt_validate(url) === 'video')) {
+            if (!(url.startsWith("https") && yt_validate(url) === "video")) {
                 const yt_info = await search(args.join(" "), { limit: 1 });
                 url = yt_info[0].url;
             }
@@ -161,7 +161,7 @@ module.exports = class Player {
 
         if (url === "") return message.channel.send("Please enter the link/name of the track");
 
-        if (!(url.startsWith('https') && yt_validate(url) === 'video')) {
+        if (!(url.startsWith("https") && yt_validate(url) === "video")) {
             const yt_info = await search(args.join(" "), { limit: 1 });
             url = yt_info[0].url;
         }
@@ -172,7 +172,7 @@ module.exports = class Player {
     }
 
     skip(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
@@ -192,7 +192,7 @@ module.exports = class Player {
     }
 
     stop(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
@@ -204,7 +204,7 @@ module.exports = class Player {
     }
 
     shuffle(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
@@ -224,7 +224,7 @@ module.exports = class Player {
     }
 
     clearQueue(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue || queue.queue.length == 0) return message.channel.send("No queue for guild.");
 
@@ -248,7 +248,7 @@ module.exports = class Player {
     }
 
     toggleLoop(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
@@ -264,7 +264,7 @@ module.exports = class Player {
     }
 
     pause(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 
@@ -280,7 +280,7 @@ module.exports = class Player {
     }
 
     resume(message) {
-        if (!message.member.voice?.channel) return message.channel.send('Connect to a Voice Channel');
+        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
         const queue = this.#queue.get(message.guild.id);
         if (!queue) return message.channel.send("No queue for guild.");
 

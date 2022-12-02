@@ -3,7 +3,7 @@ const guildModel = require("../../schemas/guild");
 
 module.exports = async (client, guild) => {
     const sus = await guildModel.findOne({ guildId: guild.id });
-    if(sus) return;
+    if (sus) return;
 
     console.log("Creating MongoDB entry for guild " + guild.name);
 

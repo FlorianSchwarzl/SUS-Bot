@@ -1,12 +1,12 @@
 module.exports = {
-    name: 'play',
-    description: "Play or Queue a new video",
+    name: "play",
+    description: "Adds a song to the queue",
 
     options: [
         {
             name: "query",
             type: "STRING",
-            description: "link / name of track to play",
+            description: "Link/Name of track to play",
             required: true
         }
     ],

@@ -1,12 +1,12 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "serverinfo",
-    description: "displays information about the server in an Embed",
+    description: "Shows information about the server",
 
     async run(client, message, args, a, slash) {
         if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         const sEmbed = new MessageEmbed()

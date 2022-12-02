@@ -1,8 +1,8 @@
-const { Client, Collection, Intents } = require('discord.js');
-const { connect, connection } = require('mongoose');
-const Player = require('./music/player');
+const { Client, Collection, Intents } = require("discord.js");
+const { connect, connection } = require("mongoose");
+const Player = require("./music/player");
 const fs = require("fs");
-require('dotenv').config();
+require("dotenv").config();
 
 const client = new Client({
     intents: [
@@ -15,17 +15,17 @@ const client = new Client({
 
 client.player = new Player(client);
 client.commands = new Collection();
-client.config = require('./config');
+client.config = require("./config");
 client.connection = connection;
 
 /* Loading all the functions. */
-client.functions = require("./functions/getFiles")('./functions', "functions.js");
+client.functions = require("./functions/getFiles")("./functions", "functions.js");
 
 module.exports = client;
 
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
-    if(!fs.lstatSync("./commands/" + dir).isDirectory()) return;
+    if (!fs.lstatSync("./commands/" + dir).isDirectory()) return;
     fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
         const command = require(`./commands/${dir}/${e}`);
         if (!command.name?.length) return;

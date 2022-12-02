@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 module.exports = getFiles = (dir, exclude = null) => {
     const output = {};

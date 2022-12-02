@@ -1,3 +1,3 @@
 module.exports = (client) => {
-    console.log("TIME FOR LEON HATE");
+    console.log("Bot is ready!");
 }

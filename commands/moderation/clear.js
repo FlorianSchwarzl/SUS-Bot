@@ -3,7 +3,7 @@ const { ManageMessages: manageMsgs } = require("../../enums/permissionStrings");
 
 module.exports = {
     name: "clear",
-    description: "clear channel up to the specified number of messages",
+    description: "Clears the last n messages",
 
     options: [
         {
@@ -22,7 +22,7 @@ module.exports = {
                 return message.channel.send("You don't the required permissions to use this command.");
             }
         } else {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         const number = parseInt(args[0]);
@@ -34,14 +34,14 @@ module.exports = {
         let temp = 0;
         while (0 < number) {
             const sus = await message.channel.bulkDelete(100, true).catch(err => message.channel.send("An error occurred."));
-            if(!sus || (sus.size === 0)) {
+            if (!sus || (sus.size === 0)) {
                 break;
             }
             temp += sus.size;
         }
 
         message.channel.send(`Deleted ${temp} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
-        if(temp === 0) {
+        if (temp === 0) {
             message.channel.send("I can't delete messages which are older than two weeks.")
         }
     }

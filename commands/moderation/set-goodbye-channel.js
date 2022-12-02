@@ -1,11 +1,11 @@
 const { ManageChannels } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
-const getChannelFromMention = require('../../functions/getChannelFromMention');
-const guilds = require('../../schemas/guild');
+const getChannelFromMention = require("../../functions/getChannelFromMention");
+const guilds = require("../../schemas/guild");
 
 module.exports = {
-    name: 'set-goodbye-channel',
-    description: "Set the goodbye channel for the current server.",
+    name: "set-goodbye-channel",
+    description: "Sets the goodbye channel",
     aliases: ["sgc"],
 
     options: [
@@ -16,25 +16,25 @@ module.exports = {
             required: true
         }
     ],
-    
+
     default_member_permissions: ManageChannel,
 
-    run: async(client, message, args, guildInfo, slash) => {
+    run: async (client, message, args, guildInfo, slash) => {
         if (!slash) {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();
                 return message.channel.send("You don't the required permissions to use this command.");
             }
         } else {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if(!channel) return message.channel.send("Please specify the welcome channel.");
+        if (!channel) return message.channel.send("Please specify the welcome channel.");
         const current = guildInfo.channels;
         current.goodbye = channel.id;
 
-        guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => {});
+        guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => { });
         message.channel.send(`Set goodbye channel to ${channel.toString()}`);
     }
 }

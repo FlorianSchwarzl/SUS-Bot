@@ -1,5 +1,5 @@
 const guildModel = require("../schemas/guild");
-const { Types } = require('mongoose');
+const { Types } = require("mongoose");
 
 module.exports = (guild) => {
     (new guildModel({
@@ -9,7 +9,7 @@ module.exports = (guild) => {
         channels: {
             welcome: undefined,
             goodbye: undefined,
-   
+
             allowed: []
         },
 
@@ -17,8 +17,8 @@ module.exports = (guild) => {
             current: 0,
             lastId: undefined,
         },
-        
-        warns:[],
-        tempBans:[],
+
+        warns: [],
+        tempBans: [],
     })).save();
 }

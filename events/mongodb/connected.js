@@ -1,3 +1,3 @@
 module.exports = (client) => {
-    console.log("MongoDB connection is ready.");
+    console.log("MongoDB connection is ready!");
 }

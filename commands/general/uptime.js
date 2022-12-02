@@ -1,12 +1,12 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     "name": "uptime",
-    "description": "Shows you the uptime of the bot",
+    "description": "Shows the uptime of the bot",
 
     run: async (client, message, args, a, slash) => {
         if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         const days = Math.floor(client.uptime / 86400000);

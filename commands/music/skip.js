@@ -1,6 +1,6 @@
 module.exports = {
     name: "skip",
-    description: "skip current track",
+    description: "Skips current track",
 
     run: (client, message, args, a, slash) => {
         if (slash) {

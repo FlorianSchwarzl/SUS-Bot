@@ -1,7 +1,7 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const guildSchema = new Schema({
-    _id:Schema.Types.ObjectId,
+    _id: Schema.Types.ObjectId,
     guildId: String,
 
     channels: {
@@ -18,7 +18,7 @@ const guildSchema = new Schema({
         current: Number,
         lastId: String
     },
-    
+
     warns: [
         { userId: String, count: Number }
     ],
