@@ -12,6 +12,8 @@ SUS-Bot is a Bot we made for our Discord Server "Stupid Useless Server" (SUS). I
 ```env
 TOKEN= # Your Discord Bot Token
 PREFIX= # The Prefix you want to use. For example: !
+PORT= # Port you want your Website to run on. Example: 80 (http)
+MONGODB= # Your mongodb connection string
 ```
 
 3. Open CMD
