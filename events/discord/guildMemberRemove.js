@@ -1,6 +1,6 @@
 const fetchData = require("../../config.js").fetchData;
 const goodbyeMessages = fetchData.get("messages").goodbye;
-
+const guilds = require("../../schemas/guild");
 const replaceUser = require("../../functions/replaceUser.js");
 
 module.exports = async (client, member) => {

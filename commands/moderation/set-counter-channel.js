@@ -31,7 +31,9 @@ module.exports = {
 
         const channel = getChannelFromMention(message.guild, args[0]);
         if(!channel) return message.channel.send("Please specify the counter channel.");
+        const current = guildInfo.channels;
+        current.counter = channel.id;
 
-        guilds.findByIdAndUpdate(guildInfo._id, { channels: { counter: channel.id, welcome: guildInfo.channels.welcome, goodbye: guildInfo.channels.goodbye   } }, (err, data) => {})
+        guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => {});
     }
 }
