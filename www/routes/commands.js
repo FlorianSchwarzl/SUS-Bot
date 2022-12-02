@@ -15,4 +15,11 @@ router.get('/allcommands', (req, res) => {
     res.send(JSON.stringify(commandName));
 });
 
+router.get('/:cmdname', (req, res) => {
+    const cmd = req.params.cmdname;
+    const command = client.commands.find(cmd1 => cmd1.name === cmd);
+    if(!command) return res.status(404).send("");
+    
+});
+
 module.exports = router;
