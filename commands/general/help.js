@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
-    name: 'help',
+    name: "help",
     description: "Displays all commands / more information about one command",
     aliases: ["h"],
 
@@ -16,15 +16,15 @@ module.exports = {
         }
     ],
 
-    run(client, message, args, slash) {
+    run(client, message, args, a, slash) {
         if (slash) {
-            message.reply({ content: 'ok', ephemeral: true });
+            message.reply({ content: "ok", ephemeral: true });
         }
 
         const commandName = args[0];
         const embed = new MessageEmbed()
             .setTimestamp(new Date())
-            .setTitle('Help panel')
+            .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));
 
         if (!commandName || commandName.length === 0) {
@@ -34,7 +34,7 @@ module.exports = {
             fs.readdirSync(`${__dirname}/../`).forEach((d) => {
                 embed.addFields({
                     name: StringUtil.capitalize(d),
-                    value: client.commands.filter(x => x.category == d).map((x) => '`' + x.name + '`').join(', ')
+                    value: client.commands.filter(x => x.category == d).map((x) => "`" + x.name + "`").join(", ")
                 })
             });;
         } else {
@@ -48,10 +48,10 @@ module.exports = {
             // TODO: Add more information
 
             embed.addFields(
-                { name: 'Name', value: cmd.name, inline: true },
-                { name: 'Description', value: cmd.description, inline: true },
-                { name: 'Category', value: cmd.category, inline: true },
-                { name: 'Aliase(s)', value: cmd.aliases?.length > 0 ? cmd.aliases.join(', ') : 'None', inline: true },
+                { name: "Name", value: cmd.name, inline: true },
+                { name: "Description", value: cmd.description, inline: true },
+                { name: "Category", value: cmd.category, inline: true },
+                { name: "Aliase(s)", value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None", inline: true },
             );
         }
 

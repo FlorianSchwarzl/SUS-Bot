@@ -1,15 +1,10 @@
-const fetchData = require("./fetchDataFromSave.js");
+const guilds = require("../schemas/guild");
 
-let current = fetchData.get("counter").current;
-let lastUser = fetchData.get("counter").lastUser;
-module.exports = (message) => {
-    const counterChannel = fetchData.get("channels").counter;
-    if (!(message.channel.id === counterChannel)) return false;
-    if (message.content.toLowerCase() == current + 1 && message.author.id != lastUser) {
-        current++;
-        lastUser = message.author.id;
-        fetchData.set("counter", { "current": current, "lastUser": lastUser });
-        fetchData.write();
+module.exports = (message, guildData) => {
+    if (!(guildData.channels.counter === message.channel.id)) return false;
+    const current = guildData.counter.current;
+    if (message.content.toLowerCase() == (current + 1) && message.author.id != guildData.counter.lastId) {
+        guilds.findByIdAndUpdate(guildData._id, { counter: { current: current + 1, lastId: message.author.id } }, (err, data) => { });
     }
     else message.delete().catch();
     return true;

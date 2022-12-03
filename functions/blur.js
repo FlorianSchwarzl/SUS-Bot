@@ -1,7 +1,7 @@
-const jimp = require('jimp');
+const jimp = require("jimp");
 
 module.exports = async (image, level) => {
-    if (!image) throw new Error(`You must provide an image as a first argument.`);
+    if (!image) throw new Error("You must provide an image as a first argument!");
 
     image = await jimp.read(image);
 
@@ -9,7 +9,7 @@ module.exports = async (image, level) => {
 
     let raw;
 
-    image.getBuffer(`image/png`, (err, buffer) => {
+    image.getBuffer("image/png", (err, buffer) => {
         raw = buffer;
     });
 

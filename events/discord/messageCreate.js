@@ -1,19 +1,25 @@
+const addGuildDocument = require("../../functions/addGuildDocument");
 const { Random } = require("sussyutilbyraphaelbader");
-const fetchData = require("../config.js").fetchData;
-const channels = fetchData.get("channels");
+const fetchData = require("../../config.js").fetchData;
+const guildModel = require("../../schemas/guild");
 
 const selfPromo = fetchData.get("messages").selfPromo;
 
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
+    let sus = await guildModel.findOne({ guildId: message.guild.id });
+    if (!sus) {
+        addGuildDocument(message.guild);
+        sus = await guildModel.findOne({ guildId: message.guild.id });
+    }
 
-    const counter = require("../functions/counter.js");
-    if (counter(message)) return;                                                   // Check if the message is in the counter channel, if so, run the counter function
+    const counter = require("../../functions/counter.js");
+    if (counter(message, sus)) return;                                              // Check if the message is in the counter channel, if so, run the counter function
 
-    const leonDetector = require("../functions/leonDetector.js");
+    const leonDetector = require("../../functions/leonDetector.js");
     if (leonDetector(message)) message.channel.send("Halts maul");                  // We do a lil trolling
-    const isBotChannel = require("../functions/checkChannelID.js");
-    if (!isBotChannel(message)) return;                         // Ignore messages not in allowed channels
+    const isBotChannel = require("../../functions/checkChannelID.js");
+    if (!isBotChannel(message, sus)) return;                                        // Ignore messages not in allowed channels
 
     const prefix = client.config.prefix;                                            // Get the prefix from the .env file
 
@@ -28,5 +34,5 @@ module.exports = (client, message) => {
     if (Random.randomInt(0, 9) === 0)                                               // 1/10 chance to send a self-promo message                         
         message.channel.send(selfPromo[Random.randomInt(0, selfPromo.length - 1)]); // Shameless self-promotion
 
-    cmd.run(client, message, args);                                                 // Run the command      
+    cmd.run(client, message, args, sus);                                            // Run the command      
 }

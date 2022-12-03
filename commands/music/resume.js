@@ -1,10 +1,10 @@
 module.exports = {
-    name: 'resume',
+    name: "resume",
     aliases: ["unpause"],
-    description: "Resumes playing the paused track.",
+    description: "Resumes playing",
 
-    run(client, message, args, slash) {
-        if(slash) message.reply("ok");
+    run(client, message, args, a, slash) {
+        if (slash) message.reply("ok");
         client.player.resume(message);
     }
 }

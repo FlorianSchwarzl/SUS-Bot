@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 const registering = (client, second) => {
     if (!second.member.permissions.has("ADMINISTRATOR")) return new MessageEmbed()
@@ -21,10 +21,10 @@ const registering = (client, second) => {
 }
 
 module.exports = {
-    name: 'prepare',
-    description: 'Create\'s slash commands in server.',
+    name: "prepare",
+    description: "Creates slash commands in server",
 
-    async run(client, message, args, slash) {
+    async run(client, message, args, a, slash) {
         const embed = registering(client, message);
         if (slash) message.reply({ embeds: [embed] });
         else message.channel.send({ embeds: [embed] });

@@ -1,9 +1,9 @@
 module.exports = {
-    name: 'loop',
+    name: "loop",
     description: "Loops the current queue.",
-    aliases: ['repeat'],
+    aliases: ["repeat"],
 
-    run(client, message, args, slash) {
+    run(client, message, args, a, slash) {
         if (slash) message.reply("ok");
         client.player.toggleLoop(message);
     },

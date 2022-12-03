@@ -4,7 +4,7 @@ const after = (client, message, msg, start, slash = false) => {
     const EndDate = Date.now();
     const embed = new MessageEmbed()
         .setColor("DARK_RED")
-        .setTitle(`Pong!`)
+        .setTitle("Pong!")
         .addFields({ name: "Message Latency", value: `${Math.floor(EndDate - start)}ms` },
             { name: "API Latency", value: `${Math.round(client.ws.ping)}ms` })
         .setTimestamp(new Date);
@@ -21,8 +21,8 @@ module.exports = {
     name: "ping",
     description: "Pings the bot and displays the latency of the bot and the latency of the api.",
 
-    run: async (client, message, args, slash = false) => {
-        const sendObj = { embeds: [new MessageEmbed().setColor(`#fff`).setDescription(`Please Wait...`)] };
+    run: async (client, message, args, a, slash = false) => {
+        const sendObj = { embeds: [new MessageEmbed().setColor("#fff").setDescription("Please Wait...")] };
         const StartDate = Date.now();
         if (slash) {
             await message.deferReply();
