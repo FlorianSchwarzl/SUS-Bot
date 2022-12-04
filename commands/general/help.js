@@ -48,10 +48,26 @@ module.exports = {
             // TODO: Add more information
 
             embed.addFields(
-                { name: "Name", value: cmd.name, inline: true },
-                { name: "Description", value: cmd.description, inline: true },
-                { name: "Category", value: cmd.category, inline: true },
-                { name: "Aliase(s)", value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None", inline: true },
+                {
+                    name: "Name",
+                    value: cmd.name,
+                    inline: true
+                },
+                {
+                    name: "Description",
+                    value: cmd.description,
+                    inline: true
+                },
+                {
+                    name: "Category",
+                    value: cmd.category,
+                    inline: true
+                },
+                {
+                    name: cmd.aliases?.length > 1 ? "Aliases" : "Alias",
+                    value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None",
+                    inline: true
+                },
             );
         }
 

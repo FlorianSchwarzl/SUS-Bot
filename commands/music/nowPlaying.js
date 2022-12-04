@@ -4,20 +4,20 @@ module.exports = {
     aliases: ["current"],
 
     run: async (client, message, args, a, slash) => {
-        if (slash) {                                                                            // if the command was sent as a slash command
-            message.reply({ content: "ok", ephemeral: true });                                  // send a reply to the interaction
+        if (slash) {
+            message.reply({ content: "ok", ephemeral: true });
         }
 
-        if (!client.player.getQueue(message.guild.id)) {                                        // if there is no queue for the guild
-            return message.channel.send("There is no queue");                                   // send an error message
+        if (client.player.getQueue(message.guild.id) === undefined) {
+            return "There is no queue";
         }
 
-        const current = client.player.getCurrent(message.guild.id);                             // get the current song
+        const current = client.player.getCurrent(message.guild.id);
 
-        if (!current) {                                                                         // if there is no current song
-            return message.channel.send("Currently not playing anything");                      // send an error message
+        if (current === undefined) {
+            return "Currently not playing anything";
         }
 
-        message.channel.send(`Now Playing: **${current.title}**\n`);                            // send the current song
+        return `Now Playing: **${current.title}**\n`;
     }
 }
