@@ -7,6 +7,6 @@ module.exports = {
             message.reply("ok");
         }
 
-        client.player.clearQueue(message);
+        return client.player.clearQueue(message);
     }
 }

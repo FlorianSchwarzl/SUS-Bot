@@ -15,7 +15,7 @@ module.exports = class Player {
         this.#client.on("voiceStateUpdate", (oldState, newState) => {
             const queue = this.getQueue(newState.guild.id);
 
-            if (!queue || !oldState.channelId) {
+            if (queue === undefined || oldState.channelId === undefined) {
                 return;
             }
 
@@ -26,7 +26,7 @@ module.exports = class Player {
                 }
                 return;
             }
-            if (!newState.channelId) {
+            if (newState.channelId === undefined) {
                 queue.current.channel.send("I have been kicked from the channel.");
                 this.#destroyQueue(newState.guild.id);
             }
@@ -51,14 +51,14 @@ module.exports = class Player {
 
     #destroyQueue(guildId) {
         const queue = this.#queue.get(guildId);
-        if (!queue) return;
+        if (queue === undefined) return;
         queue.connection.destroy();
         this.#queue.delete(guildId);
     }
 
     async play(guildId, track) {
         const guildInfo = this.#queue.get(guildId);
-        if (!guildInfo) return;
+        if (guildInfo === undefined) return;
         guildInfo.current = track;
 
         const stream = await AudioStream(track.url);
@@ -90,7 +90,35 @@ module.exports = class Player {
     }
 
     async addTrack(message, args) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) "Connect to a Voice Channel";
+
+        let videoName = args.map(e => e.trim()).join(" ").trim();
+
+        if (videoName === "") return "Please enter the link/name of the track";
+
+        let url;
+        if (videoName.startsWith("https") && yt_validate(videoName) === "video") {
+            url = videoName;
+        } else {
+            const yt_infos = await search(args.join(" "), { limit: 10 });
+            let currentInfo = 0;
+            do {
+                url = yt_infos[currentInfo].url;
+                currentInfo++;
+            } while (await isAgeRestricted(url) && currentInfo < yt_infos.length);
+        }
+
+        let info;
+        try {
+            info = (await video_basic_info(url)).video_details;
+        } catch (err) {
+
+        }
+        if (info === undefined) {
+            message.channel.send("Can't play tracks requiring age verification! Skipping...");
+            if (this.#queue.get(message.guild.id)?.queue.length === 0) return;
+            return this.skip(message);
+        }
 
         if (!this.#queue.has(message.guild.id)) {
             this.#newQueue(message.guild.id);
@@ -108,15 +136,6 @@ module.exports = class Player {
             queue.player = player;
             queue.voiceChannel = message.member.voice.channel.id;
             queue.guildId = message.guild.id;
-
-            let url = args.map(e => e.trim()).join(" ").trim();
-
-            if (url === "") return message.channel.send("Please enter the link/name of the track");
-
-            if (!(url.startsWith("https") && yt_validate(url) === "video")) {
-                const yt_info = await search(args.join(" "), { limit: 1 });
-                url = yt_info[0].url;
-            }
 
             queue.connection.on(VoiceConnectionStatus.Disconnected, async () => {
                 try {
@@ -137,79 +156,67 @@ module.exports = class Player {
 
             queue.player.on(AudioPlayerStatus.Idle, () => {
                 if (queue.loop) queue.queue.push(queue.current);
-                const queueElm = queue.queue.shift();
-                if (!queueElm) {
+                const queueElement = queue.queue.shift();
+                if (queueElement === undefined) {
                     message.channel.send("Played all tracks leaving the channel.");
                     return this.#destroyQueue(message.guild.id);
                 }
-                this.play(message.guild.id, queueElm);
+                this.play(message.guild.id, queueElement);
             });
 
-            const info = (await video_basic_info(url)).video_details;
             message.channel.send({ embeds: [await this.#createEmbed(info, "Playing")] });
-            this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
-            return;
+            return this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
         }
 
         const queue = this.#queue.get(message.guild.id);
 
         if (queue.voiceChannel !== message.member.voice.channel.id) {
-            return message.channel.send("You have to be in the same voice channel as the bot to add new tracks.");
+            return "You have to be in the same voice channel as the bot to add new tracks.";
         }
 
-        let url = args.map(e => e.trim()).join(" ").trim();
-
-        if (url === "") return message.channel.send("Please enter the link/name of the track");
-
-        if (!(url.startsWith("https") && yt_validate(url) === "video")) {
-            const yt_info = await search(args.join(" "), { limit: 1 });
-            url = yt_info[0].url;
-        }
-
-        const info = (await video_basic_info(url)).video_details;
         queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
         message.channel.send({ embeds: [await this.#createEmbed(info, "Added")] });
     }
 
     skip(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to skip tracks.");
+            return "You have to be in the same voice channel as the bot to skip tracks.";
 
-        const queueElm = queue.queue.shift();
+        const queueElement = queue.queue.shift();
 
-        if (!queueElm && !(queue.loop)) {
-            message.channel.send("Skipped last track. Leaving channel.");
-            return this.#destroyQueue(message.guild.id);
+        this.play(message.guild.id, queueElement || queue.current);
+
+        if (queueElement === undefined && !queue.loop) {
+            this.#destroyQueue(message.guild.id);
+            return "Skipped last track. Leaving channel.";
         } else {
-            message.channel.send("Skipped track.");
+            return "Skipped track.";
         }
-
-        this.play(message.guild.id, queueElm || queue.current);
     }
 
     stop(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to stop the bot.");
+            return "You have to be in the same voice channel as the bot to stop the bot.";
 
         message.channel.send("Leaving channel.");
         this.#destroyQueue(message.guild.id);
     }
 
     shuffle(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to shuffle the queue.");
+            return "You have to be in the same voice channel as the bot to shuffle the queue.";
 
         queue.queue.shuffle();
         message.channel.send("Shuffled the Queue.");
@@ -224,15 +231,15 @@ module.exports = class Player {
     }
 
     clearQueue(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue || queue.queue.length == 0) return message.channel.send("No queue for guild.");
+        if (queue === undefined || queue.queue.length == 0) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to clear the queue.");
+            return "You have to be in the same voice channel as the bot to clear the queue.";
 
         queue.queue.clear();
-        message.channel.send("Cleared queue.");
+        return "Cleared queue.";
     }
 
     #channelEmpty(channelId) {
@@ -241,57 +248,66 @@ module.exports = class Player {
 
     troll(message) {
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return;
+        if (queue === undefined) return;
         queue.queue.clear();
         /* Playing Never Gonna Give You Up bc we do miniscule amounts of trolling */
         this.play(message.guild.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
     }
 
     toggleLoop(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to toggle looping.");
+            return "You have to be in the same voice channel as the bot to toggle looping.";
 
         queue.loop = !queue.loop;
         if (queue.loop) {
-            message.channel.send("Looping is now enabled.");
+            return "Looping is now enabled.";
         } else {
-            message.channel.send("Looping is now disabled.");
+            return "Looping is now disabled.";
         }
     }
 
     pause(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to pause.");
+            return "You have to be in the same voice channel as the bot to pause";
 
         if (queue.player.state.status == "playing") {
             queue.player.pause();
-            message.channel.send("Pausing the track");
+            message.channel.send("The track has been paused");
         } else if (queue.player.state.status == "paused") {
-            message.channel.send("The track is already paused.");
+            message.channel.send("The track is already paused");
         }
     }
 
     resume(message) {
-        if (!message.member.voice?.channel) return message.channel.send("Connect to a Voice Channel");
+        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
         const queue = this.#queue.get(message.guild.id);
-        if (!queue) return message.channel.send("No queue for guild.");
+        if (queue === undefined) return "No queue for guild.";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return message.channel.send("You have to be in the same voice channel as the bot to pause.");
+            return "You have to be in the same voice channel as the bot to pause";
 
         if (queue.player.state.status == "paused") {
             queue.player.unpause();
-            message.channel.send("Resuming the track");
+            return "The track has been resumed";
         } else if (queue.player.state.status == "playing") {
-            message.channel.send("The track is already playing.");
+            return "The track is already playing";
         }
     }
+};
+
+async function isAgeRestricted(url) {
+    try {
+        (await video_basic_info(url)).video_details;
+    } catch (err) {
+        return true;
+    }
+    return false;
 }

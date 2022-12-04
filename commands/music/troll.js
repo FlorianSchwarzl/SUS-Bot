@@ -8,6 +8,6 @@ module.exports = {
         if (slash) message.reply({ content: "trollololoolololo", ephemeral: true });
         else message.delete();
 
-        client.player.troll(message);
+        return client.player.troll(message);
     },
 };

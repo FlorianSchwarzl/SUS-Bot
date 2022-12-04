@@ -27,7 +27,7 @@ module.exports = {
             .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));
 
-        if (!commandName || commandName.length === 0) {
+        if (commandName === undefined || commandName.length === 0) {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
@@ -41,17 +41,33 @@ module.exports = {
             const cmd = client.commands.get(commandName) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-            if (!cmd) {
-                return message.channel.send("No command found for: `" + commandName + "`");
+            if (cmd === undefined) {
+                return "No command found for: `" + commandName + "`";
             }
 
             // TODO: Add more information
 
             embed.addFields(
-                { name: "Name", value: cmd.name, inline: true },
-                { name: "Description", value: cmd.description, inline: true },
-                { name: "Category", value: cmd.category, inline: true },
-                { name: "Aliase(s)", value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None", inline: true },
+                {
+                    name: "Name",
+                    value: cmd.name,
+                    inline: true
+                },
+                {
+                    name: "Description",
+                    value: cmd.description,
+                    inline: true
+                },
+                {
+                    name: "Category",
+                    value: cmd.category,
+                    inline: true
+                },
+                {
+                    name: cmd.aliases?.length > 1 ? "Aliases" : "Alias",
+                    value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None",
+                    inline: true
+                },
             );
         }
 

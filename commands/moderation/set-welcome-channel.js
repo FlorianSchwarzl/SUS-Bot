@@ -20,17 +20,17 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     run: async (client, message, args, guildInfo, slash) => {
-        if (!slash) {
+        if (slash) {
+            message.reply({ content: "ok", ephemeral: true });
+        } else {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();
-                return message.channel.send("You don't the required permissions to use this command.");
+                return "You don't the required permissions to use this command.";
             }
-        } else {
-            message.reply({ content: "ok", ephemeral: true });
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if (!channel) return message.channel.send("Please specify the welcome channel.");
+        if (channel === undefined) return "Please specify the welcome channel.";
         const current = guildInfo.channels;
         current.welcome = channel.id;
 
