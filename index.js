@@ -4,6 +4,13 @@ const Player = require("./music/player");
 const fs = require("fs");
 require("dotenv").config();
 
+// add timestamps in front of log messages
+require('console-stamp')(console, '[HH:MM:ss.l]');
+
+console.clear();
+
+console.log(`Version: ${require("./package.json")["version"]} by ${require("./package.json")["authors"].join(" and ")}`);
+
 /* Create a new client instance */
 const client = new Client({
     intents: [
@@ -35,7 +42,7 @@ fs.readdirSync("./commands").forEach(dir => {
         return console.warn(`The file ./commands/${dir} is not a directory.`);
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
-        if (!command.name?.length) return;
+        if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
         command.category = dir;
         client.commands.set(command.name, command);
     })
@@ -64,3 +71,8 @@ client.login(process.env.TOKEN);
 connect(process.env.MONGODB);
 /* Starting the Webserver */
 require("./www/index").startServer(client, process.env.PORT, () => console.log("Webserver started."));
+
+console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
+setInterval(() => {
+    console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
+}, 60000);
