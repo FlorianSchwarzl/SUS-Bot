@@ -73,7 +73,6 @@ P.P.S. The prefix for the hosted Version is `!`
 - [x] `play` - Plays a Song
 - [x] `skip` - Skips the current Song
 - [x] `stop` - Stops the Music
-- [x] `leave` - Leaves the Voice Channel
 - [x] `queue` - Shows the Queue
 - [x] `nowPlaying` - Shows the current Song
 - [x] `pause` - Pauses the Music

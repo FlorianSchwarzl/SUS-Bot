@@ -9,7 +9,7 @@ module.exports = {
         {
             name: "user",
             type: "USER",
-            description: "User you want to change the nickname of",
+            description: "User you want to unban",
             required: true,
         }
     ],
