@@ -4,6 +4,7 @@ const Player = require("./music/player");
 const fs = require("fs");
 require("dotenv").config();
 
+/* Create a new client instance */
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -13,10 +14,15 @@ const client = new Client({
     ]
 });
 
+/* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
 client.config = require("./config");
 client.connection = connection;
+client.errorStrings = {
+    "NO_ERROR": "",
+    "PERMISSION_ERROR": "You don't have the required permissions to run this command!",
+}
 
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")("./functions", "functions.js");
@@ -25,9 +31,10 @@ module.exports = client;
 
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
-    if (!fs.lstatSync("./commands/" + dir).isDirectory()) return;
-    fs.readdirSync(`./commands/${dir}`).filter(e => e.endsWith(".js")).forEach(e => {
-        const command = require(`./commands/${dir}/${e}`);
+    if (!fs.lstatSync("./commands/" + dir).isDirectory())
+        return console.warn(`The file ./commands/${dir} is not a directory.`);
+    fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
+        const command = require(`./commands/${dir}/${file}`);
         if (!command.name?.length) return;
         command.category = dir;
         client.commands.set(command.name, command);
@@ -39,8 +46,13 @@ const eventToClientMap = {
     mongodb: connection,
 };
 
+/* Loading all the events. */
 fs.readdirSync("./events").forEach((dir) => {
-    console.log(`Loading ${dir} events.`);
+    if (!fs.lstatSync("./events/" + dir).isDirectory())
+        return console.warn(`The file ./events/${dir} is not a directory.`);
+    if (eventToClientMap[dir] === undefined)
+        return console.warn(`The event folder ${dir} is not valid!`);
+    console.log(`Loading ${dir} events...`);
     fs.readdirSync(`./events/${dir}`).filter(e => e.endsWith(".js")).forEach(event => {
         eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
     });

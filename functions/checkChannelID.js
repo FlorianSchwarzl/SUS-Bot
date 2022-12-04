@@ -1,6 +1,7 @@
 const fetchData = require("./fetchDataFromSave.js");
 
 module.exports = (message, guildData) => {
+    if (!guildData?.channels?.allowed) return true;
     const allowedChannelsIDS = guildData.channels.allowed;
     if (Array.isArray(allowedChannelsIDS)) {
         if (allowedChannelsIDS.length === 0) return true;

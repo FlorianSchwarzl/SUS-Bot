@@ -17,32 +17,33 @@ module.exports = {
     default_member_permissions: manageMsgs,
 
     run: async (client, message, args, a, slash) => {
-        if (!slash) {
-            if (!message.member.permissions.has(ManageMessages)) {
-                return message.channel.send("You don't the required permissions to use this command.");
-            }
-        } else {
+        if (slash) {
             message.reply({ content: "ok", ephemeral: true });
-        }
-
-        const number = parseInt(args[0]);
-
-        if (isNaN(number)) return message.channel.send("Please provide a number as the first argument.");
-
-        if (number <= 0) return message.channel.send("Number must be a positive integer.");
-
-        let temp = 0;
-        while (0 < number) {
-            const sus = await message.channel.bulkDelete(100, true).catch(err => message.channel.send("An error occurred."));
-            if (!sus || (sus.size === 0)) {
-                break;
+        } else {
+            if (!message.member.permissions.has(ManageMessages)) {
+                return client.errorStrings.PERMISSION_ERROR;
             }
-            temp += sus.size;
         }
 
-        message.channel.send(`Deleted ${temp} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
-        if (temp === 0) {
-            message.channel.send("I can't delete messages which are older than two weeks.")
+        const amount = parseInt(args[0]);
+
+        if (isNaN(amount)) return "Please provide a number as the first argument.";
+
+        if (amount <= 0) return "Number must be at least 1.";
+
+        let deletedMessagesCount = slash ? 0 : -1;
+        while (deletedMessagesCount < amount) {
+            const deleteThisTime = Math.min(...[100, amount - deletedMessagesCount]);
+            const deletedMessages = await message.channel.bulkDelete(deleteThisTime, true)
+                .catch(err => message.channel.send("An error occurred."));
+            if (deletedMessages === undefined || deletedMessages.size === 0) break;
+            deletedMessagesCount += deletedMessages.size;
         }
+
+        if (deletedMessagesCount === 0) {
+            return "I can't delete messages which are older than two weeks.";
+        }
+
+        message.channel.send(`Deleted ${deletedMessagesCount} messages from <#${message.channel.id}>`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 }
