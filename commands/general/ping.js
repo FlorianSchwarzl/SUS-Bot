@@ -9,11 +9,11 @@ const after = (client, message, msg, start, slash = false) => {
             { name: "API Latency", value: `${Math.round(client.ws.ping)}ms` })
         .setTimestamp(new Date);
 
-    if (!slash) {
+    if (slash) {
+        message.followUp({ embeds: [embed] });
+    } else {
         msg.delete();
         message.channel.send({ embeds: [embed] });
-    } else {
-        message.followUp({ embeds: [embed] });
     }
 }
 

@@ -1,7 +1,7 @@
 const guilds = require("../schemas/guild");
 
 module.exports = (message, guildData) => {
-    if (!guildData?.channels?.counter) return;
+    if (guildData?.channels?.counter === undefined) return;
     if (!(guildData.channels.counter === message.channel.id)) return false;
     const current = guildData.counter.current;
     if (message.content.toLowerCase() == (current + 1) && message.author.id != guildData.counter.lastId) {

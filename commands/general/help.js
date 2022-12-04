@@ -27,7 +27,7 @@ module.exports = {
             .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));
 
-        if (!commandName || commandName.length === 0) {
+        if (commandName === undefined || commandName.length === 0) {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
@@ -41,8 +41,8 @@ module.exports = {
             const cmd = client.commands.get(commandName) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-            if (!cmd) {
-                return message.channel.send("No command found for: `" + commandName + "`");
+            if (cmd === undefined) {
+                return "No command found for: `" + commandName + "`";
             }
 
             // TODO: Add more information

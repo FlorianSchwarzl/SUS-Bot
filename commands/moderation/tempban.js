@@ -25,15 +25,15 @@ module.exports = {
     default_member_permissions: banMbs,
 
     run: (client, message, args, guildInfo, slash) => {
-        if (!slash) {
-            if (!message.member.permissions.has(BanMembers)) {
-                return message.channel.send("You don't the required permissions to use this command.");
-            }
-        } else {
+        if (slash) {
             message.reply({ content: "ok", ephemeral: true });
+        } else {
+            if (!message.member.permissions.has(BanMembers)) {
+                return "You don't the required permissions to use this command.";
+            }
         }
 
         const old = guildInfo.tempBans;
-        
+
     }
 }

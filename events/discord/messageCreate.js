@@ -8,7 +8,7 @@ const selfPromo = fetchData.get("messages").selfPromo;
 module.exports = async (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
     let guildData = await guildModel.findOne({ guildId: message.guild.id });
-    if (!guildData) {
+    if (guildData === undefined) {
         addGuildDocument(message.guild);
         guildData = await guildModel.findOne({ guildId: message.guild.id });
     }
