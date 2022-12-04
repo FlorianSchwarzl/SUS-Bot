@@ -6,6 +6,6 @@ module.exports = {
         if (slash) {
             slash.reply("ok");
         }
-        client.player.skip(message);                                        // call the skip function from the player
+        return client.player.skip(message);                                        // call the skip function from the player
     }
 }
