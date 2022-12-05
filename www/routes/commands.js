@@ -18,7 +18,7 @@ router.get("/allcommands", (req, res) => {
 router.get("/:cmdname", (req, res) => {
     const cmd = req.params.cmdname;
     const command = client.commands.find(cmd1 => cmd1.name === cmd);
-    if (!command) return res.status(404).send("");
+    if (command === undefined) return res.status(404).send("");
 
 });
 

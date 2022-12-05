@@ -5,6 +5,6 @@ module.exports = {
 
     run(client, message, args, a, slash) {
         if (slash) message.reply("ok");
-        client.player.toggleLoop(message);
+        return client.player.toggleLoop(message);
     },
 };
