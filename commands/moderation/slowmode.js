@@ -26,8 +26,8 @@ module.exports = {
     run(client, message, args, a, slash) {
         if (!slash) {
             if (!message.member.permissions.has(ManageChannels)) {
-                message.delete();
-                return message.channel.send("You don't the required permissions to use this command.");
+                                        message.delete();                           
+                return message.channel.send("You don't the required permissions to use this command.");                 
             }
         } else {
             message.reply({ content: "ok", ephemeral: true });
@@ -41,8 +41,8 @@ module.exports = {
             return message.channel.send(`The slowmode of ${channel.toString()} was removed.`);
         }
 
-        if (!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");
+        if (!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");            
         channel.setRateLimitPerUser(+args[1]);
-        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);
-    }
-}
+        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);                                                     
+    }                                                                                                                  
+}                                                                           

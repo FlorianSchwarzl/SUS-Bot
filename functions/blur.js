@@ -11,7 +11,7 @@ module.exports = async (image, level) => {
 
     image.getBuffer("image/png", (err, buffer) => {
         raw = buffer;
-    });
+    });                 
 
     return raw;
 }
