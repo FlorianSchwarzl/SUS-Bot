@@ -41,8 +41,8 @@ module.exports = {
             return `The slowmode of ${channel.toString()} was removed.`;
         }
 
-        if (!IsSomething.isNumber(args[1] + "")) return "Please enter a number for the slowmode.";
+        if (!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");
         channel.setRateLimitPerUser(+args[1]);
-        return `The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`;
+        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);
     }
 }
