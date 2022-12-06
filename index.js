@@ -39,7 +39,7 @@ module.exports = client;
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
     if (!fs.lstatSync("./commands/" + dir).isDirectory())
-        return console.warn(`The file ./commands/${dir} is not a directory.`);
+        return console.warn(`./commands/${dir} is not a directory.`);
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
         if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
