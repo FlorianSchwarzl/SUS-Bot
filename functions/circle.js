@@ -1,7 +1,7 @@
 const jimp = require("jimp");
 
 module.exports = async (image) => {
-    if (!image) throw new Error("You must provide an image as a first argument.");
+    if (image === undefined) throw new Error("You must provide an image as a first argument.");
     image = await jimp.read(image);
 
     image.resize(480, 480);
