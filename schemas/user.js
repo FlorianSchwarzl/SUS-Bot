@@ -13,4 +13,4 @@ const userSchema = new Schema({
         bank: { type: Number, default: 0 },
     }
 });
-module.exports = model(`user`, userSchema, `users`);
+module.exports = model("user", userSchema, "users");

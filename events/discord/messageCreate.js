@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
 
 async function getGuildData(guildId) {
     let guildData = await guildModel.findOne({ guildId: guildId });
-    if (guildData === undefined) {
+    if (!guildData) {
         addGuildDocument(guildId);
         guildData = await guildModel.findOne({ guildId: guildId });
     }
@@ -49,11 +49,9 @@ async function getGuildData(guildId) {
 
 async function getUserData(userId) {
     let userData = await userModel.findOne({ userId: userId });
-    console.log(userData);
-    if (userData === undefined) {
+    if (!userData) {
         addUserDocument(userId);
         userData = await userModel.findOne({ userId: userId });
-        console.log(userData);
     }
     return userData;
 }
