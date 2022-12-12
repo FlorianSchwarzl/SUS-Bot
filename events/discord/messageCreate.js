@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
 
     if (!message.content.startsWith(prefix)) return;                                // Ignore messages that don't start with the prefix
 
-    let userData = await userModel.findOne({ userid: message.author.id });
+    let userData = await userModel.findOne({ userId: message.author.id });
     if (!userData) {
         addUserDocument(message.author);
         userData = await userModel.findOne({ userId: message.author.id });
