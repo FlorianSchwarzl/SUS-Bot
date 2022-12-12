@@ -22,6 +22,7 @@ module.exports = {
                 return "You are victorious!";
             }
             else {
+                console.log(guildData.counter.current)
                 return "You are loser!";
             }
         }

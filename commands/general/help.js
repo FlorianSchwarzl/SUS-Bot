@@ -16,7 +16,7 @@ module.exports = {
         }
     ],
 
-    run(client, message, args, a, slash) {
+    run(client, message, args, a, userData, slash) {
         if (slash) {
             message.reply({ content: "ok", ephemeral: true });
         }

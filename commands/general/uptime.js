@@ -4,7 +4,7 @@ module.exports = {
     "name": "uptime",
     "description": "Shows the uptime of the bot",
 
-    run: async (client, message, args, a, slash) => {
+    run: async (client, message, args, a, userData, slash) => {
         if (slash) {
             message.reply({ content: "ok", ephemeral: true });
         }

@@ -21,7 +21,7 @@ module.exports = {
     name: "ping",
     description: "Pings the bot and displays the latency of the bot and the latency of the api.",
 
-    run: async (client, message, args, a, slash = false) => {
+    run: async (client, message, args, a, userData, slash = false) => {
         const sendObj = { embeds: [new MessageEmbed().setColor("#fff").setDescription("Please Wait...")] };
         const StartDate = Date.now();
         if (slash) {

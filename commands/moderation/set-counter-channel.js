@@ -19,7 +19,7 @@ module.exports = {
 
     default_member_permissions: ManageChannel,
 
-    run: async (client, message, args, guildInfo, slash) => {
+    run: async (client, message, args, guildInfo, userData, slash) => {
         if (slash) {
             message.reply({ content: "ok", ephemeral: true });
         } else {

@@ -1,5 +1,7 @@
 const addGuildDocument = require("../../functions/addGuildDocument");
+const addUserDocument = require("../../functions/addUserDocument");
 const guildModel = require("../../schemas/guild");
+const userModel = require("../../schemas/user");
 
 module.exports = async (client, interaction) => {
 	if (!interaction.isCommand()) return;
@@ -7,9 +9,15 @@ module.exports = async (client, interaction) => {
 	interaction.channel = client.channels.cache.get(interaction.channelId);
 	interaction.author = interaction.user;
 	let guildData = await guildModel.findOne({ guildId: interaction.guild.id });
-	if (guildData === undefined) {
+	if (!guildData) {
 		addGuildDocument(interaction.guild);
-		guildData = await guildModel.findOne({ guildId: message.guild.id });
+		guildData = await guildModel.findOne({ guildId: interaction.guild.id });
 	}
-	if (cmd) cmd.run(client, interaction, interaction.options._hoistedOptions.map(e => e.value), guildData, true);
+
+	let userData = await userModel.findOne({ userId: interaction.user.id });
+	if(!userData) {
+		addUserDocument(interaction.user);
+		userData = await userModel.findOne({ userId: interaction.user.id });
+	}
+	if (cmd) cmd.run(client, interaction, interaction.options._hoistedOptions.map(e => e.value), guildData, userData, true);
 }
