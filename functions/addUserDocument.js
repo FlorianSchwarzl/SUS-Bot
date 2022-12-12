@@ -4,6 +4,6 @@ const { Types } = require("mongoose");
 module.exports = (user) => {
     (new userModel({
         _id: Types.ObjectId(),
-        userid: user.id,
+        userId: user.id,
     })).save();
 }
