@@ -1,7 +1,7 @@
 const userModel = require("../schemas/user");
 const { Types } = require("mongoose");
 
-module.exports = (user) => {
+module.exports = (userId) => {
     (new userModel({
         _id: Types.ObjectId(),
         userId: user.id,

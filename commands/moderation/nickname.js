@@ -23,8 +23,8 @@ module.exports = {
 
     default_member_permissions: mngNick,
 
-    async run(client, message, args, a, userData, slash) {
-        if (slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             if (!message.member.permissions.has(ManageNicknames)) {
                 return client.errorStrings.PERMISSION_ERROR;
             }

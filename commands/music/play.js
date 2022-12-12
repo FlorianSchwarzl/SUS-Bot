@@ -11,8 +11,8 @@ module.exports = {
         }
     ],
 
-    async run(client, message, args, a, userData, slash) {
-        if (slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply("ok");
         }
 

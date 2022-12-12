@@ -3,8 +3,8 @@ module.exports = {
     description: "Stops the music and clears the queue",
     aliases: ["disconnect", "leave"],
 
-    run: async (client, message, args, a, userData, slash) => {
-        if (slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         }
 

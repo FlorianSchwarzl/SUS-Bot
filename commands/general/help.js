@@ -16,8 +16,8 @@ module.exports = {
         }
     ],
 
-    run(client, message, args, a, userData, slash) {
-        if (slash) {
+    run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         }
 

@@ -5,7 +5,7 @@ module.exports = {
     name: "info",
     description: "Displays information about the bot.",
 
-    run(client, message, args, a, userData, slash) {
+    run(client, message, args, guildData, userData, isSlashCommand) {
         message.channel.send({
             embeds: [new MessageEmbed()
                 .setColor("BLUE")
