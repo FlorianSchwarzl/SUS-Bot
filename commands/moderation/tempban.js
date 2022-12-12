@@ -24,8 +24,8 @@ module.exports = {
 
     default_member_permissions: banMbs,
 
-    run: (client, message, args, guildInfo, userData, slash) => {
-        if (slash) {
+    run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(BanMembers)) {

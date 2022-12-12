@@ -7,7 +7,7 @@ module.exports = async (client, guild) => {
 
     console.log("Creating MongoDB entry for guild " + guild.name);
 
-    addGuildDocument(guild);
+    addGuildDocument(guild.id);
 
     client.commands.forEach(command => {
         if (command.name === "prepare") return;

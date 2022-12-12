@@ -17,8 +17,8 @@ module.exports = {
 
     default_member_permissions: mngNick,
 
-    async run(client, message, args, a, userData, slash) {
-        if (slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageNicknames)) {

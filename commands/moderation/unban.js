@@ -16,10 +16,10 @@ module.exports = {
 
     default_member_permissions: banMbs,
 
-    run: async (client, message, args, guildInfo, userData, slash) => {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
         message.delete();
 
-        if (slash) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(BanMembers)) {

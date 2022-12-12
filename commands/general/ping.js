@@ -21,10 +21,10 @@ module.exports = {
     name: "ping",
     description: "Pings the bot and displays the latency of the bot and the latency of the api.",
 
-    run: async (client, message, args, a, userData, slash = false) => {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
         const sendObj = { embeds: [new MessageEmbed().setColor("#fff").setDescription("Please Wait...")] };
         const StartDate = Date.now();
-        if (slash) {
+        if (isSlashCommand) {
             await message.deferReply();
             message.followUp(sendObj).then(msg => {
                 after(client, message, msg, StartDate, true);

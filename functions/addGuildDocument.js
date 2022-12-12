@@ -1,10 +1,10 @@
 const guildModel = require("../schemas/guild");
 const { Types } = require("mongoose");
 
-module.exports = (guild) => {
+module.exports = (guildId) => {
     (new guildModel({
         _id: Types.ObjectId(),
-        guildId: guild.id,
+        guildId: guildId,
 
         channels: {
             welcome: undefined,

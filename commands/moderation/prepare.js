@@ -24,9 +24,9 @@ module.exports = {
     name: "prepare",
     description: "Creates slash commands in server",
 
-    async run(client, message, args, a, userData, slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
         const embed = registering(client, message);
-        if (slash) message.reply({ embeds: [embed] });
+        if (isSlashCommand) message.reply({ embeds: [embed] });
         else message.channel.send({ embeds: [embed] });
     }
 }
