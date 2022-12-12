@@ -2,7 +2,7 @@ module.exports = {
     name: "queue",
     description: "Shows the song queue",
 
-    run: async (client, message, args, a, slash) => {
+    run: async (client, message, args, a, userData, slash) => {
         if (slash) {
             message.reply({ content: "ok", ephemeral: true });
         }

@@ -2,6 +2,8 @@ const addGuildDocument = require("../../functions/addGuildDocument");
 const { Random } = require("sussyutilbyraphaelbader");
 const fetchData = require("../../config.js").fetchData;
 const guildModel = require("../../schemas/guild");
+const addUserDocument = require("../../functions/addUserDocument");
+const userModel = require("../../schemas/user");
 
 const selfPromo = fetchData.get("messages").selfPromo;
 
@@ -24,6 +26,12 @@ module.exports = async (client, message) => {
     const prefix = client.config.prefix;                                            // Get the prefix from the .env file
 
     if (!message.content.startsWith(prefix)) return;                                // Ignore messages that don't start with the prefix
+
+    let userData = await userModel.findOne({ userid: message.author.id });
+    if (!userData) {
+        addUserDocument(message.author);
+        userData = await userModel.findOne({ userId: message.author.id });
+    }
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);          // Get the arguments
     const commandString = args.shift().toLowerCase();                               // Get the command name

@@ -2,7 +2,7 @@ module.exports = {
     name: "skip",
     description: "Skips current track",
 
-    run: (client, message, args, a, slash) => {
+    run: (client, message, args, a, userData, slash) => {
         if (slash) {
             slash.reply("ok");
         }

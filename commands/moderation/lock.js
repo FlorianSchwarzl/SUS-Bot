@@ -19,7 +19,7 @@ module.exports = {
 
     default_member_permissions: ManageChannel,
 
-    run(client, message, args, a, slash) {
+    run(client, message, args, a, userData, slash) {
         if (slash) {
             message.reply({ content: "ok", ephemeral: true });
         } else {

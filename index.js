@@ -58,7 +58,7 @@ const eventToClientMap = {
 fs.readdirSync("./events").forEach((dir) => {
     if (!fs.lstatSync("./events/" + dir).isDirectory())
         return console.warn(`The file ./events/${dir} is not a directory.`);
-    if (eventToClientMap[dir] === undefined)
+    if (!eventToClientMap[dir])
         return console.warn(`The event folder ${dir} is not valid!`);
     console.log(`Loading ${dir} events...`);
     fs.readdirSync(`./events/${dir}`).filter(e => e.endsWith(".js")).forEach(event => {
