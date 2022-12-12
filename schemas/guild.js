@@ -25,7 +25,7 @@ const guildSchema = new Schema({
 
     tempBans: [
         { userId: String, endDate: Date }
-    ],
+    ]
 });
 
 module.exports = model("guild", guildSchema, "guilds");
