@@ -24,6 +24,7 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
+client.buttons = require("./functions/getFiles")("./buttons")
 client.config = require("./config");
 client.connection = connection;
 client.errorStrings = {
