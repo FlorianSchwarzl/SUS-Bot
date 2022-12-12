@@ -25,13 +25,6 @@ const guildSchema = new Schema({
 
     tempBans: [
         { userId: String, endDate: Date }
-    ],
-
-    economy: [
-        {
-            user: String,
-            balance: String
-        }
     ]
 });
 

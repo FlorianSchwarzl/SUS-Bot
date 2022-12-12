@@ -39,7 +39,7 @@ module.exports = async (client, message) => {
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
     if (command === undefined) return;
 
-    let returnValue = command.run(client, message, args, guildData);
+    let returnValue = command.run(client, message, args, guildData, userData);
     if (returnValue instanceof Promise) returnValue = await returnValue;
     if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== undefined) message.channel.send(returnValue);
 
