@@ -1,16 +1,4 @@
 {
-    "counter": {
-        "current": 2,
-        "lastUser": "341685792185516035"
-    },
-    "channels": {
-        "allowed": [
-            "907009478610792519"
-        ],
-        "counter": "1045091931501383821",
-        "welcome": "1045278482629922847",
-        "goodbye": "1045337288583946330"
-    },
     "messages": {
         "welcome": [
             "{user} just joined the server - glhf!",
@@ -146,9 +134,22 @@
         ],
         "selfPromo": [
             "Please subscribe to our Patreon at https://patreon.com/stupid_useless_patreon",
-            "Please subscribe to our OnlyFans at https://onlyfans.com/stupid_useless_fans",
             "Please give us a star on GitHub at https://github.com/plastik-flasche/SUS-Bot",
-            "Feel free to contribute to our GitHub at https://github.com/plastik-flasche/SUS-Bot"
+            "Feel free to contribute to our GitHub at https://github.com/plastik-flasche/SUS-Bot",
+            "If you like coding yourself you can contribute to our GitHub at https://github.com/plastik-flasche/SUS-Bot",
+            "Feel free to fork our GitHub at https://github.com/plastik-flasche/SUS-Bot",
+            "Buy us some more uptime at https://patreon.com/stupid_useless_patreon",
+            "Buy us some more RAM at https://patreon.com/stupid_useless_patreon",
+            "Buy us some more CPU at https://patreon.com/stupid_useless_patreon",
+            "Buy us some more storage at https://patreon.com/stupid_useless_patreon",
+            "Buy us some more bandwidth at https://patreon.com/stupid_useless_patreon",
+            "Maybe give us a star on GitHub at https://github.com/plastik-flasche/SUS-Bot, that's gonna look good on our resume.",
+            "We are completely open source at https://github.com/plastik-flasche/SUS-Bot",
+            "We don't make any money from this bot, so please consider donating at https://patreon.com/stupid_useless_patreon to keep it running.",
+            "Consider donating at https://patreon.com/stupid_useless_patreon to keep this bot running.",
+            "Consider donating at https://patreon.com/stupid_useless_patreon to keep this bot running. We don't make any money from this bot.",
+            "Feel free to suggest new features at https://github.com/plastik-flasche/SUS-Bot",
+            "Please report any bugs at https://github.com/plastik-flasche/SUS-Bot"
         ]
     }
 }
