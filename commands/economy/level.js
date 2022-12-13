@@ -24,7 +24,6 @@ module.exports = {
                 },
         );
         return { embeds: [embed] };
-        message.channel.send("You have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank");
     }
 
 }
