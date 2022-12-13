@@ -12,6 +12,7 @@ module.exports = {
         message.channel.send("Not enough money to risk on losing");
     }
     else {
+        if (userData.economy) {
         talkedRecently.add(message.author.id);
         const earned = Math.round(Math.random()*400)-200;
         userData.economy.wallet += earned;
@@ -19,7 +20,6 @@ module.exports = {
         userData.level.xp += 2;
         userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err, data) => { });
         if(!(Math.floor(userData.level.xp / 50 /*0.5*/) === (Math.floor((userData.level.xp-5)/50) /*0.6*/))) {
-            console.log(+userData.level.xp + " cok " + (userData.level.xp - 5))
             message.channel.send(`<@${userData.userId}>` + " just levelled up!")
         }
         
@@ -33,7 +33,8 @@ module.exports = {
         setTimeout(() => {
           talkedRecently.delete(message.author.id);
         }, 60000);
-    }
+        }
+        }
     }
 
 }
