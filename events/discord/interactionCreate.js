@@ -15,6 +15,8 @@ module.exports = async (client, interaction) => {
 		if (interaction.customId.startsWith("command:")) {
 			console.log("command");
 			cmd = client.commands.get(interaction.customId.slice(8));
+			args = interaction.customId.slice(8).split(" ");
+			args.shift();
 		} else {
 			console.log("button");
 			try {

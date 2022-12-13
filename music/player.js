@@ -37,6 +37,7 @@ const playerControls = new MessageActionRow()
 
 module.exports = class Player {
     // TODO: CHANGE VARIABLE NAME FROM QUEUE TO ?????
+    //TODO: Add previous function --> Completely rewrite the queue system
 
     #queue = new Map();
     #client;
