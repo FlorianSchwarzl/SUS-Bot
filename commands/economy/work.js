@@ -10,6 +10,7 @@ module.exports = {
             message.channel.send("Wait 30 minutes before working again");
         }
         else { 
+        if (userData.economy) {
         talkedRecently.add(message.author.id);
         let earned = Math.round(Math.random() * 400) + 100;
         userData.economy.wallet += earned;
@@ -17,7 +18,6 @@ module.exports = {
         userData.level.xp += 5;
         userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err, data) => { });
         if(!(Math.floor(userData.level.xp / 50) === (Math.floor((userData.level.xp-5)/50)))) {
-            console.log(+userData.level.xp + " cok " + (userData.level.xp - 5))
             message.channel.send(`<@${userData.userId}>` + " just levelled up!")
         }
         message.channel.send("Congratulations! You earned " + earned + " gold. \nNow you have: " + userData.economy.wallet + "!");
@@ -25,7 +25,7 @@ module.exports = {
         setTimeout(() => {
           talkedRecently.delete(message.author.id);
         }, 1800000);
-        
+        }
         }
     }
 

@@ -5,8 +5,8 @@ module.exports = {
     aliases: ["resetlevels"],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        userData.levels.xp = 0;
-        userList.findByIdAndUpdate(userData._id, { levels: userData.levels }, (err, data) => { });
+        userData.level.xp = 0;
+        userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err, data) => { });
         message.channel.send("Congratulations! Your profiles xp were cleared!");
     }
 

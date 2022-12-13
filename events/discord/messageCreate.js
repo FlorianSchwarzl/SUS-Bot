@@ -28,7 +28,7 @@ module.exports = async (client, message) => {
     const commandString = args.shift().toLowerCase();                               // Get the command name
     const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
-    if (command === undefined) return;
+    if (command === void 0) return;
 
     let returnValue = command.run(client, message, args, guildData, userData, false);
     if (returnValue instanceof Promise) returnValue = await returnValue;
