@@ -6,26 +6,26 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const playerControls = new MessageActionRow()
     .addComponents(
         new MessageButton()
-            .setCustomId('previous')
-            .setLabel('⏮')
+            .setCustomId('command:queue')
+            .setLabel('Queue ☰')
             .setStyle('PRIMARY'),
     )
     .addComponents(
         new MessageButton()
             .setCustomId('play_pause')
-            .setLabel('⏯')
+            .setLabel('▶︎')
             .setStyle('SUCCESS'),
     )
     .addComponents(
         new MessageButton()
-            .setCustomId('back15s')
-            .setLabel('⏹')
+            .setCustomId('command:stop')
+            .setLabel('◼')
             .setStyle('DANGER'),
     )
     .addComponents(
         new MessageButton()
             .setCustomId('next')
-            .setLabel('⏭')
+            .setLabel('Next Song!')
             .setStyle('PRIMARY'),
     )
     .addComponents(
