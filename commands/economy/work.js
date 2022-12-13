@@ -12,7 +12,7 @@ module.exports = {
         else { 
         if (userData.economy) {
         talkedRecently.add(message.author.id);
-        let earned = Math.round(Math.random() * 400) + 100;
+        let earned = Math.round(Math.random() * (userData.jobinfo.salary)) + 100;
         userData.economy.wallet += earned;
         userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });
         userData.level.xp += 5;
@@ -20,7 +20,7 @@ module.exports = {
         if(!(Math.floor(userData.level.xp / 50) === (Math.floor((userData.level.xp-5)/50)))) {
             message.channel.send(`<@${userData.userId}>` + " just levelled up!")
         }
-        message.channel.send("Congratulations! You earned " + earned + " gold. \nNow you have: " + userData.economy.wallet + "!");
+        message.channel.send("Congratulations! You earned " + earned + " gold as a " + userData.jobinfo.job + ". \nNow you have: " + userData.economy.wallet + "!");
 
         setTimeout(() => {
           talkedRecently.delete(message.author.id);

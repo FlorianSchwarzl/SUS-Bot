@@ -33,7 +33,8 @@ module.exports = {
         setTimeout(() => {
           talkedRecently.delete(message.author.id);
         }, 60000);
-    }}
+        }
+        }
     }
 
 }
