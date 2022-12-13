@@ -1,10 +1,43 @@
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
 const { stream: AudioStream, video_basic_info, search, yt_validate } = require("play-dl");
 const { ImprovedArray } = require("sussyutilbyraphaelbader");
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+
+const playerControls = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+            .setCustomId('previous')
+            .setLabel('⏮')
+            .setStyle('PRIMARY'),
+    )
+    .addComponents(
+        new MessageButton()
+            .setCustomId('play_pause')
+            .setLabel('⏯')
+            .setStyle('SUCCESS'),
+    )
+    .addComponents(
+        new MessageButton()
+            .setCustomId('back15s')
+            .setLabel('⏹')
+            .setStyle('DANGER'),
+    )
+    .addComponents(
+        new MessageButton()
+            .setCustomId('next')
+            .setLabel('⏭')
+            .setStyle('PRIMARY'),
+    )
+    .addComponents(
+        new MessageButton()
+            .setCustomId('support')
+            .setLabel('Support us!')
+            .setStyle('SECONDARY'),
+    );
 
 module.exports = class Player {
-    // TODO: CHANGE VARIABLE NAME FROM QUEUE TO QUEUES
+    // TODO: CHANGE VARIABLE NAME FROM QUEUE TO ?????
+    //TODO: Add previous function --> Completely rewrite the queue system
 
     #queue = new Map();
     #client;
@@ -50,9 +83,12 @@ module.exports = class Player {
     }
 
     #destroyQueue(guildId) {
-        const queue = this.#queue.get(guildId);
-        if (queue === undefined) return;
-        queue.connection.destroy();
+        const guildInfo = this.#queue.get(guildId);
+        if (guildInfo === undefined) return;
+        if (guildInfo.lastNowPlayingMessage !== undefined) {
+            guildInfo.lastNowPlayingMessage.delete();
+        }
+        guildInfo.connection.destroy();
         this.#queue.delete(guildId);
     }
 
@@ -65,7 +101,10 @@ module.exports = class Player {
         const resource = createAudioResource(stream.stream, { inputType: stream.type });
 
         guildInfo.player.play(resource);
-        track.channel.send(`Now playing **${track.title}**`);
+        if (guildInfo.lastNowPlayingMessage !== undefined) {
+            guildInfo.lastNowPlayingMessage.delete();
+        }
+        guildInfo.lastNowPlayingMessage = await track.channel.send({ embeds: [await this.#createEmbed(track, "Now playing")], components: [playerControls] });
     }
 
     async #createEmbed(info, type) {
@@ -243,7 +282,7 @@ module.exports = class Player {
     }
 
     #channelEmpty(channelId) {
-        return this.#client.channels.cache.get(channelId).members.filter((member) => !member.user.bot).size === 0;
+        return this.#client.channels.cache.get(channelId)?.members.filter((member) => !member.user.bot).size;
     }
 
     troll(message) {
@@ -271,18 +310,18 @@ module.exports = class Player {
     }
 
     pause(message) {
-        if (message.member.voice?.channel === undefined) return "Connect to a Voice Channel";
+        if (message.member.voice?.channel === undefined) return "You have to be in the same voice channel as the bot to pause the track";
         const queue = this.#queue.get(message.guild.id);
-        if (queue === undefined) return "No queue for guild";
+        if (queue === undefined) return "There is nothing playing";
 
         if (queue.voiceChannel !== message.member.voice.channel.id)
-            return "You have to be in the same voice channel as the bot to pause";
+            return "You have to be in the same voice channel as the bot to pause the track";
 
         if (queue.player.state.status == "playing") {
             queue.player.pause();
-            message.channel.send("The track has been paused");
+            return "The track has been paused";
         } else if (queue.player.state.status == "paused") {
-            message.channel.send("The track is already paused");
+            return "The track is already paused";
         }
     }
 

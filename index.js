@@ -24,6 +24,7 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
+client.buttons = require("./functions/getFiles")("./buttons")
 client.config = require("./config");
 client.connection = connection;
 client.errorStrings = {
@@ -39,7 +40,7 @@ module.exports = client;
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
     if (!fs.lstatSync("./commands/" + dir).isDirectory())
-        return console.warn(`The file ./commands/${dir} is not a directory.`);
+        return console.warn(`./commands/${dir} is not a directory.`);
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
         if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
@@ -57,7 +58,7 @@ const eventToClientMap = {
 fs.readdirSync("./events").forEach((dir) => {
     if (!fs.lstatSync("./events/" + dir).isDirectory())
         return console.warn(`The file ./events/${dir} is not a directory.`);
-    if (eventToClientMap[dir] === undefined)
+    if (!eventToClientMap[dir])
         return console.warn(`The event folder ${dir} is not valid!`);
     console.log(`Loading ${dir} events...`);
     fs.readdirSync(`./events/${dir}`).filter(e => e.endsWith(".js")).forEach(event => {

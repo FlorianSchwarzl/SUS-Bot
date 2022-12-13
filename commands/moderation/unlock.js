@@ -19,8 +19,8 @@ module.exports = {
 
     default_member_permissions: ManageChannel,
 
-    run(client, message, args, guildInfo, slash) {
-        if (slash) {
+    run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageChannels)) {

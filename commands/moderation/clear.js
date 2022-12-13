@@ -16,8 +16,8 @@ module.exports = {
 
     default_member_permissions: manageMsgs,
 
-    run: async (client, message, args, a, slash) => {
-        if (slash) {
+    async run(client, message, args, guildData, userData, isSlashCommand) {
+        if (isSlashCommand) {
             message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageMessages)) {
@@ -31,7 +31,7 @@ module.exports = {
 
         if (amount <= 0) return "Number must be at least 1.";
 
-        let deletedMessagesCount = slash ? 0 : -1;
+        let deletedMessagesCount = isSlashCommand ? 0 : -1;
         while (deletedMessagesCount < amount) {
             const deleteThisTime = Math.min(...[100, amount - deletedMessagesCount]);
             const deletedMessages = await message.channel.bulkDelete(deleteThisTime, true)

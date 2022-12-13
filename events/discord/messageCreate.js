@@ -2,16 +2,15 @@ const addGuildDocument = require("../../functions/addGuildDocument");
 const { Random } = require("sussyutilbyraphaelbader");
 const fetchData = require("../../config.js").fetchData;
 const guildModel = require("../../schemas/guild");
+const addUserDocument = require("../../functions/addUserDocument");
+const userModel = require("../../schemas/user");
 
 const selfPromo = fetchData.get("messages").selfPromo;
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
-    let guildData = await guildModel.findOne({ guildId: message.guild.id });
-    if (guildData === undefined) {
-        addGuildDocument(message.guild);
-        guildData = await guildModel.findOne({ guildId: message.guild.id });
-    }
+    const guildData = await getGuildData(message.guild.id);
+    const userData = await getUserData(message.author.id);
 
     const counter = require("../../functions/counter.js");
     if (counter(message, guildData)) return;                                        // Check if the message is in the counter channel, if so, run the counter function
@@ -29,12 +28,30 @@ module.exports = async (client, message) => {
     const commandString = args.shift().toLowerCase();                               // Get the command name
     const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
-    if (command === undefined) return;
+    if (command === void 0) return;
 
-    let returnString = command.run(client, message, args, guildData);
-    if (returnString instanceof Promise) returnString = await returnString;
-    if (typeof returnString === 'string' && returnString !== "") message.channel.send(returnString);
+    let returnValue = command.run(client, message, args, guildData, userData, false);
+    if (returnValue instanceof Promise) returnValue = await returnValue;
+    if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== undefined) message.channel.send(returnValue);
 
     if (Random.randomInt(0, 9) === 0)                                               // 1/10 chance to send a self-promo message                         
         message.channel.send(selfPromo[Random.randomInt(0, selfPromo.length - 1)]); // Shameless self-promotion
+}
+
+async function getGuildData(guildId) {
+    let guildData = await guildModel.findOne({ guildId: guildId });
+    if (!guildData) {
+        addGuildDocument(guildId);
+        guildData = await guildModel.findOne({ guildId: guildId });
+    }
+    return guildData;
+}
+
+async function getUserData(userId) {
+    let userData = await userModel.findOne({ userId: userId });
+    if (!userData) {
+        addUserDocument(userId);
+        userData = await userModel.findOne({ userId: userId });
+    }
+    return userData;
 }
