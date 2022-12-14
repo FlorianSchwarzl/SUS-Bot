@@ -1,17 +1,10 @@
 const addGuildDocument = require("../../functions/addGuildDocument");
-const { Random } = require("sussyutilbyraphaelbader");
-const fetchData = require("../../config.js").fetchData;
-const guildModel = require("../../schemas/guild");
-const addUserDocument = require("../../functions/addUserDocument");
-const userModel = require("../../schemas/user");
 const executeCommand = require("../../functions/executeCommand.js");
-
-const selfPromo = fetchData.get("messages").selfPromo;
+const guildModel = require("../../schemas/guild");
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
     const guildData = await getGuildData(message.guild.id);
-    const userData = await getUserData(message.author.id);
 
     const counter = require("../../functions/counter.js");
     if (counter(message, guildData)) return;                                        // Check if the message is in the counter channel, if so, run the counter function
@@ -29,8 +22,9 @@ module.exports = async (client, message) => {
     const commandString = args.shift().toLowerCase();                               // Get the command name
     const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
-
-    executeCommand(command, client, message, args, false);     // Execute the command
+    message.followUp = message.reply;
+    
+    executeCommand(command, client, message, args, false);                          // Execute the command
 }
 
 async function getGuildData(guildId) {
@@ -40,13 +34,4 @@ async function getGuildData(guildId) {
         guildData = await guildModel.findOne({ guildId: guildId });
     }
     return guildData;
-}
-
-async function getUserData(userId) {
-    let userData = await userModel.findOne({ userId: userId });
-    if (!userData) {
-        addUserDocument(userId);
-        userData = await userModel.findOne({ userId: userId });
-    }
-    return userData;
 }
