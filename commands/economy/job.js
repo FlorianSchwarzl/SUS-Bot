@@ -3,8 +3,6 @@ const { MessageEmbed } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
 const { IsSomething } = require("sussyutilbyraphaelbader");
 
-//TODO: Please for the love of god, remove those nested if statements! It hurts my eyes!
-
 module.exports = {
     name: "job",
     description: "Panel which shows jobs",
@@ -17,7 +15,7 @@ module.exports = {
     },
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (!args[0]) {
+        if (args[0] === undefined) {
             const embed = new MessageEmbed()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")
@@ -66,33 +64,25 @@ module.exports = {
             return { embeds: [embed] };
         } else {
             const currentID = userData.jobinfo.id;
-            if (!(+args[0] === void 0) && IsSomething.isNumber(+args[0])) {
-                if (!(currentID === +args[0])) {
-                    if (jobs.find(job => job.id === +args[0])) {
-                        if (userData.jobinfo.level >= jobs[+args[0] - 1].reqlevel) {
-                            console.log(+args[0] + "")
-                            userData.jobinfo.id = jobs[+args[0] - 1].id;
-                            userData.jobinfo.job = jobs[+args[0] - 1].jobname;
-                            userData.jobinfo.level = jobs[+args[0] - 1].reqlevel;
-                            userData.jobinfo.salary = jobs[+args[0] - 1].salary;
-                            userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err, data) => { });
-                            message.channel.send("Congratulations! You are now a " + userData.jobinfo.job);
-                        }
-                        else {
-                            message.channel.send("Level too low for this job");
-                        }
-                    }
-                    else {
-                        message.channel.send("Bad ID");
-                    }
-                }
-                else {
-                    message.channel.send("You are already a " + jobs[currentID - 1].jobname);
-                }
+
+            if (!IsSomething.isNumber(+args[0]))
+                return "Provide a valid number as job ID";
+            if (currentID === +args[0])
+                return "You are already a " + jobs[currentID - 1].jobname;
+            if (!jobs.find(job => job.id === +args[0]))
+                return "Bad ID";
+            if (userData.jobinfo.level < jobs[args[0] - 1].reqlevel) {
+                console.log(userData.jobinfo.level, jobs[args[0] - 1].reqlevel);
+                return "Level too low for this job";
             }
-            else {
-                message.channel.send("Bad ID");
-            }
+
+            userData.jobinfo.id = jobs[+args[0] - 1].id;
+            userData.jobinfo.job = jobs[+args[0] - 1].jobname;
+            userData.jobinfo.level = jobs[+args[0] - 1].reqlevel;
+            userData.jobinfo.salary = jobs[+args[0] - 1].salary;
+            userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err, data) => { });
+            return "Congratulations! You are now a " + userData.jobinfo.job;
+
         }
     }
 }
