@@ -26,3 +26,12 @@ module.exports = async (client, message) => {
 
     executeCommand(command, client, message, args, false);                          // Execute the command
 }
+
+async function getGuildData(guildId) {
+    let guildData = await guildModel.findOne({ guildId: guildId });
+    if (!guildData) {
+        addGuildDocument(guildId);
+        guildData = await guildModel.findOne({ guildId: guildId });
+    }
+    return guildData;
+}
