@@ -30,26 +30,6 @@ module.exports = async (client, interaction) => {
 	}
 	interaction.channel = client.channels.cache.get(interaction.channelId);
 	interaction.author = interaction.user;
-	const guildData = await getGuildData(interaction.guild.id);
-	const userData = await getUserData(interaction.user.id);
 
 	executeCommand(cmd, client, interaction, args, true);
-}
-
-async function getGuildData(guildId) {
-	let guildData = await guildModel.findOne({ guildId: guildId });
-	if (!guildData) {
-		addGuildDocument(guildId);
-		guildData = await guildModel.findOne({ guildId: guildId });
-	}
-	return guildData;
-}
-
-async function getUserData(userId) {
-	let userData = await userModel.findOne({ userId: userId });
-	if (!userData) {
-		addUserDocument(userId);
-		userData = await userModel.findOne({ userId: userId });
-	}
-	return userData;
 }

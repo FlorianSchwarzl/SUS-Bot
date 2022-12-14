@@ -23,15 +23,6 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
     message.followUp = message.reply;
-    
-    executeCommand(command, client, message, args, false);                          // Execute the command
-}
 
-async function getGuildData(guildId) {
-    let guildData = await guildModel.findOne({ guildId: guildId });
-    if (!guildData) {
-        addGuildDocument(guildId);
-        guildData = await guildModel.findOne({ guildId: guildId });
-    }
-    return guildData;
+    executeCommand(command, client, message, args, false);                          // Execute the command
 }
