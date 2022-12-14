@@ -11,17 +11,17 @@ module.exports = {
             .setTitle("Level panel")
             .setFooter(client.config.embedFooter(client));
 
-        embed.addFields (
+        embed.addFields(
             {
-                    name: "Level",
-                    value: Math.floor(userData.level.xp / 50) + "",
-                    inline: true
-                },
-                {
-                    name: "XP",
-                    value: (userData.level.xp % 50) + "",
-                    inline: true
-                },
+                name: "Level",
+                value: Math.floor(userData.level.xp / 50) + "",
+                inline: true
+            },
+            {
+                name: "XP",
+                value: (userData.level.xp % 50) + "",
+                inline: true
+            },
         );
         return { embeds: [embed] };
     }

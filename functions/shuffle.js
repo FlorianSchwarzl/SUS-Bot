@@ -5,4 +5,4 @@ module.exports = (arrayIn) => {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-};
+}

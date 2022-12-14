@@ -6,4 +6,4 @@ module.exports = {
     run(client, message, args, guildData, userData, isSlashCommand) {
         return client.player.toggleLoop(message);
     },
-};
+}
