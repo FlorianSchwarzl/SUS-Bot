@@ -24,7 +24,7 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
-client.buttons = require("./functions/getFiles")("./buttons")
+client.buttons = new Collection();
 client.config = require("./config");
 client.connection = connection;
 client.errorStrings = {
@@ -44,6 +44,19 @@ fs.readdirSync("./commands").forEach(dir => {
         if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
         command.category = dir;
         client.commands.set(command.name, command);
+    })
+});
+
+/* Loading all the buttons. */
+fs.readdirSync("./buttons").forEach(dir => {
+    if (!fs.lstatSync("./buttons/" + dir).isDirectory())
+        return console.warn(`./buttons/${dir} is not a directory.`);
+    fs.readdirSync(`./buttons/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
+        const button = require(`./buttons/${dir}/${file}`);
+        if (!button.name?.length) return; // If the button either doesn't have a name or the name is empty, ignore it.
+        button.category = dir;
+        button.name = "button:" + button.name;
+        client.commands.set(button.name, button);
     })
 });
 

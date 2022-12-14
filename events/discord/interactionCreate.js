@@ -19,7 +19,7 @@ module.exports = async (client, interaction) => {
 				args = interaction.customId.slice(8).split(" ");
 				args.shift();
 			} else {
-				cmd = client.buttons[interaction.customId.split(" ")[0]];
+				cmd = client.commands.get("button:" + interaction.customId.split(" ")[0]);
 				args = interaction.customId.split(" ");
 				args.shift();
 			}
