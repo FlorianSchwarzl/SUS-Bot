@@ -49,14 +49,12 @@ fs.readdirSync("./commands").forEach(dir => {
 
 /* Loading all the buttons. */
 fs.readdirSync("./buttons").forEach(dir => {
-    console.log(dir);
     if (!fs.lstatSync("./buttons/" + dir).isDirectory())
         return console.warn(`./buttons/${dir} is not a directory.`);
     fs.readdirSync(`./buttons/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const button = require(`./buttons/${dir}/${file}`);
         button.category = dir;
         button.name = "button:" + file.replace(".js", "");
-        console.log(button.name);
         client.commands.set(button.name, button);
     })
 });
