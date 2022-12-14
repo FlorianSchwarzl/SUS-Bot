@@ -12,10 +12,6 @@ module.exports = {
     ],
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply("ok");
-        }
-
         return client.player.addTrack(message, args);
     }
 }

@@ -25,11 +25,10 @@ module.exports = {
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
+        } else {
             if (!message.member.permissions.has(ManageNicknames)) {
                 return client.errorStrings.PERMISSION_ERROR;
             }
-        } else {
-            message.reply({ content: "ok", ephemeral: true });
         }
 
         const mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);

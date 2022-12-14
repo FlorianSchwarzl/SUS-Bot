@@ -18,7 +18,6 @@ module.exports = {
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageMessages)) {
                 return client.errorStrings.PERMISSION_ERROR;

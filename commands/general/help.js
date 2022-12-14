@@ -17,10 +17,6 @@ module.exports = {
     ],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
-        }
-
         const commandName = args[0];
         const embed = new MessageEmbed()
             .setTimestamp(new Date())

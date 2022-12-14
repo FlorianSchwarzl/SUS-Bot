@@ -4,9 +4,6 @@ module.exports = {
     aliases: ["mix"],
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
-        }
         return client.player.shuffle(message);
     }
 }

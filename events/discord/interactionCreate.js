@@ -2,6 +2,7 @@ const addGuildDocument = require("../../functions/addGuildDocument");
 const addUserDocument = require("../../functions/addUserDocument");
 const guildModel = require("../../schemas/guild");
 const userModel = require("../../schemas/user");
+const executeCommand = require("../../functions/executeCommand.js");
 
 module.exports = async (client, interaction) => {
 	let type = interaction.isCommand() ? "command" : interaction.isButton() ? "button" : "unknown";
@@ -31,15 +32,12 @@ module.exports = async (client, interaction) => {
 	const guildData = await getGuildData(interaction.guild.id);
 	const userData = await getUserData(interaction.user.id);
 
-	let returnValue = cmd.run(client, interaction, args, guildData, userData, true)
-
-	if (returnValue instanceof Promise) returnValue = await returnValue;
-	if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== undefined) interaction.channel.send(returnValue);
+	executeCommand(cmd, client, interaction, args, true);
 }
 
 async function getGuildData(guildId) {
 	let guildData = await guildModel.findOne({ guildId: guildId });
-	if (guildData === undefined || guildData === null) {
+	if (!guildData) {
 		addGuildDocument(guildId);
 		guildData = await guildModel.findOne({ guildId: guildId });
 	}
@@ -48,11 +46,9 @@ async function getGuildData(guildId) {
 
 async function getUserData(userId) {
 	let userData = await userModel.findOne({ userId: userId });
-	console.log(userData);
-	if (userData === undefined || userData === null) {
+	if (!userData) {
 		addUserDocument(userId);
 		userData = await userModel.findOne({ userId: userId });
-		console.log(userData);
 	}
 	return userData;
 }

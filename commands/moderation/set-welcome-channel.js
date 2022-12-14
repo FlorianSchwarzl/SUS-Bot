@@ -21,7 +21,6 @@ module.exports = {
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();
@@ -31,10 +30,10 @@ module.exports = {
 
         const channel = getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) return "Please specify the welcome channel.";
-        const current = guildInfo.channels;
+        const current = guildData.channels;
         current.welcome = channel.id;
 
-        guilds.findByIdAndUpdate(guildInfo._id, { channels: current }, (err, data) => { });
+        guilds.findByIdAndUpdate(guildData._id, { channels: current }, (err, data) => { });
         message.channel.send(`Set welcome channel to ${channel.toString()}`);
     }
 }

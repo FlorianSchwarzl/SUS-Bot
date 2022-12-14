@@ -35,8 +35,6 @@ client.errorStrings = {
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")("./functions", "functions.js");
 
-module.exports = client;
-
 /* Loading all the commands. */
 fs.readdirSync("./commands").forEach(dir => {
     if (!fs.lstatSync("./commands/" + dir).isDirectory())
@@ -47,6 +45,11 @@ fs.readdirSync("./commands").forEach(dir => {
         command.category = dir;
         client.commands.set(command.name, command);
     })
+});
+
+client.commandCooldowns = new Collection();
+client.commands.forEach(command => {
+    client.commandCooldowns.set(command.name, new Collection());
 });
 
 const eventToClientMap = {
@@ -77,3 +80,5 @@ console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) 
 setInterval(() => {
     console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
 }, 60000);
+
+module.exports = client;

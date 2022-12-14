@@ -11,17 +11,15 @@ module.exports = {
         let commandsArray = [];
         fs.readdirSync("./commands/").forEach(dir => {
             if (!fs.lstatSync("./commands/" + dir).isDirectory())
-                return console.warn(`./commands/${dir} is not a directory.`);
+                return;
             fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
                 const command = require(`../${dir}/${file}`);
                 if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
                 commandsArray.push(command);
             })
         });
-        console.log(commandsArray, commandsArray.length);
         let actionRowArray = [];
         while (commandsArray.length > 5) {
-            console.log("here!");
             let actionRow = new MessageActionRow();
             for (let i = 0; i < 5; i++) {
                 actionRow.addComponents(
@@ -31,7 +29,6 @@ module.exports = {
                         .setStyle("PRIMARY")
                 );
                 commandsArray.shift();
-                console.log(commandsArray.length);
             }
             actionRowArray.push(actionRow);
         }
@@ -45,7 +42,6 @@ module.exports = {
             );
         }
         actionRowArray.push(actionRow);
-        console.log(actionRowArray);
         while (actionRowArray.length > 5) {
             let sendArray = [];
             for (let i = 0; i < 5; i++) {

@@ -25,7 +25,6 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();

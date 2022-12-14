@@ -24,7 +24,7 @@ const playerControls = new MessageActionRow()
     )
     .addComponents(
         new MessageButton()
-            .setCustomId('next')
+            .setCustomId('command:skip')
             .setLabel('Next Song!')
             .setStyle('PRIMARY'),
     )
@@ -38,6 +38,7 @@ const playerControls = new MessageActionRow()
 module.exports = class Player {
     // TODO: CHANGE VARIABLE NAME FROM QUEUE TO ?????
     //TODO: Add previous function --> Completely rewrite the queue system
+    //TODO: Add playlist support(https://stackoverflow.com/questions/13358290/how-get-all-videos-from-a-playlist-using-youtube-api)
 
     #queue = new Map();
     #client;
@@ -110,7 +111,7 @@ module.exports = class Player {
     async #createEmbed(info, type) {
         const embed = new MessageEmbed()
             .setURL(info.url)
-            .setColor("DARK_AQUA")
+            .setColor("RANDOM")
             .setTimestamp(new Date())
             .setFooter(require("../config").embedFooter(this.#client));
 
@@ -203,8 +204,8 @@ module.exports = class Player {
                 this.play(message.guild.id, queueElement);
             });
 
-            message.channel.send({ embeds: [await this.#createEmbed(info, "Playing")] });
-            return this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw });
+            this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
+            return "Started playing track!";
         }
 
         const queue = this.#queue.get(message.guild.id);

@@ -20,7 +20,6 @@ module.exports = {
         message.delete();
 
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(BanMembers)) {
                 return client.errorStrings.PERMISSION_ERROR;

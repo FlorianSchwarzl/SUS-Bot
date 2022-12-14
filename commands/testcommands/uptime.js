@@ -5,10 +5,6 @@ module.exports = {
     "description": "Shows the uptime of the bot",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
-        }
-
         const days = Math.floor(client.uptime / 86400000);
         const hours = Math.floor(client.uptime / 3600000) % 24;
         const minutes = Math.floor(client.uptime / 60000) % 60;
