@@ -49,7 +49,7 @@ module.exports = class Player {
         this.#client.on("voiceStateUpdate", (oldState, newState) => {
             const queue = this.getQueue(newState.guild.id);
 
-            if (queue === void 0 || oldState.channelId === void 0) {
+            if (queue === void 0 || oldState.channelId === null) {
                 return;
             }
 
@@ -283,7 +283,7 @@ module.exports = class Player {
     }
 
     #channelEmpty(channelId) {
-        return this.#client.channels.cache.get(channelId)?.members.filter((member) => !member.user.bot).size;
+        return this.#client.channels.cache.get(channelId)?.members.filter((member) => !member.user.bot).size === 0;
     }
 
     troll(message) {
