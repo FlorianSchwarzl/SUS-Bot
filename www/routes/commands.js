@@ -1,13 +1,9 @@
+const { deepClone, removeProperty } = require("sussyutilbyraphaelbader");
+const permissions = require("../../enums/permissionStrings");
 const client = require("../../index");
 const express = require("express");
-const fs = require("fs");
-
 
 const router = express.Router();
-
-router.get("/", (req, res) => {
-    res.send(fs.readFileSync(`${__dirname}\\..\\static\\commands.html`, "utf-8"));
-});
 
 router.get("/allcommands", (req, res) => {
     const commandName = [];
@@ -18,8 +14,16 @@ router.get("/allcommands", (req, res) => {
 router.get("/:cmdname", (req, res) => {
     const cmd = req.params.cmdname;
     const command = client.commands.find(cmd1 => cmd1.name === cmd);
-    if (command === void 0) return res.status(404).send("");
-
+    if(!command) return res.status(404).send("");
+    const clone = deepClone(command);
+    clone.permissions?.forEach((e, i) => {
+        for (const key in permissions) {
+            if(BigInt(permissions[key]) != e)
+                continue;
+            clone.permissions[i] = key;
+        }
+    });
+    res.send(JSON.stringify(removeProperty(clone, "default_member_permissions")));
 });
 
 module.exports = router;
