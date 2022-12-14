@@ -1,5 +1,6 @@
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+
 const { StringUtil } = require("sussyutilbyraphaelbader");
-const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -17,13 +18,17 @@ module.exports = {
     ],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
+        const menu = new MessageSelectMenu()
+            .setCustomId("help_menu")
+            .setPlaceholder("Select a category");
+        const component = new MessageActionRow();
         const commandName = args[0];
         const embed = new MessageEmbed()
             .setTimestamp(new Date())
             .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));
 
-        if (commandName === undefined || commandName.length === 0) {
+        if (commandName === void 0 || commandName.length === 0) {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
@@ -32,12 +37,13 @@ module.exports = {
                     name: StringUtil.capitalize(d),
                     value: client.commands.filter(x => x.category == d).map((x) => "`" + x.name + "`").join(", ")
                 })
+                menu.addOptions({ label: StringUtil.capitalize(d), value: d });
             });;
         } else {
             const cmd = client.commands.get(commandName) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-            if (cmd === undefined) {
+            if (cmd === void 0) {
                 return "No command found for: `" + commandName + "`";
             }
 
@@ -66,7 +72,7 @@ module.exports = {
                 },
             );
         }
-
-        return { embeds: [embed] };
+        component.addComponents(menu);
+        return { embeds: [embed], components: [component] };
     }
 }
