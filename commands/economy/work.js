@@ -8,7 +8,7 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (userData.economy) {
-            let earned = Math.round(Math.random() * (userData.jobinfo.salary)) + 100;
+            let earned = Math.round(Math.random() * (userData.jobinfo.salary)) + Math.floor(userData.jobinfo.salary / 3);
             userData.economy.wallet += earned;
             userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });
             userData.level.xp += 5;
