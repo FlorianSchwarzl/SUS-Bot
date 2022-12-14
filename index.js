@@ -1,9 +1,9 @@
 const { Client, Collection, Intents } = require("discord.js");
-const { connect, connection } = require("mongoose");
+const { connect, connection, set } = require("mongoose");
 const Player = require("./music/player");
 const fs = require("fs");
 require("dotenv").config();
-
+set('strictQuery', false);
 // add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');
 
@@ -69,6 +69,8 @@ fs.readdirSync("./events").forEach((dir) => {
     });
 });
 
+module.exports = client;
+
 /* Logging the bot in. */
 client.login(process.env.TOKEN);
 /* Connect to the mongodb database */
@@ -80,5 +82,3 @@ console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) 
 setInterval(() => {
     console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
 }, 60000);
-
-module.exports = client;
