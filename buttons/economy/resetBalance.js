@@ -1,4 +1,4 @@
-const userList = require("../schemas/user");
+const userList = require("../../schemas/user");
 
 module.exports = {
     run(client, interaction, args, guildData, userData) {
