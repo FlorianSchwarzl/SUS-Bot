@@ -14,9 +14,6 @@ const userSchema = new Schema({
     },
 
     jobinfo: {
-        job: { type: String, default: "Burger Flipper" },
-        salary: { type: Number, default: 500 },
-        level: { type: Number, default: 0 },
         id: { type: Number, default: 1 },
     }
 });

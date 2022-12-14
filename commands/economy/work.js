@@ -1,4 +1,5 @@
 const userList = require("../../schemas/user");
+const jobs = require("./resources/jobs.json").jobs;
 
 module.exports = {
     name: "work",
@@ -8,7 +9,7 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (userData.economy) {
-            let earned = Math.round(Math.random() * (userData.jobinfo.salary)) + Math.floor(userData.jobinfo.salary / 3);
+            let earned = Math.round(Math.random() * (jobs[userData.jobinfo.id-1].salary)) + Math.floor(jobs[userData.jobinfo.id-1].salary / 3);
             userData.economy.wallet += earned;
             userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });
             userData.level.xp += 5;
@@ -16,7 +17,7 @@ module.exports = {
             if (!(Math.floor(userData.level.xp / 50) === (Math.floor((userData.level.xp - 5) / 50)))) {
                 message.channel.send(`<@${userData.userId}>` + " just levelled up!")
             }
-            message.channel.send("Congratulations! You earned " + earned + " gold as a " + userData.jobinfo.job + ". \nNow you have: " + userData.economy.wallet + "!");
+            return ("Congratulations! You earned " + earned + " gold as a " + jobs[userData.jobinfo.id-1].jobname + ". \nNow you have: " + userData.economy.wallet + "!");
         }
     }
 }
