@@ -29,7 +29,7 @@ module.exports = {
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === undefined) return "Please specify the channel you want to lock";
+        if (channel === void 0) return "Please specify the channel you want to lock";
 
         if (!channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
             return "Channel is already locked";

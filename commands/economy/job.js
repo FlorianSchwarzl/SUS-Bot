@@ -15,7 +15,7 @@ module.exports = {
     },
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (args[0] === undefined) {
+        if (args[0] === void 0) {
             const embed = new MessageEmbed()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")
@@ -39,10 +39,10 @@ module.exports = {
             );
 
             for (let i = 0; i < jobs.length; i++) {
-                if (!(userData.jobinfo.id === (i+1))) {
+                if (!(userData.jobinfo.id === (i + 1))) {
                     embed.addFields(
                         {
-                            name: "JobID: " + (i+1),
+                            name: "JobID: " + (i + 1),
                             value: jobs[i].jobname + "",
                             inline: true
                         },
@@ -70,13 +70,13 @@ module.exports = {
                 return "You are already a " + jobs[currentID - 1].jobname;
             if (args[0] <= 0 || args[0] > jobs.length)
                 return "Bad ID";
-            if (Math.floor(userData.level.xp / 50) < (jobs[args[0]-1].reqlevel)) {
+            if (Math.floor(userData.level.xp / 50) < (jobs[args[0] - 1].reqlevel)) {
                 return "Level too low for this job";
             }
 
             userData.jobinfo.id = args[0];
             userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err, data) => { });
-            return "Congratulations! You are now a " + jobs[userData.jobinfo.id-1].jobname;
+            return "Congratulations! You are now a " + jobs[userData.jobinfo.id - 1].jobname;
 
         }
     }

@@ -2,7 +2,7 @@ const getGuildData = require("./getGuildData");
 const getUserData = require("./getUserData");
 
 module.exports = async (command, client, message, args, isInteraction) => {
-    if (command === undefined) return;
+    if (command === void 0) return;
     if (client.commandCooldowns.get(command.name).get(message.author.id) !== undefined)
         return message.reply("You are on cooldown for this command! Wait another " + Math.round((client.commandCooldowns.get(command.name).get(message.author.id) - Date.now()) / 1000) + " seconds.");
     try {

@@ -35,7 +35,7 @@ module.exports = {
             const deleteThisTime = Math.min(...[100, amount - deletedMessagesCount]);
             const deletedMessages = await message.channel.bulkDelete(deleteThisTime, true)
                 .catch(err => message.channel.send("An error occurred."));
-            if (deletedMessages === undefined || deletedMessages.size === 0) break;
+            if (deletedMessages === void 0 || deletedMessages.size === 0) break;
             deletedMessagesCount += deletedMessages.size;
         }
 

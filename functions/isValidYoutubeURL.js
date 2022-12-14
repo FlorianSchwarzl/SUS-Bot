@@ -18,7 +18,7 @@ const getURLVideoID = link => {
     } else if (parsed.hostname && !validQueryDomains.has(parsed.hostname)) {
         throw Error("Not a YouTube domain");
     }
-    if (id === undefined) {
+    if (id === void 0) {
         throw Error(`No video id found: "${link}"`);
     }
     id = id.substring(0, 11);

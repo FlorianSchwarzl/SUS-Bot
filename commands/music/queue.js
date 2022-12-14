@@ -5,7 +5,7 @@ module.exports = {
     async run(client, message, args, guildData, userData, isSlashCommand) {
         const playerInfo = client.player.getQueue(message.guild.id);
 
-        if (playerInfo === undefined) {
+        if (playerInfo === void 0) {
             return "There are no songs in the queue";
         }
 

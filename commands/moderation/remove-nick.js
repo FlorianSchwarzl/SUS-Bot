@@ -27,9 +27,9 @@ module.exports = {
 
         const mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
-        if (args[0] === undefined) return "You did not mention a user for me to change their nickname!";
-        if (mentionedMember === undefined) return "Please mention a user for me to change their nickname \`$nickname @user nickname\`";
-        if (mentionedMember.nickname === undefined) return "Mentioned user does not have a nickname.";
+        if (args[0] === void 0) return "You did not mention a user for me to change their nickname!";
+        if (mentionedMember === void 0) return "Please mention a user for me to change their nickname \`$nickname @user nickname\`";
+        if (mentionedMember.nickname === void 0) return "Mentioned user does not have a nickname.";
 
         try {
             await mentionedMember.setNickname(null);

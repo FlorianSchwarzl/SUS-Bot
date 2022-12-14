@@ -4,13 +4,13 @@ module.exports = {
     aliases: ["current"],
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (client.player.getQueue(message.guild.id) === undefined) {
+        if (client.player.getQueue(message.guild.id) === void 0) {
             return "There is no queue";
         }
 
         const current = client.player.getCurrent(message.guild.id);
 
-        if (current === undefined) {
+        if (current === void 0) {
             return "Currently not playing anything";
         }
 
