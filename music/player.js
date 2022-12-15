@@ -87,7 +87,7 @@ module.exports = class Player {
         const guildInfo = this.#queue.get(guildId);
         if (guildInfo === void 0) return;
         if (guildInfo.lastNowPlayingMessage !== undefined) {
-            guildInfo.lastNowPlayingMessage.delete();
+            guildInfo.lastNowPlayingMessage.delete().catch((e) => { });
         }
         guildInfo.connection.destroy();
         this.#queue.delete(guildId);
@@ -103,7 +103,7 @@ module.exports = class Player {
 
         guildInfo.player.play(resource);
         if (guildInfo.lastNowPlayingMessage !== undefined) {
-            guildInfo.lastNowPlayingMessage.delete();
+            guildInfo.lastNowPlayingMessage.delete().catch((e) => { });
         }
         guildInfo.lastNowPlayingMessage = await track.channel.send({ embeds: [await this.#createEmbed(track, "Now playing")], components: [playerControls] });
     }
@@ -130,7 +130,7 @@ module.exports = class Player {
     }
 
     async addTrack(message, args) {
-        if (message.member.voice?.channel === void 0) "Connect to a Voice Channel";
+        if (message.member.voice?.channel === void 0 || message.member.voice?.channel === null) return "Connect to a Voice Channel";
 
         let videoName = args.map(e => e.trim()).join(" ").trim();
 
