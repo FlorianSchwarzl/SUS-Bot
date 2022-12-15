@@ -1,7 +1,7 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+const { MessageActionRow, MessageButton } = require("discord.js");
 
 module.exports = {
-    run(client, interaction, args, guildData, userData) {
+    run(_client, interaction) {
         let choice = new MessageActionRow()
             .addComponents(
                 new MessageButton()
