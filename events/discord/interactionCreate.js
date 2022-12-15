@@ -1,29 +1,32 @@
-const addGuildDocument = require("../../functions/addGuildDocument");
-const addUserDocument = require("../../functions/addUserDocument");
-const guildModel = require("../../schemas/guild");
-const userModel = require("../../schemas/user");
 const executeCommand = require("../../functions/executeCommand.js");
 
 module.exports = async (client, interaction) => {
-	let type = interaction.isCommand() ? "command" : interaction.isButton() ? "button" : "unknown";
+	// let type = interaction.isCommand() ? "command" : interaction.isButton() ? "button" : "unknown";
+	// if (type === "unknown" && interaction.type === "MESSAGE_COMPONENT") type = "stringSelectMenu";
+	let type = interaction.componentType;
+	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
+	console.log(interaction);
 	switch (type) {
-		case "command":
-			cmd = client.commands.get(interaction.commandName);
+		case "COMMAND":
+			cmd = client.commands.get("command:" + interaction.commandName);
 			args = interaction.options?._hoistedOptions.map(e => e.value);
 			break;
-		case "button":
+		case "BUTTON":
 			if (interaction.customId.startsWith("command:")) {
-				cmd = client.commands.get(interaction.customId.slice(8));
+				cmd = client.commands.get("command:" + interaction.customId.slice(8));
 				args = interaction.customId.slice(8).split(" ");
 				args.shift();
 			} else {
-				console.log(interaction.customId.split(" ")[0]);
 				cmd = client.commands.get("button:" + interaction.customId.split(" ")[0]);
 				args = interaction.customId.split(" ");
 				args.shift();
 			}
+			break;
+		case "SELECT_MENU":
+			cmd = client.commands.get("selectMenu:" + interaction.customId);
+			args = interaction.values;
 			break;
 		default:
 			return;

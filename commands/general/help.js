@@ -19,7 +19,7 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         const menu = new MessageSelectMenu()
-            .setCustomId("help_menu")
+            .setCustomId("help")
             .setPlaceholder("Select a category");
         const component = new MessageActionRow();
         const commandName = args[0];
@@ -35,7 +35,7 @@ module.exports = {
             fs.readdirSync(`${__dirname}/../`).forEach((d) => {
                 embed.addFields({
                     name: StringUtil.capitalize(d),
-                    value: client.commands.filter(x => x.category == d).map((x) => "`" + x.name + "`").join(", ")
+                    value: "Type `" + client.config.prefix + "help " + d + "` to see more information",
                 })
                 menu.addOptions({ label: StringUtil.capitalize(d), value: d });
             });;

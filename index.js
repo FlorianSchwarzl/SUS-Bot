@@ -42,6 +42,7 @@ fs.readdirSync("./commands").forEach(dir => {
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
         if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
+        command.name = "command:" + file.replace(".js", "");
         command.category = dir;
         client.commands.set(command.name, command);
     })
@@ -53,9 +54,22 @@ fs.readdirSync("./buttons").forEach(dir => {
         return console.warn(`./buttons/${dir} is not a directory.`);
     fs.readdirSync(`./buttons/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const button = require(`./buttons/${dir}/${file}`);
-        button.category = dir;
+        button.category = "button:" + dir;
         button.name = "button:" + file.replace(".js", "");
         client.commands.set(button.name, button);
+    })
+});
+
+/* Loading all the select Menus. */
+fs.readdirSync("./selectMenus").forEach(dir => {
+    if (!fs.lstatSync("./selectMenus/" + dir).isDirectory())
+        return console.warn(`./selectMenus/${dir} is not a directory.`);
+    fs.readdirSync(`./selectMenus/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
+        const selectMenu = require(`./selectMenus/${dir}/${file}`);
+        selectMenu.category = "selectMenu:" + dir;
+        selectMenu.name = "selectMenu:" + file.replace(".js", "");
+        console.log(selectMenu.name);
+        client.commands.set(selectMenu.name, selectMenu);
     })
 });
 
