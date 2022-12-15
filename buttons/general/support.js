@@ -1,8 +1,8 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+const { MessageActionRow, MessageButton } = require("discord.js");
 
 module.exports = {
-    run(client, interaction, args, guildData, userData) {
-        let choice = new MessageActionRow()
+    run(_client, interaction) {
+        const choice = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setLabel('GitHub')

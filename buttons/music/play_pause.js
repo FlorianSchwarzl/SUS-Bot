@@ -1,5 +1,5 @@
 module.exports = {
-    run(client, interaction, args, guildData, userData) {
+    run(client, interaction) {
         let returnValue = client.player.pause(interaction);
         if (returnValue !== "The track is already paused") {
             interaction.reply({ content: returnValue, ephemeral: true });

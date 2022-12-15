@@ -86,7 +86,7 @@ module.exports = class Player {
     #destroyQueue(guildId) {
         const guildInfo = this.#queue.get(guildId);
         if (guildInfo === void 0) return;
-        if (guildInfo.lastNowPlayingMessage !== undefined) {
+        if (guildInfo.lastNowPlayingMessage !== void 0) {
             guildInfo.lastNowPlayingMessage.delete().catch((e) => { });
         }
         guildInfo.connection.destroy();
@@ -102,7 +102,7 @@ module.exports = class Player {
         const resource = createAudioResource(stream.stream, { inputType: stream.type });
 
         guildInfo.player.play(resource);
-        if (guildInfo.lastNowPlayingMessage !== undefined) {
+        if (guildInfo.lastNowPlayingMessage !== void 0) {
             guildInfo.lastNowPlayingMessage.delete().catch((e) => { });
         }
         guildInfo.lastNowPlayingMessage = await track.channel.send({ embeds: [await this.#createEmbed(track, "Now playing")], components: [playerControls] });

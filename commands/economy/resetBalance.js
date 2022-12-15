@@ -5,7 +5,7 @@ module.exports = {
     description: "Clear your profile",
     aliases: ["cls"],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run() {
         const confirmation = new MessageActionRow()
             .addComponents(
                 new MessageButton()
@@ -19,7 +19,7 @@ module.exports = {
                     .setLabel('NO')
                     .setStyle('DANGER'),
             );
-        return { embeds: [new MessageEmbed().setDescription("test")], components: [confirmation] };
+        return { embeds: [new MessageEmbed().setTitle("Do you really want to reset your balance?").setDescription("This can not be reverted.")], components: [confirmation] };
     }
 
 }
