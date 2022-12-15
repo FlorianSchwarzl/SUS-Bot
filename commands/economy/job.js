@@ -14,29 +14,29 @@ module.exports = {
         required: false,
     },
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, _message, args, _guildData, userData) {
         if (args[0] === void 0) {
             const embed = new MessageEmbed()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")
-                .setFooter(client.config.embedFooter(client));
-            embed.addFields(
-                {
-                    name: "Current Job",
-                    value: jobs[userData.jobinfo.id - 1].jobname + "",
-                    inline: true
-                },
-                {
-                    name: "Salary",
-                    value: jobs[userData.jobinfo.id - 1].salary + "",
-                    inline: true
-                },
-                {
-                    name: "Level required",
-                    value: jobs[userData.jobinfo.id - 1].reqlevel + "",
-                    inline: true
-                }
-            );
+                .setFooter(client.config.embedFooter(client))
+                .addFields(
+                    {
+                        name: "Current Job",
+                        value: jobs[userData.jobinfo.id - 1].jobname + "",
+                        inline: true
+                    },
+                    {
+                        name: "Salary",
+                        value: jobs[userData.jobinfo.id - 1].salary + "",
+                        inline: true
+                    },
+                    {
+                        name: "Level required",
+                        value: jobs[userData.jobinfo.id - 1].reqlevel + "",
+                        inline: true
+                    }
+                );
 
             for (let i = 0; i < jobs.length; i++) {
                 if (!(userData.jobinfo.id === (i + 1))) {
