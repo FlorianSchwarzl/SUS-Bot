@@ -2,7 +2,7 @@ const { MessageActionRow, MessageButton } = require("discord.js");
 
 module.exports = {
     run(_client, interaction) {
-        let choice = new MessageActionRow()
+        const choice = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setLabel('GitHub')
