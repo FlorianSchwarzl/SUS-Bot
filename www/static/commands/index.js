@@ -1,7 +1,6 @@
 axios.get('../logo').then(e => document.querySelector("#logo").src = e.data).catch(e => console.log(e));
 axios.get(`${window.location.href}/allcommands`).then(e => {
     const commands = e.data;
-    console.log(commands)
     const content = document.querySelector(".content");
     commands.forEach(cmd => {
         const command = document.createElement("a");
