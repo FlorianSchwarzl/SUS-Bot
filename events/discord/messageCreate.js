@@ -19,8 +19,8 @@ module.exports = async (client, message) => {
     if (!message.content.startsWith(prefix)) return;                                // Ignore messages that don't start with the prefix
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);          // Get the arguments
-    const commandString = args.shift().toLowerCase();                               // Get the command name
-    const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
+    const commandString = args.shift().toLowerCase().trim();                               // Get the command name
+    const command = client.commands.get("command:"+commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
     message.followUp = message.reply;
 
