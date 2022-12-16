@@ -1,16 +1,10 @@
 const addGuildDocument = require("../../functions/addGuildDocument");
-const { Random } = require("sussyutilbyraphaelbader");
-const fetchData = require("../../config.js").fetchData;
+const executeCommand = require("../../functions/executeCommand.js");
 const guildModel = require("../../schemas/guild");
-const addUserDocument = require("../../functions/addUserDocument");
-const userModel = require("../../schemas/user");
-
-const selfPromo = fetchData.get("messages").selfPromo;
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;                                                 // Ignore bots
     const guildData = await getGuildData(message.guild.id);
-    const userData = await getUserData(message.author.id);
 
     const counter = require("../../functions/counter.js");
     if (counter(message, guildData)) return;                                        // Check if the message is in the counter channel, if so, run the counter function
@@ -26,16 +20,11 @@ module.exports = async (client, message) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);          // Get the arguments
     const commandString = args.shift().toLowerCase();                               // Get the command name
-    const command = client.commands.get(commandString) ||                           // Get the command from the commands collection
+    const command = client.commands.get("command:" + commandString) ||                           // Get the command from the commands collection
         client.commands.find(command => command.aliases && command.aliases.includes(commandString));
-    if (command === void 0) return;
+    message.followUp = message.reply;
 
-    let returnValue = command.run(client, message, args, guildData, userData, false);
-    if (returnValue instanceof Promise) returnValue = await returnValue;
-    if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== undefined) message.channel.send(returnValue);
-
-    if (Random.randomInt(0, 9) === 0)                                               // 1/10 chance to send a self-promo message                         
-        message.channel.send(selfPromo[Random.randomInt(0, selfPromo.length - 1)]); // Shameless self-promotion
+    executeCommand(command, client, message, args, false);                          // Execute the command
 }
 
 async function getGuildData(guildId) {
@@ -45,13 +34,4 @@ async function getGuildData(guildId) {
         guildData = await guildModel.findOne({ guildId: guildId });
     }
     return guildData;
-}
-
-async function getUserData(userId) {
-    let userData = await userModel.findOne({ userId: userId });
-    if (!userData) {
-        addUserDocument(userId);
-        userData = await userModel.findOne({ userId: userId });
-    }
-    return userData;
 }

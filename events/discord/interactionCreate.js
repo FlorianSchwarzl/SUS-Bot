@@ -1,61 +1,38 @@
-const addGuildDocument = require("../../functions/addGuildDocument");
-const addUserDocument = require("../../functions/addUserDocument");
-const guildModel = require("../../schemas/guild");
-const userModel = require("../../schemas/user");
+const executeCommand = require("../../functions/executeCommand.js");
 
 module.exports = async (client, interaction) => {
+	// let type = interaction.isCommand() ? "command" : interaction.isButton() ? "button" : "unknown";
+	// if (type === "unknown" && interaction.type === "MESSAGE_COMPONENT") type = "stringSelectMenu";
+	let type = interaction.componentType;
+	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
-	if (interaction.isCommand()) {
-		cmd = client.commands.get(interaction.commandName);
-		args = interaction.options?._hoistedOptions.map(e => e.value);
-	}
-	else if (interaction.isButton()) {
-		console.log(interaction.customId);
-		if (interaction.customId.startsWith("command:")) {
-			console.log("command");
-			cmd = client.commands.get(interaction.customId.slice(8));
-			args = interaction.customId.slice(8).split(" ");
-			args.shift();
-		} else {
-			console.log("button");
-			try {
-				return client.buttons[interaction.customId](client, interaction, await getGuildData(interaction.guild.id));
-			} catch (e) {
-				console.log(e);
-				return interaction.reply({ content: "An unknown error occurred, sorry for the inconvenience!", ephemeral: true });
+	console.log(interaction);
+	switch (type) {
+		case "COMMAND":
+			cmd = client.commands.get("command:" + interaction.commandName);
+			args = interaction.options?._hoistedOptions.map(e => e.value);
+			break;
+		case "BUTTON":
+			if (interaction.customId.startsWith("command:")) {
+				cmd = client.commands.get("command:" + interaction.customId.slice(8));
+				args = interaction.customId.slice(8).split(" ");
+				args.shift();
+			} else {
+				cmd = client.commands.get("button:" + interaction.customId.split(" ")[0]);
+				args = interaction.customId.split(" ");
+				args.shift();
 			}
-		}
+			break;
+		case "SELECT_MENU":
+			cmd = client.commands.get("selectMenu:" + interaction.customId);
+			args = interaction.values;
+			break;
+		default:
+			return;
 	}
-	else return;
-	console.log("prepares to run command");
 	interaction.channel = client.channels.cache.get(interaction.channelId);
 	interaction.author = interaction.user;
-	const guildData = await getGuildData(interaction.guild.id);
-	const userData = await getUserData(interaction.user.id);
-	if (cmd) {
-		let returnValue = cmd.run(client, interaction, args, guildData, userData, true);
-		if (returnValue instanceof Promise) returnValue = await returnValue;
-		if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== undefined) interaction.channel.send(returnValue);
-	}
-}
 
-async function getGuildData(guildId) {
-	let guildData = await guildModel.findOne({ guildId: guildId });
-	if (guildData === undefined || guildData === null) {
-		addGuildDocument(guildId);
-		guildData = await guildModel.findOne({ guildId: guildId });
-	}
-	return guildData;
-}
-
-async function getUserData(userId) {
-	let userData = await userModel.findOne({ userId: userId });
-	console.log(userData);
-	if (userData === undefined || userData === null) {
-		addUserDocument(userId);
-		userData = await userModel.findOne({ userId: userId });
-		console.log(userData);
-	}
-	return userData;
+	executeCommand(cmd, client, interaction, args, true);
 }

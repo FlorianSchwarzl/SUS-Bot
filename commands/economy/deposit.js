@@ -1,23 +1,39 @@
 const { IsSomething } = require("sussyutilbyraphaelbader");
-const userList = require("../../schemas/user");
+const users = require("../../schemas/user");
+
 module.exports = {
     name: "deposit",
     description: "Deposit money into your bank account",
-    aliases: ["dep","dept"],
-    options: {
-        name:"what shall be deposited into the bank",
-        type:"number",
-        description:"number of money that will be deposited into the bank",
-        required:true,
-    },
+    aliases:[ "dep" ],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
-        const amount = args[0];
-        if(amount && IsSomething.isNumber(amount) && amount <= userData.economy.wallet) {
-        userData.economy.wallet -= +amount;
-        userData.economy.bank += +amount;
-        userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });
-        message.channel.send(amount + " deposited. You now have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank");
+    options: [
+        {
+            name: "amount",
+            description: "max / Amount to deposit",
+            type: "STRING",
+            required: true
         }
+    ],
+
+
+    run: (_client, message, args, _guildInfo, userInfo) => {
+        if(!args[0]) return message.reply("Please provide the amount you want to deposit.");
+
+        const current = userInfo.economy;
+        let moneys = current.wallet;
+
+        if(args[0] === "max") {
+            current.bank += current.wallet;
+            current.wallet = 0;
+        } else {
+            if(!IsSomething.isNumber(args[0])) return message.reply("Please provide the amount you want to deposit as a number.");
+            if(+args[0] > current.wallet) return message.reply("You do not have enough money to deposit " + args[0] + " gold.");
+            current.bank += +args[0];
+            current.wallet -= +args[0];
+            moneys = +args[0];            
+        }
+
+        users.findByIdAndUpdate(userInfo._id, { economy: current }, (err, data) => { });
+        message.reply(`Deposited ${moneys} gold.`);
     }
 }

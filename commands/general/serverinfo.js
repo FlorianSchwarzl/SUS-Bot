@@ -5,10 +5,6 @@ module.exports = {
     description: "Shows information about the server",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
-        }
-
         const sEmbed = new MessageEmbed()
             .setColor("DARK_BLUE")
             .setTitle("Server Info")

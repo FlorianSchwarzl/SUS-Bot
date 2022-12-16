@@ -18,7 +18,6 @@ module.exports = {
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageMessages)) {
                 return client.errorStrings.PERMISSION_ERROR;
@@ -36,7 +35,7 @@ module.exports = {
             const deleteThisTime = Math.min(...[100, amount - deletedMessagesCount]);
             const deletedMessages = await message.channel.bulkDelete(deleteThisTime, true)
                 .catch(err => message.channel.send("An error occurred."));
-            if (deletedMessages === undefined || deletedMessages.size === 0) break;
+            if (deletedMessages === void 0 || deletedMessages.size === 0) break;
             deletedMessagesCount += deletedMessages.size;
         }
 

@@ -9,5 +9,5 @@ module.exports = {
         else message.delete();
 
         return client.player.troll(message);
-    },
-};
+    }
+}

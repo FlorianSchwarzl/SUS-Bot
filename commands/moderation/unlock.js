@@ -21,7 +21,6 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();
@@ -30,7 +29,7 @@ module.exports = {
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === undefined) return "Please specify the channel you want to unlock";
+        if (channel === void 0) return "Please specify the channel you want to unlock";
 
         if (channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
             return "Channel isn't locked";

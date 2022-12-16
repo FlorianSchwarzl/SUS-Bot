@@ -1,11 +1,39 @@
 {
-"jobs":[
-    {"jobname":"Burger Flipper", "salary":500, "reqlevel":0},
-    {"jobname":"Cashier", "salary":750, "reqlevel":5},
-    {"jobname":"Discord Bot Programmer (JS)", "salary":1000, "reqlevel":10},
-    {"jobname":"Firefighter", "salary":1500, "reqlevel":15},
-    {"jobname":"Civil Engineer", "salary":2000, "reqlevel":20},
-    {"jobname":"Doctor", "salary":2500, "reqlevel":25},
-    {"jobname":"Java Developer", "salary":10000, "reqlevel":50}
-]
+    "jobs": [
+        {
+            "jobname": "Burger Flipper",
+            "salary": 500,
+            "reqlevel": 0
+        },
+        {
+            "jobname": "Cashier",
+            "salary": 750,
+            "reqlevel": 5
+        },
+        {
+            "jobname": "Discord Bot Programmer (JS)",
+            "salary": 1000,
+            "reqlevel": 10
+        },
+        {
+            "jobname": "Firefighter",
+            "salary": 1500,
+            "reqlevel": 15
+        },
+        {
+            "jobname": "Civil Engineer",
+            "salary": 2000,
+            "reqlevel": 20
+        },
+        {
+            "jobname": "Doctor",
+            "salary": 2500,
+            "reqlevel": 25
+        },
+        {
+            "jobname": "Java Developer",
+            "salary": 10000,
+            "reqlevel": 50
+        }
+    ]
 }

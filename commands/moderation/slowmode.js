@@ -25,7 +25,6 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(ManageChannels)) {
                 message.delete();
@@ -34,9 +33,9 @@ module.exports = {
         }
 
         const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
-        if (channel === undefined) return "Please specify the channel you want to set the slowmode of.";
+        if (channel === void 0) return "Please specify the channel you want to set the slowmode of.";
 
-        if (args[1] === undefined) {
+        if (args[1] === void 0) {
             channel.setRateLimitPerUser(0);
             return `The slowmode of ${channel.toString()} was removed.`;
         }

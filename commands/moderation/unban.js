@@ -20,20 +20,19 @@ module.exports = {
         message.delete();
 
         if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
         } else {
             if (!message.member.permissions.has(BanMembers)) {
                 return client.errorStrings.PERMISSION_ERROR;
             }
         }
 
-        if (args[0] === undefined)
+        if (args[0] === void 0)
             return "Please Give Me Member ID That You Want To Unban!";
 
         const bans = await message.guild.bans.fetch();
         const member = bans.find(b => b.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || bans.get(args[0]) || bans.find(bm => bm.user.tag.toLowerCase() === args[0].toLocaleLowerCase());
 
-        if (member === undefined)
+        if (member === void 0)
             return "Please Give Valid Member ID Or Member Is Not Banned!";
 
         try {

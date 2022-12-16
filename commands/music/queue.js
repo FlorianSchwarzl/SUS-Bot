@@ -3,13 +3,9 @@ module.exports = {
     description: "Shows the song queue",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-            message.reply({ content: "ok", ephemeral: true });
-        }
-
         const playerInfo = client.player.getQueue(message.guild.id);
 
-        if (playerInfo === undefined) {
+        if (playerInfo === void 0) {
             return "There are no songs in the queue";
         }
 
