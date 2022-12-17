@@ -77,7 +77,6 @@ module.exports = {
             userData.jobinfo.id = args[0];
             userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err, data) => { });
             return "Congratulations! You are now a " + jobs[userData.jobinfo.id - 1].jobname;
-
         }
     }
 }

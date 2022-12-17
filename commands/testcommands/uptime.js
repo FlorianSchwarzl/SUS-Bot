@@ -17,6 +17,6 @@ module.exports = {
                 { name: "**Stunden:**", value: `${hours}` },
                 { name: "**Minuten:**", value: `${minutes}` },
                 { name: "**Sekunden:**", value: `${seconds}` });
-        message.channel.send({ embeds: [uptime] });
+        message.reply({ embeds: [uptime] });
     }
 }
