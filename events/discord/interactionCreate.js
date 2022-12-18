@@ -7,7 +7,6 @@ module.exports = async (client, interaction) => {
 	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
-	console.log(interaction);
 	switch (type) {
 		case "COMMAND":
 			cmd = client.commands.get("command:" + interaction.commandName);
