@@ -68,7 +68,6 @@ fs.readdirSync("./selectMenus").forEach(dir => {
         const selectMenu = require(`./selectMenus/${dir}/${file}`);
         selectMenu.category = "selectMenu:" + dir;
         selectMenu.name = "selectMenu:" + file.replace(".js", "");
-        console.log(selectMenu.name);
         client.commands.set(selectMenu.name, selectMenu);
     })
 });
@@ -104,7 +103,6 @@ connect(process.env.MONGODB);
 /* Starting the Webserver */
 require("./www/index").startServer(client, process.env.PORT, () => console.log("Webserver started."));
 
-console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
 setInterval(() => {
     console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
 }, 60000);
