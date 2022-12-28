@@ -12,6 +12,7 @@ module.exports = {
     ],
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
+        try { message.suppressEmbeds(true); } catch (e) { }
         return client.player.addTrack(message, args);
     }
 }
