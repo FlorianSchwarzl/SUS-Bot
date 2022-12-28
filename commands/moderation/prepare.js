@@ -26,7 +26,6 @@ module.exports = {
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         const embed = registering(client, message);
-        if (isSlashCommand) message.reply({ embeds: [embed] });
-        else message.channel.send({ embeds: [embed] });
+        return { embeds: [embed] };
     }
 }

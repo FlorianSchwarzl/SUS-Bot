@@ -5,8 +5,7 @@ module.exports = {
     description: "A wild troll appeared.",
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) message.reply({ content: "trollololoolololo", ephemeral: true });
-        else message.delete();
+        if (!isSlashCommand) message.delete();
 
         return client.player.troll(message);
     }
