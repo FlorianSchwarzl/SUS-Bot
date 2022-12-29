@@ -4,12 +4,12 @@ const Player = require("./music/player");
 const fs = require("fs");
 require("dotenv").config();
 set('strictQuery', false);
-// add timestamps in front of log messages
-require('console-stamp')(console, '[HH:MM:ss.l]');
+
+require("./functions/modifyConsole")(console);
 
 console.clear();
 
-console.log(`Version: ${require("./package.json")["version"]} by ${require("./package.json")["authors"].join(" and ")}`);
+console.info(`Version: ${require("./package.json")["version"]} by ${require("./package.json")["authors"].join(" and ")}`);
 
 /* Create a new client instance */
 const client = new Client({
@@ -87,7 +87,7 @@ fs.readdirSync("./events").forEach((dir) => {
         return console.warn(`The file ./events/${dir} is not a directory.`);
     if (!eventToClientMap[dir])
         return console.warn(`The event folder ${dir} is not valid!`);
-    console.log(`Loading ${dir} events...`);
+    console.info(`Loading ${dir} events...`);
     fs.readdirSync(`./events/${dir}`).filter(e => e.endsWith(".js")).forEach(event => {
         eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
     });
@@ -100,8 +100,8 @@ client.login(process.env.TOKEN);
 /* Connect to the mongodb database */
 connect(process.env.MONGODB);
 /* Starting the Webserver */
-require("./www/index").startServer(client, process.env.PORT, () => console.log("Webserver started."));
+require("./www/index").startServer(client, process.env.PORT, () => console.success("Webserver ready!"));
 
-setInterval(() => {
-    console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
-}, 60000);
+// setInterval(() => {
+//     console.info("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
+// }, 60000);
