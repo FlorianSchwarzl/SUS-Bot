@@ -2,6 +2,7 @@ module.exports = {
     name: "nowplaying",
     description: "Shows the current song",
     aliases: ["current"],
+    connectedToSameVoiceChannel: true,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         if (client.player.getQueue(message.guild.id) === undefined) {

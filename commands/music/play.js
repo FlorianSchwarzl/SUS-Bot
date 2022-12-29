@@ -1,6 +1,8 @@
 module.exports = {
     name: "play",
     description: "Adds a song to the queue",
+    aliases: ["p"],
+    connectedToVoiceChannel: true,
 
     options: [
         {

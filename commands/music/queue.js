@@ -1,6 +1,8 @@
 module.exports = {
     name: "queue",
     description: "Shows the song queue",
+    aliases: ["q"],
+    connectedToSameVoiceChannel: true,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
         const playerInfo = client.player.getQueue(message.guild.id);

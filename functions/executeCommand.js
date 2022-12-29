@@ -1,9 +1,26 @@
+// TODO: Add automated argument checking
+// TODO: Add automated permission checking
+
 const getGuildData = require("./getGuildData.js");
 const getUserData = require("./getUserData.js");
 const formatCommandReturn = require("./formatCommandReturn.js");
 
 module.exports = async (command, client, message, args, isInteraction) => {
     if (command === undefined) return;
+
+    if (command.default_member_permissions
+        && !isInteraction
+        && !message.member.permissions.has(command.default_member_permissions))
+        return message.reply(client.errorStrings.PERMISSION_ERROR);
+
+    if (command.connectedToSameVoiceChannel)
+        command.connectedToVoiceChannel = true;
+
+    if (command.connectedToVoiceChannel && !message.member.voice?.channel)
+        return message.reply("You need to be in a voice channel to use this command.");
+
+    if (command.connectedToSameVoiceChannel && message.member.voice?.channel !== message.guild.voice?.channel)
+        return message.reply("You need to be in the same voice channel as me to use this command.");
 
     if (client.commandCooldowns.get(command.name).get(message.author.id) !== undefined)
         return message.reply("You are on cooldown for this command! Wait another " + Math.round((client.commandCooldowns.get(command.name).get(message.author.id) - Date.now()) / 1000) + " seconds.");

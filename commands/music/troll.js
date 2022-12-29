@@ -3,6 +3,7 @@ module.exports = {
     aliases: ["t"],
     category: "Music",
     description: "A wild troll appeared.",
+    connectedToVoiceChannel: true,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
         if (!isSlashCommand) message.delete();
