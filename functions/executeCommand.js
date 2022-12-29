@@ -1,11 +1,14 @@
-const getGuildData = require("./getGuildData");
-const getUserData = require("./getUserData");
+const getGuildData = require("./getGuildData.js");
+const getUserData = require("./getUserData.js");
+const formatCommandReturn = require("./formatCommandReturn.js");
 
 module.exports = async (command, client, message, args, isInteraction) => {
-    if (command === void 0) return;
-    if (client.commandCooldowns.get(command.name).get(message.author.id) !== void 0)
+    if (command === undefined) return;
+
+    if (client.commandCooldowns.get(command.name).get(message.author.id) !== undefined)
         return message.reply("You are on cooldown for this command! Wait another " + Math.round((client.commandCooldowns.get(command.name).get(message.author.id) - Date.now()) / 1000) + " seconds.");
 
+    // makes reply unavailable so two replies can't be sent
     const reply = message.reply;
     message.reply = () => { throw new Error("Cannot reply outside of executeCommand.js. Use return or message.channel.send() instead!") };
 
@@ -13,27 +16,39 @@ module.exports = async (command, client, message, args, isInteraction) => {
         let guildData = await getGuildData(message.guild.id);
         let userData = await getUserData(message.author.id);
 
-        let returnValue = command.run(client, message, args, guildData, userData, isInteraction);
-        if (returnValue instanceof Promise) returnValue = await returnValue;
-        message.reply = reply;
-        if ((typeof returnValue === "string" && returnValue !== "") || returnValue?.embeds !== void 0 || returnValue?.files !== void 0 || returnValue?.components !== void 0 || returnValue?.content !== void 0) {
-            if (isInteraction) {
-                if (typeof returnValue === "string") message.reply({ content: returnValue, ephemeral: true });
-                else {
-                    returnValue.ephemeral = true;
-                    message.reply(returnValue);
-                }
-            }
-            else message.reply(returnValue);
-        } else throw new Error(`Command ${command.name} returned nothing.`);
+        let returnValue = formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction));
 
-        if (command.cooldown) {
-            client.commandCooldowns.get(command.name).set(message.author.id, Date.now() + command.cooldown * 1000);
+        if (returnValue.announce && isInteraction) {
+            message.channel.send(returnValue);
+            returnValue = { content: "Command executed successfully.", ephemeral: true };
+        }
+
+        // makes reply available again
+        message.reply = reply;
+        const sentMessage = message.reply(returnValue);
+
+        let cooldown;
+        if (returnValue.cooldown) cooldown = returnValue.cooldown;
+        else cooldown = command.cooldown;
+
+        if (cooldown && returnValue.success !== false) {
+            client.commandCooldowns.get(command.name).set(message.author.id, Date.now() + cooldown * 1000);
             setTimeout(() => {
                 client.commandCooldowns.get(command.name).delete(message.author.id);
-            }, command.cooldown * 1000);
+            }, cooldown * 1000);
         }
+
+        if (returnValue.deleteMessage && !isInteraction) message.delete();
+
+        if (returnValue.deleteReply) {
+            setTimeout(() => {
+                if (isInteraction) message.deleteReply();
+                else sentMessage.delete();
+            }, command.deleteReply * 1000);
+        }
+
     } catch (e) {
+        // makes reply available again
         message.reply = reply;
         if (isInteraction) message.reply({ content: "An error occurred while executing this command.", ephemeral: true });
         else message.reply("An error occurred while executing this command.");
