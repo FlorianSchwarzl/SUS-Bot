@@ -16,7 +16,9 @@ module.exports = async (command, client, message, args, isInteraction) => {
         let guildData = await getGuildData(message.guild.id);
         let userData = await getUserData(message.author.id);
 
-        let returnValue = formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction));
+        let returnValue = await formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction));
+
+        console.debug(returnValue);
 
         if (returnValue.announce && isInteraction) {
             message.channel.send(returnValue);
