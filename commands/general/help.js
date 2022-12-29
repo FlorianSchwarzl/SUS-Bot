@@ -28,7 +28,7 @@ module.exports = {
             .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));
 
-        if (commandName === void 0 || commandName.length === 0) {
+        if (commandName === undefined || commandName.length === 0) {
             embed
                 .setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
@@ -43,7 +43,7 @@ module.exports = {
             const cmd = client.commands.get(commandName) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-            if (cmd === void 0) {
+            if (cmd === undefined) {
                 return "No command found for: `" + commandName + "`";
             }
 
@@ -72,7 +72,7 @@ module.exports = {
                 },
                 {
                     name: "Cooldown",
-                    value: cmd.cooldown?`${cmd.cooldown}seconds`: "None",
+                    value: cmd.cooldown ? `${cmd.cooldown}seconds` : "None",
                     inline: true
                 }
             );

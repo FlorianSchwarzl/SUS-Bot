@@ -29,7 +29,7 @@ module.exports = {
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === void 0) return "Please specify the channel you want to unlock";
+        if (channel === undefined) return "Please specify the channel you want to unlock";
 
         if (channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
             return "Channel isn't locked";

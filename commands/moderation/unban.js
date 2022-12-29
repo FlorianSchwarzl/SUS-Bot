@@ -26,13 +26,13 @@ module.exports = {
             }
         }
 
-        if (args[0] === void 0)
+        if (args[0] === undefined)
             return "Please Give Me Member ID That You Want To Unban!";
 
         const bans = await message.guild.bans.fetch();
         const member = bans.find(b => b.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || bans.get(args[0]) || bans.find(bm => bm.user.tag.toLowerCase() === args[0].toLocaleLowerCase());
 
-        if (member === void 0)
+        if (member === undefined)
             return "Please Give Valid Member ID Or Member Is Not Banned!";
 
         try {

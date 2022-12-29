@@ -15,7 +15,7 @@ module.exports = {
     },
 
     run(client, _message, args, _guildData, userData) {
-        if (args[0] === void 0) {
+        if (args[0] === undefined) {
             const embed = new MessageEmbed()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")
