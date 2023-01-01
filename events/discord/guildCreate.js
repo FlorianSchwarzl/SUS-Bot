@@ -5,7 +5,7 @@ module.exports = async (client, guild) => {
     const sus = await guildModel.findOne({ guildId: guild.id });
     if (sus) return;
 
-    console.log("Creating MongoDB entry for guild " + guild.name);
+    console.info("Creating MongoDB entry for guild " + guild.name);
 
     addGuildDocument(guild.id);
 
