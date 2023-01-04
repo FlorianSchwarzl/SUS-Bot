@@ -19,7 +19,7 @@ module.exports = async (command, client, message, args, isInteraction) => {
     if (command.connectedToVoiceChannel && !message.member.voice?.channel)
         return message.reply("You need to be in a voice channel to use this command.");
 
-    if (command.connectedToSameVoiceChannel && message.member.voice?.channel !== message.guild.voice?.channel)
+    if (command.connectedToSameVoiceChannel && client.voiceChannel !== message.member.voice?.channel.id)
         return message.reply("You need to be in the same voice channel as me to use this command.");
 
     if (client.commandCooldowns.get(command.name).get(message.author.id) !== undefined)
@@ -35,16 +35,12 @@ module.exports = async (command, client, message, args, isInteraction) => {
 
         let returnValue = await formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction));
 
-        console.debug(returnValue);
-
-        if (returnValue.announce && isInteraction) {
-            message.channel.send(returnValue);
-            returnValue = { content: "Command executed successfully.", ephemeral: true };
-        }
+        if (returnValue.announce)
+            returnValue.ephemeral = false;
 
         // makes reply available again
         message.reply = reply;
-        const sentMessage = message.reply(returnValue);
+        const sentMessage = await message.reply(returnValue);
 
         let cooldown;
         if (returnValue.cooldown) cooldown = returnValue.cooldown;
@@ -59,7 +55,10 @@ module.exports = async (command, client, message, args, isInteraction) => {
 
         if (returnValue.deleteMessage && !isInteraction) message.delete();
 
+        if (returnValue.ephemeral && isInteraction) returnValue.deleteReply = false; // ephemeral messages can't be deleted
+
         if (returnValue.deleteReply) {
+            if (returnValue.deleteReply === true) returnValue.deleteReply = 5;
             setTimeout(() => {
                 if (isInteraction) message.deleteReply();
                 else sentMessage.delete();

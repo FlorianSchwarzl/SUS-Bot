@@ -64,6 +64,7 @@ module.exports = class Player {
 
             if (oldState.channelId !== newState.channelId) {
                 queue.voiceChannel = newState.channelId;
+                client.voiceChannel = newState.channelId;
             }
         });
     }
@@ -172,6 +173,7 @@ module.exports = class Player {
             queue.connection = connection;
             queue.player = player;
             queue.voiceChannel = message.member.voice.channel.id;
+            this.#client.voiceChannel = message.member.voice.channel.id;
             queue.guildId = message.guild.id;
 
             queue.connection.on(VoiceConnectionStatus.Disconnected, async () => {
