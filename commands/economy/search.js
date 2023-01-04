@@ -1,4 +1,4 @@
-const { Random } = require("sussyutilbyraphaelbader");
+const { Random } = require("sussy-util");
 const { MessageEmbed } = require("discord.js");
 const userList = require("../../schemas/user");
 

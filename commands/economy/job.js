@@ -1,7 +1,7 @@
 const userList = require("../../schemas/user");
 const { MessageEmbed } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 
 module.exports = {
     name: "job",

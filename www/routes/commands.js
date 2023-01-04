@@ -1,4 +1,4 @@
-const { deepClone, removeProperty } = require("sussyutilbyraphaelbader");
+const { deepClone, removeProperty } = require("sussy-util");
 const permissions = require("../../enums/permissionStrings");
 const client = require("../../index");
 const express = require("express");
@@ -14,11 +14,11 @@ router.get("/allcommands", (req, res) => {
 router.get("/:cmdname", (req, res) => {
     const cmd = req.params.cmdname;
     const command = client.commands.find(cmd1 => cmd1.name === cmd);
-    if(!command) return res.status(404).send("");
+    if (!command) return res.status(404).send("");
     const clone = deepClone(command);
     clone.permissions?.forEach((e, i) => {
         for (const key in permissions) {
-            if(BigInt(permissions[key]) != e)
+            if (BigInt(permissions[key]) != e)
                 continue;
             clone.permissions[i] = key;
         }

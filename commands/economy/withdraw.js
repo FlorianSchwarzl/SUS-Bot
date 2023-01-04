@@ -1,4 +1,4 @@
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 const userList = require("../../schemas/user");
 module.exports = {
     name: "withdraw",

@@ -1,6 +1,6 @@
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
 const { stream: AudioStream, video_basic_info, search, yt_validate } = require("play-dl");
-const { ImprovedArray } = require("sussyutilbyraphaelbader");
+const { ImprovedArray } = require("sussy-util");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
 const playerControls = new MessageActionRow()

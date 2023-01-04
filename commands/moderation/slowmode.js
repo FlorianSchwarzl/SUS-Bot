@@ -1,4 +1,4 @@
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 const { ManageChannels } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
 

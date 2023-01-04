@@ -1,7 +1,7 @@
 const userList = require("../../schemas/user");
 const { MessageEmbed } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 
 module.exports = {
     name: "bet",
@@ -10,9 +10,9 @@ module.exports = {
     run(client, message, args, guildData, userData, isSlashCommand) {
 
         const embed = new MessageEmbed()
-                .setTimestamp(new Date())
-                .setTitle("Casino")
-                .setFooter(client.config.embedFooter(client));
+            .setTimestamp(new Date())
+            .setTitle("Casino")
+            .setFooter(client.config.embedFooter(client));
 
         if (!(IsSomething.isNumber(args[0]))) {
             embed.addFields(
@@ -39,22 +39,22 @@ module.exports = {
                 case 0:
                     userData.economy.wallet -= args[0];
                     embed.addFields(
-                {
-                    name: "You Lost!",
-                    value: "Oh No! You lost " + args[0] + " gold!",
-                    inline: true
-                }
-            );
+                        {
+                            name: "You Lost!",
+                            value: "Oh No! You lost " + args[0] + " gold!",
+                            inline: true
+                        }
+                    );
                     break;
                 default:
                     userData.economy.wallet += args[0];
                     embed.addFields(
-                {
-                    name: "You won!",
-                    value: "Congratulations! You won " + args[0] + " gold!",
-                    inline: true
-                }
-            );
+                        {
+                            name: "You won!",
+                            value: "Congratulations! You won " + args[0] + " gold!",
+                            inline: true
+                        }
+                    );
                     break;
             }
             userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });

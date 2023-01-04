@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
 
-const { StringUtil } = require("sussyutilbyraphaelbader");
+const { StringUtil } = require("sussy-util");
 const fs = require("fs");
 
 module.exports = {
