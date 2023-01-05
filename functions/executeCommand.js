@@ -33,7 +33,7 @@ module.exports = async (command, client, message, args, isInteraction) => {
         let guildData = await getGuildData(message.guild.id);
         let userData = await getUserData(message.author.id);
 
-        let returnValue = await formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction));
+        let returnValue = await formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction), command);
 
         if (returnValue.announce)
             returnValue.ephemeral = false;
@@ -68,8 +68,8 @@ module.exports = async (command, client, message, args, isInteraction) => {
     } catch (e) {
         // makes reply available again
         message.reply = reply;
-        if (isInteraction) message.reply({ content: "An error occurred while executing this command.", ephemeral: true });
-        else message.reply("An error occurred while executing this command.");
+        if (isInteraction) message.reply({ content: "An error occurred while executing this command.", ephemeral: true }).catch(() => { });
+        else message.reply("An error occurred while executing this command.").catch(() => { });
         console.error(e);
     }
 }
