@@ -45,6 +45,7 @@ fs.readdirSync("./commands").forEach(dir => {
         return console.warn(`./commands/${dir} is not a directory.`);
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
+        if (command.ignore) return;
         command.name = "command:" + file.replace(/(\.js)$/, "").toLowerCase();
         command.category = dir;
         client.commands.set(command.name, command);
