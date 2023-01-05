@@ -227,12 +227,15 @@ module.exports = class Player {
 
         const queueElement = queue.queue.shift();
 
-        this.play(message.guild.id, queueElement || queue.current);
-
         if (queueElement === undefined && !queue.loop) {
-            this.#destroyQueue(message.guild.id);
+            if (queue.loop) {
+                this.play(message.guild.id, queueElement || queue.current);
+            } else {
+                this.#destroyQueue(message.guild.id);
+            }
             return { content: "Skipped last track. Leaving channel!", announce: true };
         } else {
+            this.play(message.guild.id, queueElement || queue.current);
             return { content: "Skipped track.", announce: true };
         }
     }
