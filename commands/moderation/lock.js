@@ -28,8 +28,8 @@ module.exports = {
             }
         }
 
-        const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === undefined) return "Please specify the channel you want to lock";
+        let channel = getChannelFromMention(message.guild, args[0]);
+        if (channel === undefined) channel = message.channel;
 
         if (!channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))
             return "Channel is already locked";
@@ -43,6 +43,6 @@ module.exports = {
             .setFooter(client.config.embedFooter(client))
             .setTimestamp(new Date())
 
-        message.channel.send({ embeds: [embed] });
+        return { embeds: [embed] };
     }
 }

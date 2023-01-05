@@ -32,16 +32,21 @@ module.exports = {
             }
         }
 
-        const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
-        if (channel === undefined) return "Please specify the channel you want to set the slowmode of.";
+        let rate;
 
-        if (args[1] === undefined) {
+        let channel = client.functions.getChannelFromMention(message.guild, args[0]);
+        if (channel === undefined) {
+            channel = message.channel;
+            rate = args[0];
+        } else rate = args[1];
+
+        if (rate === undefined) {
             channel.setRateLimitPerUser(0);
             return `The slowmode of ${channel.toString()} was removed.`;
         }
 
-        if (!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");
-        channel.setRateLimitPerUser(+args[1]);
-        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);
+        if (!IsSomething.isNumber(rate + "")) return message.channel.send("Please enter a number for the slowmode.");
+        channel.setRateLimitPerUser(+rate);
+        return `The slowmode of ${channel.toString()} was set to ${rate} seconds.`;
     }
 }
