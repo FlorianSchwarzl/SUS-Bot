@@ -1,3 +1,5 @@
+const { Message } = require("discord.js");
+
 module.exports = async (returnValue, command) => {
     return await new Promise(async (resolve, reject) => {
         if (returnValue instanceof Promise) {
@@ -7,11 +9,13 @@ module.exports = async (returnValue, command) => {
             returnValue = await returnValue;
             clearTimeout(timeout);
         }
-        if ((typeof returnValue === "string" && returnValue !== "")
+        if ((
+            (typeof returnValue === "string" && returnValue !== "")
             || returnValue?.embeds !== undefined
             || returnValue?.files !== undefined
             || returnValue?.components !== undefined
-            || returnValue?.content !== undefined) {
+            || returnValue?.content !== undefined
+        ) && !(returnValue instanceof Message)) {
             if (typeof returnValue === "string") returnValue = { content: returnValue };
             returnValue.ephemeral = true;
         } else reject(`Command "${command.name}" returned nothing.`);
