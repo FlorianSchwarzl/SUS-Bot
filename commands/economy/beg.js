@@ -1,6 +1,10 @@
 const userList = require("../../schemas/user");
+const messages = require("../../resources/messages.json");
 
 module.exports = {
+    ignore: true, // the messages is kinda broken
+    //TODO: fix the messages
+
     name: "beg",
     description: "Beg to earn money",
     cooldown: 60,
