@@ -40,7 +40,7 @@ module.exports = {
                 menu.addOptions({ label: StringUtil.capitalize(d), value: d });
             });;
         } else {
-            const cmd = client.commands.get(commandName) ||
+            const cmd = client.commands.get(`command:${commandName}`) ||
                 client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
             if (cmd === undefined) {
@@ -77,7 +77,11 @@ module.exports = {
                 }
             );
         }
-        component.addComponents(menu);
-        return { embeds: [embed], components: [component] };
+        if (menu.options.length > 0) {
+            component.addComponents(menu);
+            return { embeds: [embed], components: [component] };
+        } else {
+            return { embeds: [embed] };
+        }
     }
 }
