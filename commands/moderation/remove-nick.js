@@ -21,21 +21,20 @@ module.exports = {
         if (isSlashCommand) {
         } else {
             if (!message.member.permissions.has(ManageNicknames)) {
-                return "You don't the required permissions to use this command.";
+                return client.errorStrings.PERMISSION_ERROR;
             }
         }
 
-        const mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-
-        if (args[0] === void 0) return "You did not mention a user for me to change their nickname!";
-        if (mentionedMember === void 0) return "Please mention a user for me to change their nickname \`$nickname @user nickname\`";
-        if (mentionedMember.nickname === void 0) return "Mentioned user does not have a nickname.";
+        let mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        if (mentionedMember === undefined)
+            mentionedMember = message.member;
 
         try {
+            const username = mentionedMember.nickname || mentionedMember.user.username;
             await mentionedMember.setNickname(null);
-            message.channel.send(`Removed nickname of ${mentionedMember.toString()}.`);
+            return `Reset nickname of ${username}.`;
         } catch (err) {
-            message.channel.send(`I do not have the required permissions to to set ${mentionedMember.nickname || mentionedMember.user.username} username.`);
+            return `I do not have the required permissions to to reset ${mentionedMember.nickname || mentionedMember.user.username}'s username.`;
         }
     }
 }

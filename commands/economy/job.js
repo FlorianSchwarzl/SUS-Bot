@@ -1,7 +1,7 @@
 const userList = require("../../schemas/user");
 const { MessageEmbed } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 
 module.exports = {
     name: "job",
@@ -15,7 +15,7 @@ module.exports = {
     },
 
     run(client, _message, args, _guildData, userData) {
-        if (args[0] === void 0) {
+        if (args[0] === undefined) {
             const embed = new MessageEmbed()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")

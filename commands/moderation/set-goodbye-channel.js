@@ -29,11 +29,11 @@ module.exports = {
         }
 
         const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === void 0) return "Please specify the welcome channel.";
+        if (channel === undefined) channel = message.channel;
         const current = guildData.channels;
         current.goodbye = channel.id;
 
         guilds.findByIdAndUpdate(guildData._id, { channels: current }, (err, data) => { });
-        message.channel.send(`Set goodbye channel to ${channel.toString()}`);
+        return `Set goodbye channel to ${channel.toString()}`;
     }
 }

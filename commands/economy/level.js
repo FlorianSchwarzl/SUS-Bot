@@ -1,4 +1,4 @@
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "level",

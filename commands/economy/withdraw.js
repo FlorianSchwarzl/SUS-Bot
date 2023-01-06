@@ -1,4 +1,4 @@
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 const userList = require("../../schemas/user");
 module.exports = {
     name: "withdraw",
@@ -18,10 +18,10 @@ module.exports = {
             userData.economy.bank -= +amount;
             userData.economy.wallet += +amount;
             userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err, data) => { });
-            message.channel.send(amount + " withdrawn. You now have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank");
+            return amount + " withdrawn. You now have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank";
         }
         else {
-            message.channel.send("Please specify an amount");
+            return "Please specify an amount";
         }
     }
 }

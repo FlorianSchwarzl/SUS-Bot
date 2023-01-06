@@ -21,6 +21,6 @@ module.exports = {
                 //     .setStyle('LINK')
                 //     .setURL('')
             );
-        interaction.channel.send({ content: 'If you can code, help us out on our Github, if not, maybe buy us some more processing power!', components: [choice] });
+        return { content: 'If you can code, help us out on our Github, if not, maybe buy us some more processing power!', components: [choice] };
     }
 }

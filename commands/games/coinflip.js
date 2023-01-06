@@ -1,4 +1,5 @@
 module.exports = {
+    ignore: true,
     name: "flip",
     aliases: ["coinflip", "coin", "skyrim"],
     description: "flips a coin",

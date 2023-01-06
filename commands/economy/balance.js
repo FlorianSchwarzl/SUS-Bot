@@ -4,7 +4,7 @@ module.exports = {
     aliases: ["bal"],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        message.channel.send("You have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank");
+        return "You have " + userData.economy.wallet + " gold in your wallet and " + userData.economy.bank + " gold in your bank";
     }
 
 }

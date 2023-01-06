@@ -1,4 +1,4 @@
-const { IsSomething } = require("sussyutilbyraphaelbader");
+const { IsSomething } = require("sussy-util");
 const { ManageChannels } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
 
@@ -32,16 +32,20 @@ module.exports = {
             }
         }
 
-        const channel = client.channels.cache.get(args[0].substring(2, args[0].length - 1));
-        if (channel === void 0) return "Please specify the channel you want to set the slowmode of.";
+        let rate;
 
-        if (args[1] === void 0) {
+        let channel = client.functions.getChannelFromMention(message.guild, args[0]);
+        if (channel === undefined) {
+            channel = message.channel;
+            rate = args[0];
+        } else rate = args[1];
+
+        if (typeof rate !== "number" || rate === 0) {
             channel.setRateLimitPerUser(0);
             return `The slowmode of ${channel.toString()} was removed.`;
         }
 
-        if (!IsSomething.isNumber(args[1] + "")) return message.channel.send("Please enter a number for the slowmode.");
-        channel.setRateLimitPerUser(+args[1]);
-        return message.channel.send(`The slowmode of ${channel.toString()} was set to ${args[1]}seconds.`);
+        channel.setRateLimitPerUser(+rate);
+        return `The slowmode of ${channel.toString()} was set to ${rate} seconds.`;
     }
 }

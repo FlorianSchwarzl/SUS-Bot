@@ -1,6 +1,8 @@
 module.exports = {
     name: "play",
     description: "Adds a song to the queue",
+    aliases: ["p"],
+    connectedToVoiceChannel: true,
 
     options: [
         {
@@ -12,6 +14,7 @@ module.exports = {
     ],
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
+        try { message.suppressEmbeds(true); } catch (e) { }
         return client.player.addTrack(message, args);
     }
 }

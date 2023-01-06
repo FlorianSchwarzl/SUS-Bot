@@ -1,11 +1,15 @@
+//TODO: Add a command to change the prefix
+//TODO: Add automated testing
+//TODO: Add the ability to automatically give members with a certain level a role
+
 const { Client, Collection, Intents } = require("discord.js");
 const { connect, connection, set } = require("mongoose");
 const Player = require("./music/player");
 const fs = require("fs");
 require("dotenv").config();
 set('strictQuery', false);
-// add timestamps in front of log messages
-require('console-stamp')(console, '[HH:MM:ss.l]');
+
+require("better-cl").setup(console, [], "./logs");
 
 console.clear();
 
@@ -41,8 +45,8 @@ fs.readdirSync("./commands").forEach(dir => {
         return console.warn(`./commands/${dir} is not a directory.`);
     fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const command = require(`./commands/${dir}/${file}`);
-        if (!command.name?.length) return; // If the command either doesn't have a name or the name is empty, ignore it.
-        command.name = "command:" + file.replace(".js", "");
+        if (command.ignore) return;
+        command.name = "command:" + file.replace(/(\.js)$/, "").toLowerCase();
         command.category = dir;
         client.commands.set(command.name, command);
     })
@@ -55,7 +59,7 @@ fs.readdirSync("./buttons").forEach(dir => {
     fs.readdirSync(`./buttons/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const button = require(`./buttons/${dir}/${file}`);
         button.category = "button:" + dir;
-        button.name = "button:" + file.replace(".js", "");
+        button.name = "button:" + file.replace(/(\.js)$/, "").toLowerCase();
         client.commands.set(button.name, button);
     })
 });
@@ -67,8 +71,7 @@ fs.readdirSync("./selectMenus").forEach(dir => {
     fs.readdirSync(`./selectMenus/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
         const selectMenu = require(`./selectMenus/${dir}/${file}`);
         selectMenu.category = "selectMenu:" + dir;
-        selectMenu.name = "selectMenu:" + file.replace(".js", "");
-        console.log(selectMenu.name);
+        selectMenu.name = "selectMenu:" + file.replace(/(\.js)$/, "").toLowerCase();
         client.commands.set(selectMenu.name, selectMenu);
     })
 });
@@ -102,9 +105,8 @@ client.login(process.env.TOKEN);
 /* Connect to the mongodb database */
 connect(process.env.MONGODB);
 /* Starting the Webserver */
-require("./www/index").startServer(client, process.env.PORT, () => console.log("Webserver started."));
+require("./www/index").startServer(client, process.env.PORT, () => console.success("Webserver ready!"));
 
-console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
-setInterval(() => {
-    console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
-}, 60000);
+// setInterval(() => {
+//     console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
+// }, 60000);

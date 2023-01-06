@@ -7,7 +7,6 @@ module.exports = async (client, interaction) => {
 	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
-	console.log(interaction);
 	switch (type) {
 		case "COMMAND":
 			cmd = client.commands.get("command:" + interaction.commandName);
@@ -26,7 +25,8 @@ module.exports = async (client, interaction) => {
 			break;
 		case "SELECT_MENU":
 			cmd = client.commands.get("selectMenu:" + interaction.customId);
-			args = interaction.values;
+			args = interaction.customId.split(" ");
+			args[0] = interaction.values[0];
 			break;
 		default:
 			return;

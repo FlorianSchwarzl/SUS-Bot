@@ -28,8 +28,8 @@ module.exports = {
             }
         }
 
-        const channel = getChannelFromMention(message.guild, args[0]);
-        if (channel === void 0) return "Please specify the counter channel.";
+        let channel = getChannelFromMention(message.guild, args[0]);
+        if (channel === undefined) channel = message.channel;
         const current = guildData.channels;
         current.counter = channel.id;
 
