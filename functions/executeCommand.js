@@ -62,7 +62,7 @@ module.exports = async (command, client, message, args, isInteraction) => {
             setTimeout(() => {
                 if (isInteraction) message.deleteReply();
                 else sentMessage.delete();
-            }, command.deleteReply * 1000);
+            }, returnValue.deleteReply * 1000);
         }
 
     } catch (e) {

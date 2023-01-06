@@ -214,7 +214,7 @@ module.exports = class Player {
         }
 
         queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
-        return ({ embeds: [await this.#createEmbed(info, "Added")], deleteReply: 10 });
+        return ({ embeds: [await this.#createEmbed(info, "Added")], deleteReply: 10, announce: true });
     }
 
     skip(message) {
