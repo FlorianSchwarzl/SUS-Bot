@@ -1,4 +1,5 @@
 module.exports = {
+    ignore: true,
     name: "guess",
     aliases: ["number", "numberguess"],
     description: "guess a number between 1 and the specified number",

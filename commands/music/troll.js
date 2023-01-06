@@ -1,4 +1,5 @@
 module.exports = {
+    ignore: true,
     name: "troll",
     aliases: ["t"],
     category: "Music",
