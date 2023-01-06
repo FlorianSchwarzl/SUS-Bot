@@ -34,6 +34,6 @@ module.exports = {
         current.welcome = channel.id;
 
         guilds.findByIdAndUpdate(guildData._id, { channels: current }, (err, data) => { });
-        message.channel.send(`Set welcome channel to ${channel.toString()}`);
+        return `Set welcome channel to ${channel.toString()}`;
     }
 }

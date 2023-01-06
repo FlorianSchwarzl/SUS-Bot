@@ -55,6 +55,6 @@ module.exports = {
             sendArray.push(actionRowArray[0]);
             actionRowArray.shift();
         }
-        message.channel.send({ embeds: [new MessageEmbed().setDescription("test")], components: sendArray });
+        return { embeds: [new MessageEmbed().setDescription("test")], components: sendArray };
     }
 }

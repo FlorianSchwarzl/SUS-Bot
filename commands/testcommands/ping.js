@@ -13,7 +13,7 @@ const after = (client, message, msg, start, slash = false) => {
         message.followUp({ embeds: [embed] });
     } else {
         msg.delete();
-        message.channel.send({ embeds: [embed] });
+        return { embeds: [embed] };
     }
 }
 
@@ -30,8 +30,8 @@ module.exports = {
                 after(client, message, msg, StartDate, true);
             });
         } else {
-            message.channel.send(sendObj)
-                .then((msg) => after(client, message, msg, StartDate));
+            return message.channel.send(sendObj)
+                .then((msg) => { return after(client, message, msg, StartDate) });
         }
     }
 }

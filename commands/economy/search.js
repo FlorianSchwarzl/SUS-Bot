@@ -9,7 +9,6 @@ module.exports = {
 
     run: (_client, message, _args, _guildData, userData) => {
         const places = ["bank", "river", "pocket"];
-        message.channel.send("Please tell me where you want to search.\n" + places.map(e => "`" + e + "`").join(", "));
         const collector = message.channel.createMessageCollector({ filter: msg => msg.author.id === message.author.id, time: 30000 });
 
         collector.on("collect", async msg => {
@@ -31,5 +30,6 @@ module.exports = {
             }
             collector.stop("success");
         });
+        return "Please tell me where you want to search.\n" + places.map(e => "`" + e + "`").join(", ");
     }
 }

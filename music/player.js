@@ -153,9 +153,10 @@ module.exports = class Player {
 
         }
         if (info === undefined) {
-            message.channel.send("Can't play tracks requiring age verification! Skipping...");
             if (this.#queue.get(message.guild.id)?.queue.length === 0) return;
-            return this.skip(message);
+            let returnValue = this.skip(message);
+            returnValue.content = "Can't play tracks requiring age verification! Skipping...";
+            return returnValue;
         }
 
         if (!this.#queue.has(message.guild.id)) {
@@ -183,8 +184,8 @@ module.exports = class Player {
                         entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
                     ]);
                 } catch (error) {
-                    message.channel.send("There was an error connecting to the voice channel.");
                     this.#destroyQueue(queue.guildId);
+                    return "There was an error connecting to the voice channel.";
                 }
             });
 
@@ -197,8 +198,8 @@ module.exports = class Player {
                 if (queue.loop) queue.queue.push(queue.current);
                 const queueElement = queue.queue.shift();
                 if (queueElement === undefined) {
-                    message.channel.send("Played all tracks leaving the channel.");
-                    return this.#destroyQueue(message.guild.id);
+                    this.#destroyQueue(message.guild.id);
+                    return { content: "Played all tracks leaving the channel.", announce: true };
                 }
                 this.play(message.guild.id, queueElement);
             });

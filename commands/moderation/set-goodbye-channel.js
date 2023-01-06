@@ -34,6 +34,6 @@ module.exports = {
         current.goodbye = channel.id;
 
         guilds.findByIdAndUpdate(guildData._id, { channels: current }, (err, data) => { });
-        message.channel.send(`Set goodbye channel to ${channel.toString()}`);
+        return `Set goodbye channel to ${channel.toString()}`;
     }
 }
