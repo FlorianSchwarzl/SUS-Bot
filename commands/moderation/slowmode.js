@@ -40,12 +40,11 @@ module.exports = {
             rate = args[0];
         } else rate = args[1];
 
-        if (rate === undefined) {
+        if (typeof rate !== "number" || rate === 0) {
             channel.setRateLimitPerUser(0);
             return `The slowmode of ${channel.toString()} was removed.`;
         }
 
-        if (!IsSomething.isNumber(rate + "")) return message.channel.send("Please enter a number for the slowmode.");
         channel.setRateLimitPerUser(+rate);
         return `The slowmode of ${channel.toString()} was set to ${rate} seconds.`;
     }
