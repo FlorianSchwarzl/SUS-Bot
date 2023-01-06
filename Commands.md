@@ -10,19 +10,19 @@
 - [x] level
 - [ ] resetBalance
 - [ ] resetLevel
-- [ ] search
-- [ ] withdraw
+- [x] search
+- [x] withdraw
 - [x] work
 
 ## Games
 
-- [ ] coinflip
-- [ ] numberGuess
+- [x] coinflip
+- [x] numberGuess
 
 ## General
 
 - [ ] help
-- [ ] info
+- [x] info
 - [x] invite
 - [x] inviteBot
 - [x] serverInfo
@@ -50,10 +50,10 @@
 - [x] nowPlaying
 - [x] pause
 - [x] play
-- [ ] queue
+- [x] queue
 COMING SOON! - [ ] remove
 - [x] resume
 - [x] shuffle
 - [x] skip
 - [x] stop
-- [ ] troll
+- [x] troll

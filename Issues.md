@@ -4,22 +4,22 @@
 - [ ] When outputting time, format seconds to seconds, minutes, hours, days, ...
 - [ ] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
 - [ ] Fix help command
-- [ ] Fix coinflip: returned nothing
-- [ ] Fix !numberguess:
+- [x] Fix coinflip: returned nothing
+- [x] Fix !numberguess:
  Number was generated! The number is: NaN
  You're number is false!
  __returned nothing__
-- [ ] Fix queue: if queue is too long it could exceed the 2000 character limit imposed by discord
+- [x] Fix queue: if queue is too long it could exceed the 2000 character limit imposed by discord
 - [ ] deferReply() will crash the bot
 - [ ] beg is currently broken
 - [ ] fix bet messages, kinda ugly and overcrowded imo
-- [ ] search returns nothing
+- [x] search returns nothing
 - [ ] rewrite search so it used buttons instead of having to listen for messages sent by the user
-- [ ] withdraw returns nothing
+- [x] withdraw returns nothing
 - [ ] can't check balance of other users
 - [ ] make a leaderboard command
-- [ ] coinflip returns nothing
-- [ ] coinflip has no right to exist in the current state
+- [x] coinflip returns nothing
+- [x] coinflip has no right to exist in the current state
 - [ ] clear works only when deleting under 50 messages, else it times out
 - [ ] all set-*-channel commands are broken as they don't work with slash commands
 - [ ] tempban "guildInfo" is not defined
@@ -53,4 +53,4 @@ message_reference: Unknown message
     files: []
   }
 }
-- [ ] troll returns nothing
+- [x] troll returns nothing
