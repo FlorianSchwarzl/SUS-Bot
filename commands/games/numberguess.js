@@ -1,7 +1,6 @@
 const { IsSomething } = require("sussy-util");
 module.exports = {
-    name: "guess",
-    aliases: ["number", "numberguess"],
+    aliases: ["number", "guess"],
     description: "guess a number between 1 and the specified number",
     options: [
         {
@@ -34,7 +33,7 @@ module.exports = {
         if (number === +(args[1])) {
             return "Your number is correct!";
         }
-            return "Your number is false!";
+        return "Your number is false!";
 
     }
 

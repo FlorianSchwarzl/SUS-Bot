@@ -2,7 +2,6 @@ const { ManageMessages } = require("../../enums/permissionBitField");
 const { ManageMessages: manageMsgs } = require("../../enums/permissionStrings");
 
 module.exports = {
-    name: "clear",
     description: "Clears the last n messages",
 
     options: [
@@ -17,13 +16,6 @@ module.exports = {
     default_member_permissions: manageMsgs,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(ManageMessages)) {
-                return client.errorStrings.PERMISSION_ERROR;
-            }
-        }
-
         const amount = parseInt(args[0]);
 
         if (isNaN(amount)) return "Please provide a number as the first argument.";

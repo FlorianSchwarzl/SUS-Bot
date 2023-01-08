@@ -29,10 +29,6 @@ client.commands = new Collection();
 client.sentMessages = new Map();
 client.config = require("./config");
 client.connection = connection;
-client.errorStrings = {
-    "NO_ERROR": "",
-    "PERMISSION_ERROR": "You don't have the required permissions to run this command!",
-}
 
 console.log(`Version: ${client.config.version} by ${client.config.authorsString}`);
 

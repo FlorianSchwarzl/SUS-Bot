@@ -4,7 +4,6 @@ const jobs = require("./resources/jobs.json").jobs;
 const { IsSomething } = require("sussy-util");
 
 module.exports = {
-    name: "bet",
     description: "Bet your money and win!",
 
     run(client, message, args, guildData, userData, isSlashCommand) {

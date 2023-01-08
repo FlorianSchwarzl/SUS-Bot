@@ -4,7 +4,6 @@ const { StringUtil } = require("sussy-util");
 const fs = require("fs");
 
 module.exports = {
-    name: "help",
     description: "Displays all commands / more information about one command",
     aliases: ["h"],
 

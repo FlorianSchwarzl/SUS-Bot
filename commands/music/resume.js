@@ -1,5 +1,4 @@
 module.exports = {
-    name: "resume",
     aliases: ["unpause"],
     description: "Resumes playing",
     connectedToSameVoiceChannel: true,

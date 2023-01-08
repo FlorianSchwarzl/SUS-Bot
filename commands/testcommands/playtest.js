@@ -1,5 +1,4 @@
 module.exports = {
-    name: "playtest",
     description: "Plays a random song from a list",
     aliases: ["pt"],
 

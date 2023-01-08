@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "serverinfo",
     description: "Shows information about the server",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

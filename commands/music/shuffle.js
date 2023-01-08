@@ -1,5 +1,4 @@
 module.exports = {
-    name: "shuffle",
     description: "Shuffles the queue",
     aliases: ["mix"],
     connectedToSameVoiceChannel: true,

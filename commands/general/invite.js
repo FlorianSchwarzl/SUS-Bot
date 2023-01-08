@@ -1,5 +1,4 @@
 module.exports = {
-    name: "invite",
     description: "Sends the invite link of the server",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

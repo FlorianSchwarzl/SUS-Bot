@@ -3,7 +3,6 @@ const { MessageEmbed } = require("discord.js");
 const userList = require("../../schemas/user");
 
 module.exports = {
-    name: "search",
     description: "Search in a few places for money.",
     cooldown: 60,
 

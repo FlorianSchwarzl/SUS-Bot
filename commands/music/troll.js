@@ -1,6 +1,5 @@
 module.exports = {
     ignore: true,
-    name: "troll",
     aliases: ["t"],
     category: "Music",
     description: "A wild troll appeared.",
@@ -11,6 +10,7 @@ module.exports = {
 
         // Low the user using the command
         console.log(`${message.author.username} used the troll command.`);
-        return client.player.troll(message);
+        client.player.troll(message);
+        return null;
     }
 }

@@ -18,7 +18,6 @@ const after = (client, message, msg, start, slash = false) => {
 }
 
 module.exports = {
-    name: "ping",
     description: "Pings the bot and displays the latency of the bot and the latency of the api.",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

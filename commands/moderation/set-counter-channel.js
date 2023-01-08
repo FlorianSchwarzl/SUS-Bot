@@ -4,7 +4,7 @@ const getChannelFromMention = require("../../functions/getChannelFromMention");
 const guilds = require("../../schemas/guild");
 
 module.exports = {
-    name: "set-counter-channel",
+    ignore: true, //TODO: Needs fix ASAP
     description: "Sets the counter channel",
     aliases: ["scc"],
 
@@ -20,14 +20,6 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(ManageChannels)) {
-                message.delete();
-                return "You don't the required permissions to use this command.";
-            }
-        }
-
         let channel = getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) channel = message.channel;
         const current = guildData.channels;

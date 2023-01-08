@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: "userinfo",
     description: "Displays information about the current user.",
 
     run(client, message, args) {
