@@ -7,6 +7,11 @@ module.exports = async (client, interaction) => {
 	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
+	let isComponent = false;
+
+	if (interaction.customId)
+		interaction.customId = interaction.customId.toLowerCase();
+
 	switch (type) {
 		case "COMMAND":
 			cmd = client.commands.get("command:" + interaction.commandName);
@@ -22,11 +27,13 @@ module.exports = async (client, interaction) => {
 				args = interaction.customId.split(" ");
 				args.shift();
 			}
+			isComponent = true;
 			break;
 		case "SELECT_MENU":
 			cmd = client.commands.get("selectMenu:" + interaction.customId);
 			args = interaction.customId.split(" ");
 			args[0] = interaction.values[0];
+			isComponent = true;
 			break;
 		default:
 			return;
@@ -34,5 +41,5 @@ module.exports = async (client, interaction) => {
 	interaction.channel = client.channels.cache.get(interaction.channelId);
 	interaction.author = interaction.user;
 
-	executeCommand(cmd, client, interaction, args, true);
+	executeCommand(cmd, client, interaction, args, true, isComponent);
 }

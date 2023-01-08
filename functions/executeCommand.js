@@ -4,8 +4,9 @@
 const getGuildData = require("./getGuildData.js");
 const getUserData = require("./getUserData.js");
 const formatCommandReturn = require("./formatCommandReturn.js");
+const sendMessage = require("./sendMessage.js");
 
-module.exports = async (command, client, message, args, isInteraction) => {
+module.exports = async (command, client, message, args, isInteraction, isComponent = false) => {
     if (command === undefined) return;
 
     if (command.default_member_permissions
@@ -28,19 +29,25 @@ module.exports = async (command, client, message, args, isInteraction) => {
     // makes reply unavailable so two replies can't be sent
     const reply = message.reply;
     message.reply = () => { throw new Error("Cannot reply outside of executeCommand.js. Use return or message.channel.send() instead!") };
+    const deferReply = message.deferReply;
+    message.deferReply = () => { throw new Error("Cannot defer reply outside of executeCommand.js. Use return null instead!") };
 
     try {
-        let guildData = await getGuildData(message.guild.id);
+        if (command.guildOnly && message.channel.type === "dm") return message.reply("This command can only be used in a server.");
+
+        let guildData;
+        if (message.guild)
+            guildData = await getGuildData(message.guild.id);
+
         let userData = await getUserData(message.author.id);
 
         let returnValue = await formatCommandReturn(command.run(client, message, args, guildData, userData, isInteraction), command);
 
-        if (returnValue.announce)
-            returnValue.ephemeral = false;
-
-        // makes reply available again
-        message.reply = reply;
-        const sentMessage = await message.reply(returnValue);
+        if (returnValue === null) {
+            message.deferReply = deferReply;
+            if (isInteraction) message.deferReply();
+            return;
+        }
 
         let cooldown;
         if (returnValue.cooldown) cooldown = returnValue.cooldown;
@@ -53,18 +60,31 @@ module.exports = async (command, client, message, args, isInteraction) => {
             }, cooldown * 1000);
         }
 
-        if (returnValue.deleteMessage && !isInteraction) message.delete();
+        // makes reply available again
+        message.reply = reply;
 
-        if (returnValue.ephemeral && isInteraction) returnValue.deleteReply = false; // ephemeral messages can't be deleted
-
-        if (returnValue.deleteReply) {
-            if (returnValue.deleteReply === true) returnValue.deleteReply = 5;
-            setTimeout(() => {
-                if (isInteraction) message.deleteReply();
-                else sentMessage.delete();
-            }, returnValue.deleteReply * 1000);
+        if (returnValue.DM !== undefined && returnValue.DM !== null) {
+            sendMessage(returnValue.DM, command, client, message, args, isInteraction, guildData, userData, true);
         }
 
+        if (message.guildId === null) returnValue.announce = true;
+        sendMessage(returnValue, command, client, message, args, isInteraction, guildData, userData, false);
+
+        const disable = returnValue.disableOriginal || command.disableOriginal;
+        if (disable && isComponent) {
+            const originalMessage = await client.sentMessages.get(message.message.id);
+            if (originalMessage) {
+                originalMessage.components.forEach(actionRow => {
+                    actionRow.components.forEach(component => {
+                        component.setDisabled(true);
+                    });
+                });
+                if (originalMessage.content) originalMessage.content += "\n\nThis message has been \u202B\u202B and is now disabled";
+                else originalMessage.content = "This message has been \u202B\u202B and is now disabled";
+                originalMessage.edit({ content: originalMessage.content, components: originalMessage.components });
+                client.sentMessages.delete(message.channel.id);
+            }
+        }
     } catch (e) {
         // makes reply available again
         message.reply = reply;

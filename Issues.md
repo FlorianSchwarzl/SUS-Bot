@@ -1,6 +1,5 @@
 # Issues
 
-- [ ] beg can't be used without money
 - [ ] When outputting time, format seconds to seconds, minutes, hours, days, ...
 - [ ] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
 - [ ] Fix help command
@@ -10,7 +9,7 @@
  You're number is false!
  __returned nothing__
 - [x] Fix queue: if queue is too long it could exceed the 2000 character limit imposed by discord
-- [ ] deferReply() will crash the bot
+- [x] deferReply() will crash the bot
 - [ ] beg is currently broken
 - [ ] fix bet messages, kinda ugly and overcrowded imo
 - [x] search returns nothing

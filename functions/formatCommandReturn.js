@@ -18,7 +18,9 @@ module.exports = async (returnValue, command) => {
         ) && !(returnValue instanceof Message)) {
             if (typeof returnValue === "string") returnValue = { content: returnValue };
             returnValue.ephemeral = true;
-        } else reject(`Command "${command.name}" returned nothing.`);
+        } else if (returnValue?.DM !== undefined) {
+            returnValue.DM = module.exports(returnValue.DM, command);
+        } else if (returnValue !== null) reject(`Command "${command.name}" returned nothing.`);
         resolve(returnValue);
     });
 }
