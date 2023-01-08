@@ -11,8 +11,13 @@ module.exports = async (command, client, message, args, isInteraction, isCompone
 
     if (command.default_member_permissions
         && !isInteraction
-        && !message.member.permissions.has(command.default_member_permissions))
-        return message.reply(client.errorStrings.PERMISSION_ERROR);
+        && !message.member.permissions.has(command.default_member_permissions)) {
+        const permissionString = getPermissionsString(command.default_member_permissions);
+        const moreThanOne = (permissionString.match(/,/g) || []).length;
+        const outputString = `You don't have the permission to use this command. You need the following permission${moreThanOne ? "s" : ""}: ${permissionString}`;
+        return message.reply(outputString);
+    }
+
 
     if (command.connectedToSameVoiceChannel)
         command.connectedToVoiceChannel = true;
@@ -33,7 +38,7 @@ module.exports = async (command, client, message, args, isInteraction, isCompone
     message.deferReply = () => { throw new Error("Cannot defer reply outside of executeCommand.js. Use return null instead!") };
 
     try {
-        if (command.guildOnly && message.channel.type === "dm") return message.reply("This command can only be used in a server.");
+        if (command.guildOnly && message.guildId === null) return message.reply("This command can only be used in a server.");
 
         let guildData;
         if (message.guild)
@@ -92,4 +97,45 @@ module.exports = async (command, client, message, args, isInteraction, isCompone
         else message.reply("An error occurred while executing this command.").catch(() => { });
         console.error(e);
     }
+}
+
+// function that converts default_member_permissions bitfield to a human readable string
+
+function getPermissionsString(permissions) {
+    if (permissions === 0) return "None";
+    if (permissions === 8) return "Administrator";
+    if (permissions === 2147483647) return "All";
+    const perms = [];
+    if (permissions & 1) perms.push("Create Instant Invite");
+    if (permissions & 2) perms.push("Kick Members");
+    if (permissions & 4) perms.push("Ban Members");
+    if (permissions & 8) perms.push("Administrator");
+    if (permissions & 16) perms.push("Manage Channels");
+    if (permissions & 32) perms.push("Manage Guild");
+    if (permissions & 64) perms.push("Add Reactions");
+    if (permissions & 128) perms.push("View Audit Log");
+    if (permissions & 256) perms.push("Priority Speaker");
+    if (permissions & 512) perms.push("Stream");
+    if (permissions & 1024) perms.push("View Channel");
+    if (permissions & 2048) perms.push("Send Messages");
+    if (permissions & 4096) perms.push("Send TTS Messages");
+    if (permissions & 8192) perms.push("Manage Messages");
+    if (permissions & 16384) perms.push("Embed Links");
+    if (permissions & 32768) perms.push("Attach Files");
+    if (permissions & 65536) perms.push("Read Message History");
+    if (permissions & 131072) perms.push("Mention Everyone");
+    if (permissions & 262144) perms.push("Use External Emojis");
+    if (permissions & 524288) perms.push("View Guild Insights");
+    if (permissions & 1048576) perms.push("Connect");
+    if (permissions & 2097152) perms.push("Speak");
+    if (permissions & 4194304) perms.push("Mute Members");
+    if (permissions & 8388608) perms.push("Deafen Members");
+    if (permissions & 16777216) perms.push("Move Members");
+    if (permissions & 33554432) perms.push("Use VAD");
+    if (permissions & 67108864) perms.push("Change Nickname");
+    if (permissions & 134217728) perms.push("Manage Nicknames");
+    if (permissions & 268435456) perms.push("Manage Roles");
+    if (permissions & 536870912) perms.push("Manage Webhooks");
+    if (permissions & 1073741824) perms.push("Manage Emojis");
+    return perms.join(", ");
 }
