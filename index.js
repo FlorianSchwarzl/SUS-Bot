@@ -26,7 +26,6 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
-client.sentMessages = new Map();
 client.config = require("./config");
 client.connection = connection;
 

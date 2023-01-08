@@ -3,7 +3,6 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 module.exports = {
     description: "Clears your balance",
     aliases: ["clb", "clearbalance", "resetbalance", "rb", "resetbal", "clearbal"],
-    saveReply: true,
 
     run(client, message, args, guildData, userData, isInteraction) {
         const embed = new MessageEmbed()

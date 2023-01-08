@@ -3,12 +3,16 @@ module.exports = async (messageToSend, command, client, message, args, isInterac
 
     if (messageToSend.announce || isDM)
         messageToSend.ephemeral = false;
+    else
+        messageToSend.ephemeral = true;
 
     if (messageToSend.deleteMessage && !isInteraction) message.delete();
 
     if (messageToSend.ephemeral && isInteraction) messageToSend.deleteReply = false; // ephemeral messages can't be deleted
 
     if (messageToSend.disableMentions) messageToSend.allowedMentions = { parse: [] };
+
+    messageToSend.failIfNotExists = false;
 
     if (isDM) {
         sentMessage = await message.author.send(messageToSend);
@@ -35,9 +39,5 @@ module.exports = async (messageToSend, command, client, message, args, isInterac
             if (isInteraction) message.editReply(messageToSend);
             else sentMessage.edit(messageToSend);
         }, messageToSend.disable * 1000);
-    }
-
-    if (command.saveReply) {
-        client.sentMessages.set(sentMessage.id, sentMessage);
     }
 }

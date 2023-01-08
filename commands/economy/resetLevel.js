@@ -3,7 +3,6 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 module.exports = {
     description: "Clears your level",
     aliases: ["cll", "clearlevel", "resetlevel", "rl", "resetlvl", "clearlvl"],
-    saveReply: true,
 
     run(client, message, args, guildData, userData, isInteraction) {
         const embed = new MessageEmbed()
