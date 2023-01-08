@@ -1,7 +1,7 @@
 # Issues
 
 - [ ] When outputting time, format seconds to seconds, minutes, hours, days, ...
-- [ ] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
+- [x] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
 - [ ] Fix help command
 - [x] Fix coinflip: returned nothing
 - [x] Fix !numberguess:

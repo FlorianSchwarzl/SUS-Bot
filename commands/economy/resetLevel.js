@@ -1,22 +1,22 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
 module.exports = {
-    description: "Clears your balance",
-    aliases: ["clb", "clearbalance", "resetbalance", "rb", "resetbal", "clearbal"],
+    description: "Clears your level",
+    aliases: ["cll", "clearlevel", "resetlevel", "rl", "resetlvl", "clearlvl"],
     saveReply: true,
 
     run(client, message, args, guildData, userData, isInteraction) {
         const embed = new MessageEmbed()
-            .setTitle("Reset Balance")
-            .setDescription("Are you sure you want to reset your balance?")
+            .setTitle("Reset Level")
+            .setDescription("Are you sure you want to reset your level?")
             .setColor("RED")
-            .setFooter(client.config.embedFooter(client));
+            .setFooter("This action cannot be undone!");
 
         if (isInteraction) {
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setCustomId("resetBalance")
+                        .setCustomId("resetLevel")
                         .setLabel("Confirm")
                         .setStyle("DANGER"),
                 );
@@ -26,7 +26,7 @@ module.exports = {
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setCustomId(`resetBalance`)
+                        .setCustomId(`resetLevel`)
                         .setLabel("Confirm")
                         .setStyle("DANGER"),
                 );
