@@ -1,10 +1,6 @@
 const executeCommand = require("../../functions/executeCommand.js");
 
 module.exports = async (client, interaction) => {
-	// let type = interaction.isCommand() ? "command" : interaction.isButton() ? "button" : "unknown";
-	// if (type === "unknown" && interaction.type === "MESSAGE_COMPONENT") type = "stringSelectMenu";
-	let type = interaction.componentType;
-	if (interaction.type == "APPLICATION_COMMAND") type = "COMMAND";
 	let cmd;
 	let args = [];
 	let isComponent = false;
@@ -12,12 +8,20 @@ module.exports = async (client, interaction) => {
 	if (interaction.customId)
 		interaction.customId = interaction.customId.toLowerCase();
 
+	let type = interaction.type;
+
+	if (type === 3) // INTERACTION_RESPONSE
+		if (interaction.componentType === 2) // BUTTON
+			type = 32;
+		else if (interaction.componentType === 3) // SELECT_MENU
+			type = 33;
+
 	switch (type) {
-		case "COMMAND":
+		case 2: // COMMAND
 			cmd = client.commands.get("command:" + interaction.commandName);
 			args = interaction.options?._hoistedOptions.map(e => e.value);
 			break;
-		case "BUTTON":
+		case 32: // BUTTON
 			if (interaction.customId.startsWith("command:")) {
 				cmd = client.commands.get("command:" + interaction.customId.slice(8));
 				args = interaction.customId.slice(8).split(" ");
@@ -29,7 +33,7 @@ module.exports = async (client, interaction) => {
 			}
 			isComponent = true;
 			break;
-		case "SELECT_MENU":
+		case 33: // SELECT_MENU
 			cmd = client.commands.get("selectMenu:" + interaction.customId);
 			args = interaction.customId.split(" ");
 			args[0] = interaction.values[0];

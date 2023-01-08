@@ -25,8 +25,10 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
     if (command.connectedToVoiceChannel && !interaction.member.voice?.channel)
         return interaction.reply("You need to be in a voice channel to use this command.");
 
-    if (command.connectedToSameVoiceChannel && client.voiceChannel !== interaction.member.voice?.channel.id)
+    if (command.connectedToSameVoiceChannel && client.player.getQueue(interaction.guildId)?.voiceChannel !== interaction.member.voice?.channel.id) {
+        if (client.player.getQueue(interaction.guildId)?.voiceChannel === undefined) return interaction.reply("I am not in a voice channel.");
         return interaction.reply("You need to be in the same voice channel as me to use this command.");
+    }
 
     if (client.commandCooldowns.get(command.name).get(interaction.author.id) !== undefined)
         return interaction.reply("You are on cooldown for this command! Wait another " + Math.round((client.commandCooldowns.get(command.name).get(interaction.author.id) - Date.now()) / 1000) + " seconds.");
@@ -80,7 +82,7 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
             const originalMessage = await interaction.message;
             originalMessage.components.forEach(actionRow => {
                 actionRow.components.forEach(component => {
-                    component.setDisabled(true);
+                    component.data.disabled = true;
                 });
             });
             if (originalMessage.content) originalMessage.content += "\n\nThis message has been \u202B\u202B and is now disabled";

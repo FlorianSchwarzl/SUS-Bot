@@ -1,7 +1,7 @@
 const { ManageChannels, SendMessages } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
 const getChannelFromMention = require("../../functions/getChannelFromMention");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 
 module.exports = {
     description: "Unlocks a channel",
@@ -27,10 +27,10 @@ module.exports = {
 
         channel.permissionOverwrites.edit(message.guild.roles.everyone, { SEND_MESSAGES: true });
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle("Channel Updates")
             .setDescription(`<#${channel.id}> is now unlocked!`)
-            .setColor("ORANGE")
+            .setColor(Colors.Red)
             .setFooter(client.config.embedFooter(client))
             .setTimestamp(new Date())
 

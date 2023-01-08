@@ -1,17 +1,17 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 const registering = (client, second) => {
-    if (!second.member.permissions.has("ADMINISTRATOR")) return new MessageEmbed()
+    if (!second.member.permissions.has("ADMINISTRATOR")) return new EmbedBuilder()
         .setTitle("Failed to create slash-commands")
         .setDescription("You do not have permissions to create slash-commands");
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Success")
 
     client.commands.forEach(command => {
         if (command.name === "prepare") return;
         second.guild.commands?.create(command).catch(error => {
-            return new MessageEmbed()
+            return new EmbedBuilder()
                 .setTitle("Failed to create slash-commands")
                 .setDescription(error.toString());
         });

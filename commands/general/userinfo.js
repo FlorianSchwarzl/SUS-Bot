@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, Colors } = require('discord.js');
 
 module.exports = {
     description: "Displays information about the current user.",
@@ -7,9 +7,9 @@ module.exports = {
         const user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
 
         return {
-            embeds: [new MessageEmbed()
+            embeds: [new EmbedBuilder()
                 .setTitle("**Userinfo**")
-                .setColor("RANDOM")
+                .setColor(Colors.Red)
                 .setThumbnail(user.displayAvatarURL())
                 .addFields(
                     { name: "Username", value: user.username, inline: true },

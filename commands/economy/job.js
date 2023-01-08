@@ -1,5 +1,5 @@
 const userList = require("../../schemas/user");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
 const { IsSomething } = require("sussy-util");
 
@@ -15,7 +15,7 @@ module.exports = {
 
     run(client, _message, args, _guildData, userData) {
         if (args[0] === undefined) {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTimestamp(new Date())
                 .setTitle("Jobs panel")
                 .setFooter(client.config.embedFooter(client))

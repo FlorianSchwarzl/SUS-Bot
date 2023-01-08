@@ -1,5 +1,5 @@
 const userList = require("../../schemas/user");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
 const { IsSomething } = require("sussy-util");
 
@@ -8,7 +8,7 @@ module.exports = {
 
     run(client, message, args, guildData, userData, isSlashCommand) {
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTimestamp(new Date())
             .setTitle("Casino")
             .setFooter(client.config.embedFooter(client));
