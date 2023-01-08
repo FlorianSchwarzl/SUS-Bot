@@ -13,8 +13,6 @@ require("better-cl").setup(console, [], "./logs");
 
 console.clear();
 
-console.log(`Version: ${require("./package.json")["version"]} by ${require("./package.json")["authors"].join(" and ")}`);
-
 /* Create a new client instance */
 const client = new Client({
     intents: [
@@ -28,53 +26,18 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
-client.buttons = new Collection();
 client.config = require("./config");
 client.connection = connection;
-client.errorStrings = {
-    "NO_ERROR": "",
-    "PERMISSION_ERROR": "You don't have the required permissions to run this command!",
-}
+
+console.log(`Version: ${client.config.version} by ${client.config.authorsString}`);
 
 /* Loading all the functions. */
 client.functions = require("./functions/getFiles")("./functions", "functions.js");
 
 /* Loading all the commands. */
-fs.readdirSync("./commands").forEach(dir => {
-    if (!fs.lstatSync("./commands/" + dir).isDirectory())
-        return console.warn(`./commands/${dir} is not a directory.`);
-    fs.readdirSync(`./commands/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
-        const command = require(`./commands/${dir}/${file}`);
-        if (command.ignore) return;
-        command.name = "command:" + file.replace(/(\.js)$/, "").toLowerCase();
-        command.category = dir;
-        client.commands.set(command.name, command);
-    })
-});
-
-/* Loading all the buttons. */
-fs.readdirSync("./buttons").forEach(dir => {
-    if (!fs.lstatSync("./buttons/" + dir).isDirectory())
-        return console.warn(`./buttons/${dir} is not a directory.`);
-    fs.readdirSync(`./buttons/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
-        const button = require(`./buttons/${dir}/${file}`);
-        button.category = "button:" + dir;
-        button.name = "button:" + file.replace(/(\.js)$/, "").toLowerCase();
-        client.commands.set(button.name, button);
-    })
-});
-
-/* Loading all the select Menus. */
-fs.readdirSync("./selectMenus").forEach(dir => {
-    if (!fs.lstatSync("./selectMenus/" + dir).isDirectory())
-        return console.warn(`./selectMenus/${dir} is not a directory.`);
-    fs.readdirSync(`./selectMenus/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
-        const selectMenu = require(`./selectMenus/${dir}/${file}`);
-        selectMenu.category = "selectMenu:" + dir;
-        selectMenu.name = "selectMenu:" + file.replace(/(\.js)$/, "").toLowerCase();
-        client.commands.set(selectMenu.name, selectMenu);
-    })
-});
+loadCommands("commands");
+loadCommands("buttons");
+loadCommands("selectMenus");
 
 client.commandCooldowns = new Collection();
 client.commands.forEach(command => {
@@ -83,7 +46,7 @@ client.commands.forEach(command => {
 
 const eventToClientMap = {
     discord: client,
-    mongodb: connection,
+    mongodb: connection
 };
 
 /* Loading all the events. */
@@ -107,6 +70,24 @@ connect(process.env.MONGODB);
 /* Starting the Webserver */
 require("./www/index").startServer(client, process.env.PORT, () => console.success("Webserver ready!"));
 
-// setInterval(() => {
-//     console.log("RAM usage: " + Math.round(process.memoryUsage().rss / 1024 / 1024) + "MB");
-// }, 60000);
+// makes sure the bot doesn't crash
+process.on("uncaughtException", (err) => {
+    console.error(err);
+});
+
+function loadCommands(dirName, removeTrailingS = true) {
+    let dirNameCollection = dirName;
+    if (removeTrailingS) dirNameCollection = dirName.replace(/s$/, "");
+    fs.readdirSync(`./${dirName}`).forEach(dir => {
+        if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
+            return console.warn(`./${dirName}/${dir} is not a directory.`);
+        fs.readdirSync(`./${dirName}/${dir}`).filter(file => file.endsWith(".js")).forEach(file => {
+            const command = require(`./${dirName}/${dir}/${file}`);
+            if (command.ignore) return;
+            command.category = `${dirNameCollection}:` + dir;
+            if (command.name === undefined) command.name = `${dirNameCollection}:` + file.replace(/(\.js)$/, "").toLowerCase();
+            else command.name = `${dirNameCollection}:` + command.name.toLowerCase();
+            client.commands.set(command.name, command);
+        })
+    });
+}

@@ -5,7 +5,6 @@ module.exports = {
     ignore: true, // the messages is kinda broken
     //TODO: fix the messages
 
-    name: "beg",
     description: "Beg to earn money",
     cooldown: 60,
 

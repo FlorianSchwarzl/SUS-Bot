@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    "name": "uptime",
     "description": "Shows the uptime of the bot",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

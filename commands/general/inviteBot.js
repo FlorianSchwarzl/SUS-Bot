@@ -1,5 +1,4 @@
 module.exports = {
-    name: "invitebot",
     description: "Sends the invite link of the bot",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

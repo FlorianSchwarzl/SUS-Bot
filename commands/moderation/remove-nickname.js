@@ -2,8 +2,7 @@ const { ManageNicknames } = require("../../enums/permissionBitField");
 const { ManageNicknames: mngNick } = require("../../enums/permissionStrings");
 
 module.exports = {
-    name: "remove-nickname",
-    aliases: ["remove-nick", "reset-nick", "reset-nickname", "un-nick", "un-nickname", "unnick", "unnickname"],
+    aliases: ["remove-nick", "reset-nick", "reset-nickname", "un-nick", "un-nickname", "unnick", "unnickname", "removenick", "removenickname"],
     description: "Removes a user\"s nickname",
 
     options: [
@@ -18,13 +17,6 @@ module.exports = {
     default_member_permissions: mngNick,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(ManageNicknames)) {
-                return client.errorStrings.PERMISSION_ERROR;
-            }
-        }
-
         let mentionedMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (mentionedMember === undefined)
             mentionedMember = message.member;

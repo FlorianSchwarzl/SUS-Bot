@@ -4,7 +4,6 @@ const getChannelFromMention = require("../../functions/getChannelFromMention");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "lock",
     description: "Locks a channel",
     aliases: ["lockdown"],
 
@@ -20,14 +19,6 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(ManageChannels)) {
-                message.delete();
-                return client.errorStrings.PERMISSION_ERROR;
-            }
-        }
-
         let channel = getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) channel = message.channel;
 

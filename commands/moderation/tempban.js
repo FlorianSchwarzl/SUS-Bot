@@ -3,7 +3,7 @@ const { BanMembers: banMbs } = require("../../enums/permissionStrings");
 // TODO: write temp ban command
 
 module.exports = {
-    // name: "tempban", // uncomment when ready
+    ignore: true,
     description: "",
     aliases: ["tempban", "temp-ban"],
 
@@ -25,14 +25,7 @@ module.exports = {
     default_member_permissions: banMbs,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(BanMembers)) {
-                return "You don't the required permissions to use this command.";
-            }
-        }
 
-        const old = guildInfo.tempBans;
 
     }
 }

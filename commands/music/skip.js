@@ -1,5 +1,4 @@
 module.exports = {
-    name: "skip",
     description: "Skips current track",
     aliases: ["next"],
     connectedToSameVoiceChannel: true,

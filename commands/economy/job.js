@@ -4,7 +4,6 @@ const jobs = require("./resources/jobs.json").jobs;
 const { IsSomething } = require("sussy-util");
 
 module.exports = {
-    name: "job",
     description: "Panel which shows jobs",
     aliases: ["jobs"],
     options: {

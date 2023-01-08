@@ -2,7 +2,6 @@ const { MessageEmbed, version: discordjsVersion } = require("discord.js");
 const ms = require("@parade/pretty-ms");
 
 module.exports = {
-    name: "info",
     description: "Displays information about the bot.",
 
     run(client, message) {

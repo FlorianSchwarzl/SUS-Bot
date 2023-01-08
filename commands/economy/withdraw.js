@@ -1,7 +1,6 @@
 const { IsSomething } = require("sussy-util");
 const userList = require("../../schemas/user");
 module.exports = {
-    name: "withdraw",
     description: "Withdraw money from your bank account",
     aliases: ["with", "wth"],
     options: {

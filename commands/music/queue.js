@@ -1,5 +1,4 @@
 module.exports = {
-    name: "queue",
     description: "Shows the song queue",
     aliases: ["q"],
     connectedToSameVoiceChannel: true,

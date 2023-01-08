@@ -15,10 +15,13 @@ module.exports = async (returnValue, command) => {
             || returnValue?.files !== undefined
             || returnValue?.components !== undefined
             || returnValue?.content !== undefined
+            || returnValue?.files !== undefined
+            || returnValue?.attachments !== undefined
         ) && !(returnValue instanceof Message)) {
             if (typeof returnValue === "string") returnValue = { content: returnValue };
-            returnValue.ephemeral = true;
-        } else reject(`Command "${command.name}" returned nothing.`);
+        } else if (returnValue?.DM !== undefined) {
+            returnValue.DM = module.exports(returnValue.DM, command);
+        } else if (returnValue !== null) reject(`Command "${command.name}" returned nothing.`);
         resolve(returnValue);
     });
 }

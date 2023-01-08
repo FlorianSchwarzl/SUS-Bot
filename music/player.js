@@ -111,7 +111,7 @@ module.exports = class Player {
             .setURL(info.url)
             .setColor("RANDOM")
             .setTimestamp(new Date())
-            .setFooter(require("../config").embedFooter(this.#client));
+            .setFooter(this.#client.config.embedFooter(this.#client));
 
         if (info.title) {
             embed.setTitle(`${type} track ${info.title}`);

@@ -1,5 +1,4 @@
 module.exports = {
-    name: "clear-queue",
     description: "Clears the song queue.",
     connectedToSameVoiceChannel: true,
 

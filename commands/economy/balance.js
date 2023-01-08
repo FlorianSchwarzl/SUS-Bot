@@ -1,5 +1,4 @@
 module.exports = {
-    name: "balance",
     description: "Shows the balance of your money",
     aliases: ["bal"],
 

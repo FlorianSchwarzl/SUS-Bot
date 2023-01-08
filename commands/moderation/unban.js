@@ -2,7 +2,7 @@ const { BanMembers } = require("../../enums/permissionBitField");
 const { BanMembers: banMbs } = require("../../enums/permissionStrings");
 
 module.exports = {
-    name: "unban",
+    ignore: true,
     description: "Unbans a user",
 
     options: [
@@ -17,15 +17,6 @@ module.exports = {
     default_member_permissions: banMbs,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        message.delete();
-
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(BanMembers)) {
-                return client.errorStrings.PERMISSION_ERROR;
-            }
-        }
-
         if (args[0] === undefined)
             return "Please Give Me Member ID That You Want To Unban!";
 

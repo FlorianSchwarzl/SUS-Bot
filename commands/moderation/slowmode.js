@@ -3,7 +3,6 @@ const { ManageChannels } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
 
 module.exports = {
-    name: "slowmode",
     description: "Sets the slowmode of the current channel",
 
     option: [
@@ -24,14 +23,6 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (isSlashCommand) {
-        } else {
-            if (!message.member.permissions.has(ManageChannels)) {
-                message.delete();
-                return client.errorStrings.PERMISSION_ERROR;
-            }
-        }
-
         let rate;
 
         let channel = client.functions.getChannelFromMention(message.guild, args[0]);

@@ -2,7 +2,6 @@ const { IsSomething } = require("sussy-util");
 const users = require("../../schemas/user");
 
 module.exports = {
-    name: "deposit",
     description: "Deposit money into your bank account",
     aliases: ["dep"],
 

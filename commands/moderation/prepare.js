@@ -21,7 +21,6 @@ const registering = (client, second) => {
 }
 
 module.exports = {
-    name: "prepare",
     description: "Creates slash commands in server",
 
     async run(client, message, args, guildData, userData, isSlashCommand) {

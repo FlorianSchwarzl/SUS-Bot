@@ -1,5 +1,4 @@
 module.exports = {
-    name: "loop",
     description: "Loops the current queue.",
     aliases: ["repeat"],
     connectedToSameVoiceChannel: true,

@@ -1,7 +1,6 @@
 const { IsSomething } = require("sussy-util");
 const { MessageEmbed } = require("discord.js");
 module.exports = {
-    name: "level",
     description: "Shows the level of your account",
     aliases: ["lvl"],
 

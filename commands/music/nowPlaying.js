@@ -1,5 +1,4 @@
 module.exports = {
-    name: "nowplaying",
     description: "Shows the current song",
     aliases: ["current"],
     connectedToSameVoiceChannel: true,

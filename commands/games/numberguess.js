@@ -1,7 +1,6 @@
+const { IsSomething } = require("sussy-util");
 module.exports = {
-    ignore: true,
-    name: "guess",
-    aliases: ["number", "numberguess"],
+    aliases: ["number", "guess"],
     description: "guess a number between 1 and the specified number",
     options: [
         {
@@ -19,15 +18,22 @@ module.exports = {
     ],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
+        if (args[0] === undefined || args[0] === `` || args[1] === undefined || args[1] === ``) {
+            return "Please specify two numbers";
+        }
+        if (!(IsSomething.isNumber(args[0])) || !(IsSomething.isNumber(args[1]))) {
+            return "Both parameters need to be numbers";
+        }
+        if (args[1] > args[0]) {
+            return "First number needs to be larger than the second"
+        }
         const number = Math.round(Math.random() * args[0] - 1) + 1;
         message.channel.send("Number was generated! The number is: " + number);
 
-        if (number == args[1]) {
-            message.channel.send("You're number is correct!");
+        if (number === +(args[1])) {
+            return "Your number is correct!";
         }
-        else {
-            message.channel.send("You're number is false!");
-        }
+        return "Your number is false!";
 
     }
 
