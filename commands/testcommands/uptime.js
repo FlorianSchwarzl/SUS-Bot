@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 
 module.exports = {
     "description": "Shows the uptime of the bot",
@@ -9,8 +9,8 @@ module.exports = {
         const minutes = Math.floor(client.uptime / 60000) % 60;
         const seconds = Math.floor(client.uptime / 1000) % 60;
 
-        const uptime = new MessageEmbed()
-            .setColor("#fff7f7")
+        const uptime = new EmbedBuilder()
+            .setColor(Colors.Red)
             .setDescription(` \`\📝\`\ | **__Uptime:__**`)
             .addFields({ name: "**Tage:**", value: `${days}` },
                 { name: "**Stunden:**", value: `${hours}` },

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { StringUtil } = require("sussy-util");
 const fs = require("fs");
@@ -17,12 +17,12 @@ module.exports = {
     ],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        const menu = new MessageSelectMenu()
+        const menu = new StringSelectMenuBuilder()
             .setCustomId("help")
             .setPlaceholder("Select a category");
-        const component = new MessageActionRow();
+        const component = new ActionRowBuilder();
         const commandName = args[0];
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTimestamp(new Date())
             .setTitle("Help panel")
             .setFooter(client.config.embedFooter(client));

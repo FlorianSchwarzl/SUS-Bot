@@ -1,30 +1,30 @@
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
 const { stream: AudioStream, video_basic_info, search, yt_validate } = require("play-dl");
 const { ImprovedArray } = require("sussy-util");
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require("discord.js");
 
-const playerControls = new MessageActionRow()
+const playerControls = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('command:queue')
             .setLabel('☰')
-            .setStyle('PRIMARY'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
             .setCustomId('play_pause')
             .setLabel('׀׀')
-            .setStyle('SUCCESS'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
             .setCustomId('command:stop')
             .setLabel('◼')
-            .setStyle('DANGER'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Danger),
+        new ButtonBuilder()
             .setCustomId('command:skip')
             .setLabel('>>')
-            .setStyle('PRIMARY'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
             .setCustomId('support')
             .setLabel('Support us!')
-            .setStyle('SECONDARY'),
+            .setStyle(ButtonStyle.Secondary),
     );
 
 module.exports = class Player {
@@ -107,9 +107,9 @@ module.exports = class Player {
     }
 
     async #createEmbed(info, type) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setURL(info.url)
-            .setColor("RANDOM")
+            .setColor(Colors.Red)
             .setTimestamp(new Date())
             .setFooter(this.#client.config.embedFooter(this.#client));
 

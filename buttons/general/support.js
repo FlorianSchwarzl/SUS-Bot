@@ -1,22 +1,22 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
     run(_client, interaction) {
-        const choice = new MessageActionRow()
+        const choice = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setLabel('GitHub')
-                    .setStyle('LINK')
+                    .setStyle(ButtonStyle.Link)
                     .setURL('https://github.com/plastik_flasche/SUS-Bot'),
-                new MessageButton()
+                new ButtonBuilder()
                     .setLabel('Patreon')
-                    .setStyle('LINK')
+                    .setStyle(ButtonStyle.Link)
                     .setURL('https://patreon.com/stupid-useless-patreon'),
-                new MessageButton()
+                new ButtonBuilder()
                     .setLabel('PayPal')
-                    .setStyle('LINK')
+                    .setStyle(ButtonStyle.Link)
                     .setURL('https://paypal.me/stupiduselesspaypal'),
-                // new MessageButton()
+                // new ButtonBuilder()
                 //     .setLabel('Crypto')
                 //     .setStyle('LINK')
                 //     .setURL('')

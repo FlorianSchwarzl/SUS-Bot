@@ -4,12 +4,12 @@
 
 - [x] balance
 - [ ] beg
-- [ ] bet
+- [x] bet
 - [x] deposit
 - [x] job
 - [x] level
-- [ ] resetBalance
-- [ ] resetLevel
+- [x] resetBalance
+- [x] resetLevel
 - [x] search
 - [x] withdraw
 - [x] work
@@ -31,17 +31,17 @@
 ## Moderation
 
 - [ ] clear
-- [x] lock
-- [x] nickname
-- [x] prepare
-- [x] remove-nick
+- [ ] lock
+- [ ] nickname
+- [ ] prepare
+- [ ] remove-nick
 - [ ] set-counter-channel
 - [ ] set-welcome-channel
 - [ ] set-goodbye-channel
-- [x] slowmode
+- [ ] slowmode
 - [ ] tempban
 - [ ] unban
-- [x] unlock
+- [ ] unlock
 
 ## Music
 
@@ -56,4 +56,4 @@ COMING SOON! - [ ] remove
 - [x] shuffle
 - [x] skip
 - [x] stop
-- [x] troll
+- [ ] troll

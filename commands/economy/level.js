@@ -1,11 +1,11 @@
 const { IsSomething } = require("sussy-util");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 module.exports = {
     description: "Shows the level of your account",
     aliases: ["lvl"],
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTimestamp(new Date())
             .setTitle("Level panel")
             .setFooter(client.config.embedFooter(client));

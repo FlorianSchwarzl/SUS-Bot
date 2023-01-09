@@ -1,5 +1,5 @@
 const { Random } = require("sussy-util");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 const userList = require("../../schemas/user");
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
 
         collector.on("end", async (_ignore, error) => {
             if (error && error !== 'success') {
-                return message.followUp({ embeds: [new MessageEmbed().setTitle("Timed Out").setColor("RED")] });
+                return message.followUp({ embeds: [new EmbedBuilder().setTitle("Timed Out").setColor(Colors.Red)] });
             }
             collector.stop("success");
         });

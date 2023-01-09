@@ -53,3 +53,6 @@ message_reference: Unknown message
   }
 }
 - [x] troll returns nothing
+- [ ] search gives you a cooldown even when you didn't search anything
+- [ ] job doesn't display which level is required to get the job
+- [ ] coinflip "You are victorious!"... Like WTF?! Mb think 5 secs before writing that

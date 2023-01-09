@@ -1,4 +1,4 @@
-const { MessageEmbed, version: discordjsVersion } = require("discord.js");
+const { EmbedBuilder, version: discordjsVersion, Colors } = require("discord.js");
 const ms = require("@parade/pretty-ms");
 
 module.exports = {
@@ -6,8 +6,8 @@ module.exports = {
 
     run(client, message) {
         return {
-            embeds: [new MessageEmbed()
-                .setColor("BLUE")
+            embeds: [new EmbedBuilder()
+                .setColor(Colors.Red)
                 .setTitle(`${client.user.username} v${require("../../package.json")["version"]}`)
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
                 .setURL("https://github.com/plastik-flasche/SUS-Bot")
