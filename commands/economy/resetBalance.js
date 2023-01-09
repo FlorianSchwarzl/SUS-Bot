@@ -20,7 +20,7 @@ module.exports = {
                         .setStyle(ButtonStyle.Danger),
                 );
 
-            return { embeds: [embed], components: [row] };
+            return { embeds: [embed], components: [row], disable: 60 };
         } else {
             const row = new ActionRowBuilder()
                 .addComponents(

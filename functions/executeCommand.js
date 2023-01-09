@@ -18,7 +18,6 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
         return interaction.reply(outputString);
     }
 
-
     if (command.connectedToSameVoiceChannel)
         command.connectedToVoiceChannel = true;
 
@@ -87,7 +86,7 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
             });
             if (originalMessage.content) originalMessage.content += "\n\nThis message has been \u202B\u202B and is now disabled";
             else originalMessage.content = "This message has been \u202B\u202B and is now disabled";
-            originalMessage.edit({ content: originalMessage.content, components: originalMessage.components });
+            originalMessage.edit({ content: originalMessage.content, components: originalMessage.components }).catch(() => { });
         }
     } catch (e) {
         // makes reply available again

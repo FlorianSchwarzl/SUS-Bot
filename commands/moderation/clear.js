@@ -2,6 +2,7 @@ const { ManageMessages } = require("../../enums/permissionBitField");
 const { ManageMessages: manageMsgs } = require("../../enums/permissionStrings");
 
 module.exports = {
+    ignore: true,
     description: "Clears the last n messages",
 
     options: [
