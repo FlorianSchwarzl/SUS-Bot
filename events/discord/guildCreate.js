@@ -1,4 +1,3 @@
-const addGuildDocument = require("../../functions/addGuildDocument");
 const guildModel = require("../../schemas/guild");
 
 module.exports = async (client, guild) => {
@@ -7,7 +6,7 @@ module.exports = async (client, guild) => {
 
     console.info("Creating MongoDB entry for guild " + guild.name);
 
-    addGuildDocument(guild.id);
+    global.functions.addGuildDocument(guild.id);
 
     client.commands.forEach(command => {
         if (command.name === "prepare") return;

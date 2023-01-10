@@ -1,6 +1,5 @@
 const { ManageChannels } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
-const getChannelFromMention = require("../../functions/getChannelFromMention");
 const guilds = require("../../schemas/guild");
 
 module.exports = {
@@ -20,7 +19,7 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     async run(client, message, args, guildData, userData, isSlashCommand) {
-        const channel = getChannelFromMention(message.guild, args[0]);
+        const channel = global.functions.getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) channel = message.channel;
         const current = guildData.channels;
         current.goodbye = channel.id;

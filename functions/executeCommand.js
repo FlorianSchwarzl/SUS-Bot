@@ -24,12 +24,17 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
         return interaction.reply("You need to be in a voice channel to use this command.");
 
     if (command.connectedToSameVoiceChannel && client.player.getQueue(interaction.guildId)?.voiceChannel !== interaction.member.voice?.channel.id) {
-        if (client.player.getQueue(interaction.guildId)?.voiceChannel === undefined) return interaction.reply("I am not in a voice channel.");
+        if (client.player.getQueue(interaction.guildId)?.voiceChannel === undefined)
+            return interaction.reply("I am not in a voice channel.");
         return interaction.reply("You need to be in the same voice channel as me to use this command.");
     }
 
-    if (client.commandCooldowns.get(command.name).get(interaction.author.id) !== undefined)
-        return interaction.reply("You are on cooldown for this command! Wait another " + client.functions.convertTime(Math.round((client.commandCooldowns.get(command.name).get(interaction.author.id) - Date.now()) / 1000)) + ".");
+    const cooldown = client.commandCooldowns.get(command.name).get(interaction.author.id);
+    if (cooldown !== undefined)
+        return interaction.reply("You are on cooldown for this command! Wait another " +
+            global.functions.convertTime(
+                Math.round(cooldown - Date.now()) / 1000)
+            + ".");
 
     // makes reply unavailable so two replies can't be sent
     const reply = interaction.reply;

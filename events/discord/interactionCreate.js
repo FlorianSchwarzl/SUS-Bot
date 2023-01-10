@@ -1,5 +1,3 @@
-const executeCommand = require("../../functions/executeCommand.js");
-
 module.exports = async (client, interaction) => {
 	let cmd;
 	let args = [];
@@ -44,5 +42,5 @@ module.exports = async (client, interaction) => {
 	interaction.channel = client.channels.cache.get(interaction.channelId);
 	interaction.author = interaction.user;
 
-	executeCommand(cmd, client, interaction, args, true, isComponent);
+	global.functions.executeCommand(cmd, client, interaction, args, true, isComponent);
 }

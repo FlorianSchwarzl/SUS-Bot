@@ -25,7 +25,7 @@ module.exports = {
     run(client, message, args, guildData, userData, isSlashCommand) {
         let rate;
 
-        let channel = client.functions.getChannelFromMention(message.guild, args[0]);
+        let channel = global.functions.getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) {
             channel = message.channel;
             rate = args[0];

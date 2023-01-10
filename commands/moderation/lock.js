@@ -1,6 +1,5 @@
 const { ManageChannels, SendMessages } = require("../../enums/permissionBitField");
 const { ManageChannels: ManageChannel } = require("../../enums/permissionStrings");
-const getChannelFromMention = require("../../functions/getChannelFromMention");
 const { EmbedBuilder, Colors } = require("discord.js");
 
 module.exports = {
@@ -19,7 +18,7 @@ module.exports = {
     default_member_permissions: ManageChannel,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        let channel = getChannelFromMention(message.guild, args[0]);
+        let channel = global.functions.getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) channel = message.channel;
 
         if (!channel.permissionsFor(message.guild.roles.everyone).has(SendMessages))

@@ -13,16 +13,6 @@ require("better-cl").setup(console, [], "./logs");
 
 console.clear();
 
-/* Create a new client instance */
-// const client = new Client({
-//     intents: [
-//         Intents.FLAGS.GUILDS,
-//         Intents.FLAGS.GUILD_MEMBERS,
-//         Intents.FLAGS.GUILD_MESSAGES,
-//         Intents.FLAGS.GUILD_VOICE_STATES
-//     ]
-// });
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -42,7 +32,7 @@ client.connection = connection;
 console.log(`Version: ${client.config.version} by ${client.config.authorsString}`);
 
 /* Loading all the functions. */
-client.functions = require("./functions/getFiles")("./functions", "functions.js");
+global.functions = require("./functions/getFiles")("./functions", "functions.js");
 
 /* Loading all the commands. */
 loadCommands("commands");
