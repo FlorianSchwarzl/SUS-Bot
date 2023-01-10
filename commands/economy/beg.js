@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 60,
 
     run(client, message, args, guildData, userData, isSlashCommand) {
-        if (userData.economy.wallet < 200)
+        if (userData.economy?.wallet < 200)
             return "Not enough money to risk on losing";
         const earned = Math.round(Math.random() * 400) - 200;
         userData.economy.wallet += earned;
