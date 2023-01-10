@@ -12,7 +12,7 @@ module.exports = async (client, interaction) => {
 
 	if (interaction.isCommand()) type = "COMMAND";
 	else if (interaction.isButton()) type = "BUTTON";
-	else if (interaction.isSelectMenu()) type = "SELECT_MENU";
+	else if (interaction.isStringSelectMenu()) type = "SELECT_MENU";
 	else throw new Error("Unknown interaction type");
 
 	switch (type) {
