@@ -1,6 +1,6 @@
 # Issues
 
-- [ ] When outputting time, format seconds to seconds, minutes, hours, days, ...
+- [x] When outputting time, format seconds to seconds, minutes, hours, days, ...
 - [x] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
 - [ ] Fix help command
 - [x] Fix coinflip: returned nothing
@@ -53,6 +53,6 @@ message_reference: Unknown message
   }
 }
 - [x] troll returns nothing
-- [ ] search gives you a cooldown even when you didn't search anything
+- [x] search gives you a cooldown even when you didn't search anything
 - [ ] job doesn't display which level is required to get the job
 - [ ] coinflip "You are victorious!"... Like WTF?! Mb think 5 secs before writing that

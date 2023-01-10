@@ -30,7 +30,7 @@
 
 ## Moderation
 
-- [ ] clear
+- [x] clear
 - [ ] lock
 - [ ] nickname
 - [ ] prepare
