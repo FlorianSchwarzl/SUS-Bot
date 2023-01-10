@@ -30,7 +30,7 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
     }
 
     if (client.commandCooldowns.get(command.name).get(interaction.author.id) !== undefined)
-        return interaction.reply("You are on cooldown for this command! Wait another " + Math.round((client.commandCooldowns.get(command.name).get(interaction.author.id) - Date.now()) / 1000) + " seconds.");
+        return interaction.reply("You are on cooldown for this command! Wait another " + client.functions.convertTime(Math.round((client.commandCooldowns.get(command.name).get(interaction.author.id) - Date.now()) / 1000)) + ".");
 
     // makes reply unavailable so two replies can't be sent
     const reply = interaction.reply;
@@ -55,15 +55,21 @@ module.exports = async (command, client, interaction, args, isInteraction, isCom
             return;
         }
 
-        let cooldown;
-        if (returnValue.cooldown) cooldown = returnValue.cooldown;
-        else cooldown = command.cooldown;
+        let success = returnValue.success || command.success;
 
-        if (cooldown && returnValue.success !== false) {
-            client.commandCooldowns.get(command.name).set(interaction.author.id, Date.now() + cooldown * 1000);
-            setTimeout(() => {
-                client.commandCooldowns.get(command.name).delete(interaction.author.id);
-            }, cooldown * 1000);
+        if (success !== undefined && success !== null) {
+            let cooldownArray = returnValue.success || command.success || [command.cooldown !== undefined];
+
+            cooldownArray.forEach(commandObject => {
+                if (typeof commandObject === "string")
+                    commandObject = client.commands.get(commandObject);
+                if (commandObject === undefined) return console.error("Could not set cooldown, command not found: " + commandObject);
+                if (typeof commandObject.cooldown !== "number") return console.error("Could not set cooldown, command has no cooldown: " + commandObject.name);
+                client.commandCooldowns.get(commandObject.name).set(interaction.author.id, Date.now() + commandObject.cooldown * 1000);
+                setTimeout(() => {
+                    client.commandCooldowns.get(commandObject.name).delete(interaction.author.id);
+                }, commandObject.cooldown * 1000);
+            });
         }
 
         // makes reply available again

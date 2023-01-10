@@ -16,7 +16,7 @@ module.exports = {
             if (!(Math.floor(userData.level.xp / 50) === (Math.floor((userData.level.xp - 5) / 50)))) {
                 message.channel.send(`<@${userData.userId}>` + " just levelled up!")
             }
-            return ("Congratulations! You earned " + earned + " gold as a " + jobs[userData.jobinfo.id - 1].jobname + ". \nNow you have: " + userData.economy.wallet + "!");
+            return { content: "Congratulations! You earned " + earned + " gold as a " + jobs[userData.jobinfo.id - 1].jobname + ". \nNow you have: " + userData.economy.wallet + "!", success: [this] };
         }
     }
 }
