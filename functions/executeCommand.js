@@ -1,5 +1,4 @@
 // TODO: Add automated argument checking
-// TODO: Add automated permission checking
 
 const getGuildData = require("./getGuildData.js");
 const getUserData = require("./getUserData.js");
