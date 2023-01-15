@@ -12,13 +12,11 @@ import sendMessage from "./sendMessage";
 
 
 module.exports = async (command: Command, client: Client<true>, interaction: Message, args: string[], isInteraction: boolean, isComponent = false) => {
-    console.debug(`Executing command ${command.name} by ${interaction.author.tag} (${interaction.author.id})`);
-
+    console.log(interaction)
     if (command === void 0) return;
 
-    console.debug(`${command.name} by ${interaction.author.tag} (${interaction.author.id}) is not undefined`);
-
-    console.log(interaction.author)
+    // @ts-expect-error
+    interaction.author ||= interaction.message.author;
 
     if (command.default_member_permissions
         && !isInteraction
@@ -191,7 +189,6 @@ function checkCooldown(commandString: Command | string, interaction: Message, cl
         command = getCommand;
     } else
         command = commandString;
-    if (typeof command!.commandOptions?.cooldown !== "number") throw new Error("Could not check cooldown, command has no cooldown: " + command.name);
     if (command.name === void 0) throw new Error("Could not check cooldown, command has no name: " + command.name);
     if (client.commandCooldowns.get(command.name)!.has(interaction!.author.id)) {
         let timeLeft = client.commandCooldowns.get(command.name)!.get(interaction!.author.id)! - Date.now();

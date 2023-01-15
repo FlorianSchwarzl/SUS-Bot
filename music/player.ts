@@ -363,16 +363,10 @@ async function isAgeRestricted(url: string) {
     return false;
 }
 
-//queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
-
-// @ts-expect-error // Idfc
-const ytVideo = new YouTubeVideo();
-type thumbnailsType = typeof ytVideo.thumbnails;
-
 type QueueElement = {
     url: string;
     channel: BaseChannel;
     title: string;
     duration?: string;
-    thumbnails: thumbnailsType;
+    thumbnails: any[];
 };

@@ -54,11 +54,12 @@ module.exports = async (client: Client<true>, interaction: Interaction) => {
 		default:
 			return;
 	}
-	// @ts-expect-error // "doEs NoT eXiSt"... Fuck u TS, that's y I'm adding it
-	interaction.channel = client.channels.cache.get(interaction.channelId);
-	// @ts-expect-error // same as above
-	interaction.author = interaction.user;
+
+	const modifiedInteraction = interaction as any;
+	// console.log(typeof modifiedInteraction)
+	// modifiedInteraction.channel = client.channels.cache.get(modifiedInteraction.channelId);
+	// modifiedInteraction.author = modifiedInteraction.user;
 
 	// @ts-expect-error // i gotta stop doing this
-	global.functions.executeCommand(cmd, client, interaction, args, true, isComponent);
+	global.functions.executeCommand(cmd, client, modifiedInteraction, args, true, isComponent);
 }
