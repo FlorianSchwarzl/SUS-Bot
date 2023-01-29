@@ -2,10 +2,10 @@ import { GuildMember, Message, BaseChannel } from "discord.js";
 import { CommandReturnWithoutString } from "../types/command";
 
 const { createAudioPlayer, createAudioResource, joinVC, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
-import { stream, video_basic_info, search, yt_validate, YouTubeVideo } from "play-dl";
+import { stream, video_basic_info, search, yt_validate } from "play-dl";
 import Client from "../types/client";
-const { ImprovedArray } = require("sussy-util");
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require("discord.js");
+import { ImprovedArray } from "sussy-util";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } from "discord.js";
 
 const playerControls = new ActionRowBuilder()
     .addComponents(
@@ -36,7 +36,7 @@ module.exports = class Player {
     //TODO: Add previous function --> Completely rewrite the queue system
     //TODO: Add playlist support(https://stackoverflow.com/questions/13358290/how-get-all-videos-from-a-playlist-using-youtube-api)
     //TODO: Add Spotify support
-    //TODO: Add Soundcloud support
+    //TODO: Add SoundCloud support
     //TODO: Don't get sued by YouTube
     //TODO: Complete rewrite of the player
     //BUG: See issue #17
@@ -88,7 +88,7 @@ module.exports = class Player {
         const guildInfo = this.#queue.get(guildId);
         if (guildInfo === void 0) return;
         if (guildInfo.lastNowPlayingMessage !== void 0) {
-            guildInfo.lastNowPlayingMessage.delete().catch((e: Error) => { });
+            guildInfo.lastNowPlayingMessage.delete().catch((e: Error) => { e });
         }
         guildInfo.connection.destroy();
         this.#queue.delete(guildId);
@@ -104,7 +104,7 @@ module.exports = class Player {
 
         guildInfo.player.play(resource);
         if (guildInfo.lastNowPlayingMessage !== void 0) {
-            guildInfo.lastNowPlayingMessage.delete().catch((e: Error) => { });
+            guildInfo.lastNowPlayingMessage.delete().catch((e: Error) => { e });
         }
         // @ts-expect-error
         guildInfo.lastNowPlayingMessage = await track.channel.send({ embeds: [await this.#createEmbed(track, "Now playing")], components: [playerControls] });
@@ -196,6 +196,7 @@ module.exports = class Player {
             queue.player.on("error", (err: Error) => {
                 message.channel.send("An error occurred while playing the track.");
                 this.#destroyQueue(message.guild!.id);
+                err;
             });
 
             queue.player.on(AudioPlayerStatus.Idle, () => {
