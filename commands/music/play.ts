@@ -2,22 +2,22 @@ import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
-    description: "Adds a song to the queue",
-    aliases: ["p"],
-    connectedToVC: true,
+	description: "Adds a song to the queue",
+	aliases: ["p"],
+	connectedToVC: true,
 
-    options: [
-        {
-            name: "query",
-            type: ApplicationCommandOptionType.String,
-            description: "Link/Name of track to play",
-            required: true
-        }
-    ],
+	options: [
+		{
+			name: "query",
+			type: ApplicationCommandOptionType.String,
+			description: "Link/Name of track to play",
+			required: true
+		}
+	],
 
-    async run(client, message, args, _guildData, _userData, _isSlashCommand) {
-        // @ts-expect-error // cause it's getting caught anyway
-        try { message.suppressEmbeds(true); } catch (e) { }
-        return client.player.addTrack(message, args);
-    }
+	async run(client, message, args, _guildData, _userData, _isSlashCommand) {
+		// @ts-expect-error // cause it's getting caught anyway
+		try { message.suppressEmbeds(true); } catch (e) { }
+		return client.player.addTrack(message, args);
+	}
 } as Command;

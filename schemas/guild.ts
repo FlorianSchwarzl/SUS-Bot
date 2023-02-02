@@ -1,31 +1,31 @@
 const { Schema, model } = require("mongoose");
 
 const guildSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    guildId: String,
+	_id: Schema.Types.ObjectId,
+	guildId: String,
 
-    channels: {
-        welcome: String,
-        goodbye: String,
-        counter: String,
+	channels: {
+		welcome: String,
+		goodbye: String,
+		counter: String,
 
-        allowed: [
-            String
-        ],
-    },
+		allowed: [
+			String
+		],
+	},
 
-    counter: {
-        current: Number,
-        lastId: String
-    },
+	counter: {
+		current: Number,
+		lastId: String
+	},
 
-    warns: [
-        { userId: String, count: Number }
-    ],
+	warns: [
+		{ userId: String, count: Number }
+	],
 
-    tempBans: [
-        { userId: String, endDate: Date }
-    ]
+	tempBans: [
+		{ userId: String, endDate: Date }
+	]
 });
 
 export default model("guild", guildSchema, "guilds");

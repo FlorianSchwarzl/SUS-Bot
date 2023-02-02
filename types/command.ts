@@ -2,50 +2,50 @@ import { CommandInteraction, ApplicationCommandOption, CacheType, Message, Inter
 import Client from "./client";
 
 export interface Command {
-    ignore?: boolean;
-    name?: string;
-    aliases?: string[];
-    description: string;
-    options?: ApplicationCommandOption[];
-    default_member_permissions?: string;
-    commandOptions?: CommandOptions;
-    category?: string;
-    run: (client: Client<true>, message: CommandInteraction<CacheType> | Message<boolean>, args: string[], guildData: any, userData: any, isInteraction: boolean) => CommandReturns;
+	ignore?: boolean;
+	name?: string;
+	aliases?: string[];
+	description: string;
+	options?: ApplicationCommandOption[];
+	default_member_permissions?: string;
+	commandOptions?: CommandOptions;
+	category?: string;
+	run: (client: Client<true>, message: CommandInteraction<CacheType> | Message<boolean>, args: string[], guildData: any, userData: any, isInteraction: boolean) => CommandReturns;
 }
 
 interface CommandOptions {
-    connectedToVC?: boolean;
-    connectedToSameVC?: boolean;
-    guildOnly?: boolean;
-    defaultReturn?: CommandReturn;
-    cooldown?: number;
+	connectedToVC?: boolean;
+	connectedToSameVC?: boolean;
+	guildOnly?: boolean;
+	defaultReturn?: CommandReturn;
+	cooldown?: number;
 }
 
 
 interface extensionWithoutDM {
-    announce?: boolean;
-    success?: boolean;
-    setCooldown?: Command[];
-    disableOriginal?: boolean;
-    deleteMessage?: boolean | number;
-    deleteReply?: boolean | number;
-    disable?: number | boolean;
-    disableMentions?: boolean;
-    timeout?: number;
+	announce?: boolean;
+	success?: boolean;
+	setCooldown?: Command[];
+	disableOriginal?: boolean;
+	deleteMessage?: boolean | number;
+	deleteReply?: boolean | number;
+	disable?: number | boolean;
+	disableMentions?: boolean;
+	timeout?: number;
 }
 
 
 interface MessageExtensionsWithoutDMMessage extends MessageReplyOptions, extensionWithoutDM { }
 
 interface MessageExtensionsMessage extends MessageExtensionsWithoutDMMessage {
-    DM?: MessageExtensionsWithoutDMMessage;
+	DM?: MessageExtensionsWithoutDMMessage;
 }
 
 
 interface MessageExtensionsWithoutDMInteraction extends InteractionReplyOptions, extensionWithoutDM { }
 
 interface MessageExtensionsInteraction extends MessageExtensionsWithoutDMInteraction {
-    DM?: MessageExtensionsWithoutDMInteraction;
+	DM?: MessageExtensionsWithoutDMInteraction;
 }
 
 

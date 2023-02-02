@@ -2,23 +2,23 @@ import guildModel from "../schemas/guild";
 import { Types } from "mongoose";
 
 export default (guildId: string) => {
-    (new guildModel({
-        _id: new Types.ObjectId(),
-        guildId: guildId,
+	(new guildModel({
+		_id: new Types.ObjectId(),
+		guildId: guildId,
 
-        channels: {
-            welcome: undefined,
-            goodbye: undefined,
+		channels: {
+			welcome: undefined,
+			goodbye: undefined,
 
-            allowed: []
-        },
+			allowed: []
+		},
 
-        counter: {
-            current: 0,
-            lastId: undefined,
-        },
+		counter: {
+			current: 0,
+			lastId: undefined,
+		},
 
-        warns: [],
-        tempBans: [],
-    })).save();
+		warns: [],
+		tempBans: [],
+	})).save();
 }

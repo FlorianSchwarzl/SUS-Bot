@@ -1,13 +1,13 @@
 import { Command } from "../../types/command";
 
 module.exports = {
-    aliases: ["unpause"],
-    description: "Resumes playing",
-    commandOptions: {
-        connectedToSameVC: true
-    },
+	aliases: ["unpause"],
+	description: "Resumes playing",
+	commandOptions: {
+		connectedToSameVC: true
+	},
 
-    run(client, message, _args, _guildData, _userData, _isSlashCommand) {
-        return client.player.resume(message);
-    }
+	run(client, message, _args, _guildData, _userData, _isSlashCommand) {
+		return client.player.resume(message);
+	}
 } as Command;

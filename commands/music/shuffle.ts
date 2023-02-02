@@ -1,13 +1,13 @@
 import { Command } from "../../types/command";
 
 module.exports = {
-    description: "Shuffles the queue",
-    aliases: ["mix"],
-    commandOptions: {
-        connectedToSameVC: true
-    },
+	description: "Shuffles the queue",
+	aliases: ["mix"],
+	commandOptions: {
+		connectedToSameVC: true
+	},
 
-    async run(client, message, _args, _guildData, _userData, _isSlashCommand) {
-        return client.player.shuffle(message);
-    }
+	async run(client, message, _args, _guildData, _userData, _isSlashCommand) {
+		return client.player.shuffle(message);
+	}
 } as Command;

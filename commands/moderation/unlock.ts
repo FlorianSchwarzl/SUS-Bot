@@ -6,38 +6,38 @@ import permissionStrings from "../../enums/permissionStrings";
 const { EmbedBuilder, Colors } = require("discord.js");
 
 module.exports = {
-    description: "Unlocks a channel",
-    aliases: [],
+	description: "Unlocks a channel",
+	aliases: [],
 
-    options: [
-        {
-            name: "channel",
-            type: ApplicationCommandOptionType.Channel,
-            description: "The channel you want to unlock",
-            required: true
-        }
-    ],
+	options: [
+		{
+			name: "channel",
+			type: ApplicationCommandOptionType.Channel,
+			description: "The channel you want to unlock",
+			required: true
+		}
+	],
 
-    default_member_permissions: permissionStrings.ManageChannels,
+	default_member_permissions: permissionStrings.ManageChannels,
 
-    run(client, message, args, _guildData, _userData, _isSlashCommand) {
-        // @ts-expect-error
-        let channel = global.functions.getChannelFromMention(message.guild, args[0]);
-        channel ||= message.channel;
+	run(client, message, args, _guildData, _userData, _isSlashCommand) {
+		// @ts-expect-error
+		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
+		channel ||= message.channel;
 
-        if (channel.permissionsFor(message.guild!.roles.everyone).has(permissionBitField.SendMessages))
-            return "Channel isn't locked";
+		if (channel.permissionsFor(message.guild!.roles.everyone).has(permissionBitField.SendMessages))
+			return "Channel isn't locked";
 
-        channel.permissionOverwrites.edit(message.guild!.roles.everyone, { SEND_MESSAGES: true });
+		channel.permissionOverwrites.edit(message.guild!.roles.everyone, { SEND_MESSAGES: true });
 
-        const embed = new EmbedBuilder()
-            .setTitle("Channel Updates")
-            .setDescription(`<#${channel.id}> is now unlocked!`)
-            .setColor(Colors.Red)
-            // @ts-expect-error
-            .setFooter(client.config.embedFooter(client))
-            .setTimestamp(new Date())
+		const embed = new EmbedBuilder()
+			.setTitle("Channel Updates")
+			.setDescription(`<#${channel.id}> is now unlocked!`)
+			.setColor(Colors.Red)
+			// @ts-expect-error
+			.setFooter(client.config.embedFooter(client))
+			.setTimestamp(new Date())
 
-        return { embeds: [embed] };
-    }
+		return { embeds: [embed] };
+	}
 } as Command;

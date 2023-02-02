@@ -16,13 +16,13 @@ require("better-cl").setup(console, [], "./logs");
 console.clear();
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.MessageContent
-    ]
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.MessageContent
+	]
 }) as ModifiedClient<true>;
 
 /* add important stuff to client */
@@ -39,33 +39,33 @@ global.functions = require("./functions/getFiles")("./functions", "functions.ts"
 
 /* Loading all the commands. */
 [
-    "commands",
-    "buttons",
-    "selectMenus"
+	"commands",
+	"buttons",
+	"selectMenus"
 ].forEach((name) => loadCommands(name, true));
 
 client.commandCooldowns = new Collection();
 client.commands.forEach((command: Command) => {
-    client.commandCooldowns.set(command.name!, new Collection());
+	client.commandCooldowns.set(command.name!, new Collection());
 });
 
 const eventToClientMap = {
-    discord: client,
-    mongodb: connection
+	discord: client,
+	mongodb: connection
 };
 
 /* Loading all the events. */
 fs.readdirSync("./events").forEach((dir: string) => {
-    if (!fs.lstatSync("./events/" + dir).isDirectory())
-        return console.warn(`The file ./events/${dir} is not a directory.`);
-    // @ts-expect-error
-    if (!eventToClientMap[dir])
-        return console.warn(`The event folder ${dir} is not valid!`);
-    console.log(`Loading ${dir} events...`);
-    fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".ts")).forEach((event: string) => {
-        // @ts-expect-error
-        eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
-    });
+	if (!fs.lstatSync("./events/" + dir).isDirectory())
+		return console.warn(`The file ./events/${dir} is not a directory.`);
+	// @ts-expect-error
+	if (!eventToClientMap[dir])
+		return console.warn(`The event folder ${dir} is not valid!`);
+	console.log(`Loading ${dir} events...`);
+	fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".ts")).forEach((event: string) => {
+		// @ts-expect-error
+		eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
+	});
 });
 
 module.exports = client;
@@ -81,22 +81,22 @@ require("./www/index").startServer(client, process.env.PORT, () => console.succe
 
 // makes sure the bot doesn't crash
 process.on("uncaughtException", (err) => {
-    console.error(err);
+	console.error(err);
 });
 
 function loadCommands(dirName: string, removeTrailingS = true) {
-    let dirNameCollection = dirName;
-    if (removeTrailingS) dirNameCollection = dirName.replace(/s$/, "");
-    fs.readdirSync(`./${dirName}`).forEach((dir: string) => {
-        if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
-            return console.warn(`./${dirName}/${dir} is not a directory.`);
-        fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
-            const command = require(`./${dirName}/${dir}/${file}`);
-            if (command.ignore) return;
-            command.category = `${dirNameCollection}:` + dir;
-            command.name ||= file.replace(/(\.ts)$/, "");
-            command.name = `${dirNameCollection}:` + command.name.toLowerCase();
-            client.commands.set(command.name, command);
-        })
-    });
+	let dirNameCollection = dirName;
+	if (removeTrailingS) dirNameCollection = dirName.replace(/s$/, "");
+	fs.readdirSync(`./${dirName}`).forEach((dir: string) => {
+		if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
+			return console.warn(`./${dirName}/${dir} is not a directory.`);
+		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
+			const command = require(`./${dirName}/${dir}/${file}`);
+			if (command.ignore) return;
+			command.category = `${dirNameCollection}:` + dir;
+			command.name ||= file.replace(/(\.ts)$/, "");
+			command.name = `${dirNameCollection}:` + command.name.toLowerCase();
+			client.commands.set(command.name, command);
+		})
+	});
 }
