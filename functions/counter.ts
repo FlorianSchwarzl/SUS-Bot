@@ -9,7 +9,8 @@ module.exports = (message: Message, guildData: any) => {
     const current = guildData.counter.current;
     if (message.content.toLowerCase() == (current + 1) && message.author.id != guildData.counter.lastId)
         guilds.findByIdAndUpdate(guildData._id, { counter: { current: current + 1, lastId: message.author.id } }, (err: Error, data: any) => {
-            if (err) console.log(err);
+            if (err) console.error(err);
+            (err);
             if (!data) return "No data found"
         });
     else message.delete().catch();

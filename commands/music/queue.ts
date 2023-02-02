@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
     description: "Shows the song queue",
@@ -8,7 +7,7 @@ module.exports = {
         connectedToSameVC: true
     },
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, _args, _guildData, _userData, _isSlashCommand) {
         const playerInfo = client.player.getQueue(message.guild!.id);
 
         if (playerInfo === void 0) {

@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
     description: "Loops the current queue.",
@@ -7,7 +6,7 @@ module.exports = {
     commandOptions: {
         connectedToSameVC: true
     },
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, message, _args, _guildData, _userData, _isSlashCommand) {
         return client.player.toggleLoop(message);
     },
 } as Command;

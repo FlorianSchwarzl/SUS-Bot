@@ -6,9 +6,9 @@ const getFiles = (dir: string, exclude = null) => {
         if (fs.lstatSync(dir + "/" + path).isDirectory()) {
             output[path] = getFiles(dir + "/" + path, exclude);
         } else {
-            if (!path.endsWith(".js")) return;
+            if (!path.endsWith(".js") && !path.endsWith(".ts")) return;
             const func = require(`.${dir}/${path}`);
-            output[path.replace(".js", "")] = func;
+            output[path.replace(".js", "").replace(".ts", "")] = func;
         }
     });
     return output;

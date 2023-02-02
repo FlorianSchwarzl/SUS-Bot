@@ -22,10 +22,12 @@ const after = (client: Client<true>, message: Message, sentMessage: Message, sta
     }
 }
 
+//TODO: I implemented returning null for a reason... So ig I should use it here
+
 module.exports = {
     description: "Pings the bot and displays the latency of the bot and the latency of the api.",
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, _args, _guildData, _userData, isSlashCommand) {
         const sendObj = { embeds: [new EmbedBuilder().setColor(Colors.Red).setDescription("Please Wait...")] };
         const StartDate = Date.now();
         if (isSlashCommand) {

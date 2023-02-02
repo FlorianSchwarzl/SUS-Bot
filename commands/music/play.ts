@@ -15,7 +15,7 @@ module.exports = {
         }
     ],
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, args, _guildData, _userData, _isSlashCommand) {
         // @ts-expect-error // cause it's getting caught anyway
         try { message.suppressEmbeds(true); } catch (e) { }
         return client.player.addTrack(message, args);

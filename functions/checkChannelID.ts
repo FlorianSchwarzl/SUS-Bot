@@ -1,6 +1,6 @@
 import { Guild, Message } from "discord.js";
 
-const fetchData = require("./fetchDataFromSave.js");
+const fetchData = require("./fetchDataFromSave");
 
 module.exports = (message: Message, guildData: any) => {
     if (guildData?.channels?.allowed === void 0) return true;

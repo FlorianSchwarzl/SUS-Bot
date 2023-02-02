@@ -1,5 +1,5 @@
 import { Client as DiscordClient, Collection } from "discord.js";
-import { Command } from "./command.js";
+import { Command } from "./command";
 // @ts-ignore: Unreachable code error
 import Player from "../music/player";
 import { connection } from "mongoose";

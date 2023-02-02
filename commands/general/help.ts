@@ -1,7 +1,7 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { StringUtil } = require("sussy-util");
 const fs = require("fs");
@@ -19,7 +19,7 @@ module.exports = {
         }
     ],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, _message, args, _guildData, _userData, _isSlashCommand) {
         const menu = new StringSelectMenuBuilder()
             .setCustomId("help")
             .setPlaceholder("Select a category");

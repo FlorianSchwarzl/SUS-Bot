@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
     ignore: true,
@@ -8,7 +7,7 @@ module.exports = {
     description: "A wild troll appeared.",
     connectedToVC: true,
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, message, _args, _guildData, _userData, isSlashCommand) {
         // @ts-expect-error
         if (!isSlashCommand) message.delete();
 

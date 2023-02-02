@@ -1,15 +1,13 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
-const userList = require("../../schemas/user");
-const { EmbedBuilder } = require("discord.js");
-const jobs = require("./resources/jobs.json").jobs;
-const { IsSomething } = require("sussy-util");
+import userList from "../../schemas/user";
+import { EmbedBuilder } from "discord.js";
+import { IsSomething } from "sussy-util";
 
 module.exports = {
     description: "Bet your money and win!",
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, _message, args, _guildData, userData, _isSlashCommand) {
 
         const embed = new EmbedBuilder()
             .setTimestamp(new Date())

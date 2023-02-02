@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 const { StringUtil } = require("sussy-util");
 const { EmbedBuilder, Colors, ActionRowBuilder, StringSelectMenuBuilder, SelectMenuOptionBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
@@ -11,7 +10,7 @@ module.exports = {
         cooldown: 60
     },
 
-    run: (_client, message, _args, _guildData, userData) => {
+    run: (_client, _message, _args, _guildData, _userData) => {
         const places = [
             "bank",
             "river",

@@ -4,9 +4,9 @@ module.exports = {
     description: "Plays a random song from a list",
     aliases: ["pt"],
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, _args, guildData, userData, isSlashCommand) {
         const pickedSong = songList[Math.floor(Math.random() * songList.length)];
-        return require("../music/play.js").run(client, message, [pickedSong], guildData, userData, isSlashCommand);
+        return require("../music/play").run(client, message, [pickedSong], guildData, userData, isSlashCommand);
     }
 } as Command;
 

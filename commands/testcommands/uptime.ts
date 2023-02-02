@@ -5,7 +5,7 @@ const { EmbedBuilder, Colors } = require("discord.js");
 module.exports = {
     "description": "Shows the uptime of the bot",
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, _message, _args, _guildData, _userData, _isSlashCommand) {
         const days = Math.floor(client.uptime / 86400000);
         const hours = Math.floor(client.uptime / 3600000) % 24;
         const minutes = Math.floor(client.uptime / 60000) % 60;

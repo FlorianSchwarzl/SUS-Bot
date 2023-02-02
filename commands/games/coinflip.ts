@@ -11,7 +11,7 @@ module.exports = {
         required: false,
     }],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         const coinArray = ["heads", "tails"];
         let numberThrow = Math.floor(Math.random() * 2);
         if (!(args[0] === `heads`) && !(args[0] === 'tails')) {

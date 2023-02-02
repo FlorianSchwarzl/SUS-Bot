@@ -1,9 +1,9 @@
 import { Component } from "../../types/command";
 
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 module.exports = {
-    run(client, interaction) {
+    run(_client, _interaction) {
         const choice = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()

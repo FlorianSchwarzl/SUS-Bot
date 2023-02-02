@@ -20,7 +20,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageChannels,
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, args, guildData, _userData, _isSlashCommand) {
         // @ts-expect-error
         let channel = global.functions.getChannelFromMention(message.guild, args[0]);
         if (channel === undefined) channel = message.channel;

@@ -20,7 +20,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageChannels,
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, message, args, _guildData, _userData, _isSlashCommand) {
         // @ts-expect-error
         let channel = global.functions.getChannelFromMention(message.guild, args[0]);
         channel ||= message.channel;

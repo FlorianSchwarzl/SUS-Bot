@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require("discord.js");
 
@@ -7,7 +6,7 @@ module.exports = {
     description: "Clears your level",
     aliases: ["cll", "clearlevel", "resetlevel", "rl", "resetlvl", "clearlvl"],
 
-    run(client, message, args, guildData, userData, isInteraction) {
+    run(client, _message, _args, _guildData, _userData, isInteraction) {
         const embed = new EmbedBuilder()
             .setTitle("Reset Level")
             .setDescription("Are you sure you want to reset your level?")

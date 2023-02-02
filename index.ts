@@ -35,7 +35,7 @@ console.log(`Version: ${client.config.version} by ${client.config.authorsString}
 
 /* Loading all the functions. */
 // @ts-expect-error
-global.functions = require("./functions/getFiles")("./functions", "functions.js");
+global.functions = require("./functions/getFiles")("./functions", "functions.ts");
 
 /* Loading all the commands. */
 [
@@ -43,8 +43,6 @@ global.functions = require("./functions/getFiles")("./functions", "functions.js"
     "buttons",
     "selectMenus"
 ].forEach((name) => loadCommands(name, true));
-
-console.log(client.commands)
 
 client.commandCooldowns = new Collection();
 client.commands.forEach((command: Command) => {
@@ -64,7 +62,7 @@ fs.readdirSync("./events").forEach((dir: string) => {
     if (!eventToClientMap[dir])
         return console.warn(`The event folder ${dir} is not valid!`);
     console.log(`Loading ${dir} events...`);
-    fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".js")).forEach((event: string) => {
+    fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".ts")).forEach((event: string) => {
         // @ts-expect-error
         eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
     });
@@ -92,11 +90,11 @@ function loadCommands(dirName: string, removeTrailingS = true) {
     fs.readdirSync(`./${dirName}`).forEach((dir: string) => {
         if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
             return console.warn(`./${dirName}/${dir} is not a directory.`);
-        fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".js")).forEach((file: string) => {
+        fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
             const command = require(`./${dirName}/${dir}/${file}`);
             if (command.ignore) return;
             command.category = `${dirNameCollection}:` + dir;
-            command.name ||= file.replace(/(\.js)$/, "");
+            command.name ||= file.replace(/(\.ts)$/, "");
             command.name = `${dirNameCollection}:` + command.name.toLowerCase();
             client.commands.set(command.name, command);
         })

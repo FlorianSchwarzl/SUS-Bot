@@ -1,7 +1,6 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
-import permissionBitField from "../../enums/permissionBitField";
 import permissionStrings from "../../enums/permissionStrings";
 
 module.exports = {
@@ -19,7 +18,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageNicknames,
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         // @ts-expect-error
         let mentionedMember = message.mentions.members.first() || message.guild!.members.cache.get(args[0]);
         mentionedMember ||= message.member;

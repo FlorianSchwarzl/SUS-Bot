@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
     aliases: [],
@@ -8,7 +7,7 @@ module.exports = {
         connectedToSameVC: true
     },
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(client, message, _args, _guildData, _userData, _isSlashCommand) {
         return client.player.pause(message);
     }
 } as Command;

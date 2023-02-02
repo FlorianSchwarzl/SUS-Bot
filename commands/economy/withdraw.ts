@@ -13,7 +13,7 @@ module.exports = {
         required: true,
     }],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(_client, _message, args, _guildData, userData, _isSlashCommand) {
         let amount = args[0];
         if (amount && IsSomething.isNumber(amount)) {
             if (amount > userData.economy.bank) amount = userData.economy.bank;

@@ -18,7 +18,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.BanMembers,
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         if (args[0] === void 0)
             return "Please Give Me Member ID That You Want To Unban!";
 

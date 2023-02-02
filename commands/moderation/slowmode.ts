@@ -1,7 +1,6 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
-const { IsSomething } = require("sussy-util");
 import permissionStrings from "../../enums/permissionStrings";
 
 module.exports = {
@@ -24,7 +23,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageChannels,
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         let rate;
 
         // @ts-expect-error

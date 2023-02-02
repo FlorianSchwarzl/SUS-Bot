@@ -7,7 +7,7 @@ const ms = require("@parade/pretty-ms");
 module.exports = {
     description: "Displays information about the bot.",
 
-    run(client, message) {
+    run(client, _message, _args, _guildData, _userData, _isSlashCommand) {
         return {
             embeds: [new EmbedBuilder()
                 .setColor(Colors.Red)

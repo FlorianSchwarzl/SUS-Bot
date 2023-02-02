@@ -17,7 +17,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageMessages,
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, args, _guildData, _userData, isSlashCommand) {
         const amount = parseInt(args[0]);
 
         if (args[0] === "all") {

@@ -1,4 +1,5 @@
 const data = require("../data.json");
+import fs from "fs";
 
 module.exports = {
     all: () => {

@@ -1,5 +1,5 @@
 import { CommandInteraction, ApplicationCommandOption, CacheType, Message, InteractionReplyOptions, MessageReplyOptions } from "discord.js";
-import Client from "./client.js";
+import Client from "./client";
 
 export interface Command {
     ignore?: boolean;

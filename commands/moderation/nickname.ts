@@ -24,7 +24,7 @@ module.exports = {
 
     default_member_permissions: permissionStrings.ManageNicknames,
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         // @ts-expect-error
         let mentionedMember = message.mentions.members.first() || message.guild!.members.cache.get(args[0]);
         let nickName;

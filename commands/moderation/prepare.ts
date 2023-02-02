@@ -1,6 +1,6 @@
 import { Command } from "../../types/command";
 import Client from "../../types/client";
-import { ApplicationCommandOptionType, CommandInteraction, Message } from "discord.js";
+import { CommandInteraction, Message } from "discord.js";
 
 const { EmbedBuilder } = require("discord.js");
 
@@ -15,7 +15,7 @@ const registering = (client: Client<true>, message: CommandInteraction | Message
 
     client.commands.forEach((command: Command) => {
         if (command.name === "prepare") return;
-        // @ts-expect-error // cause name can't be undefined, look at index.js
+        // @ts-expect-error // cause name can't be undefined, look at index.ts
         message.guild!.commands?.create(command).catch((error: Error) => {
             return new EmbedBuilder()
                 .setTitle("Failed to create slash-commands")
@@ -29,7 +29,7 @@ const registering = (client: Client<true>, message: CommandInteraction | Message
 module.exports = {
     description: "Creates slash commands in server",
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, _args, _guildData, _userData, _isSlashCommand) {
         const embed = registering(client, message);
         return { embeds: [embed] };
     }

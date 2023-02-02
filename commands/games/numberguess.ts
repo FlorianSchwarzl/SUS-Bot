@@ -20,7 +20,7 @@ module.exports = {
         }
     ],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(_client, message, args, _guildData, _userData, _isSlashCommand) {
         if (args[0] === void 0 || args[0] === `` || args[1] === void 0 || args[1] === ``) {
             return "Please specify two numbers";
         }

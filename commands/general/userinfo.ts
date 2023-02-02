@@ -1,12 +1,11 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 const { EmbedBuilder, Colors } = require('discord.js');
 
 module.exports = {
     description: "Displays information about the current user.",
 
-    run(client, message, args) {
+    run(client, message, args, _guildData, _userData, _isSlashCommand) {
         // @ts-expect-error // yes, it does exist!
         const user = message.mentions!.users.first() || client.users.cache.get(args[0]) || message.author;
 

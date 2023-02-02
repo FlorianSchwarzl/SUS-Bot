@@ -5,7 +5,7 @@
 import Client from "./types/client";
 
 module.exports.prefix = process.env.PREFIX;
-module.exports.fetchData = require("./functions/fetchDataFromSave.js");
+module.exports.fetchData = require("./functions/fetchDataFromSave");
 
 module.exports.authorsString = "";
 const { authors } = require("./package.json");

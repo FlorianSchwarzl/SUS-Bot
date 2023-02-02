@@ -1,5 +1,4 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 module.exports = {
     description: "Stops the music and clears the queue",
@@ -8,7 +7,7 @@ module.exports = {
         connectedToSameVC: true
     },
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(client, message, _args, _guildData, _userData, _isSlashCommand) {
         return client.player.stop(message);
     }
 } as Command;

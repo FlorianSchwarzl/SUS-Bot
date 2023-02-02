@@ -2,10 +2,11 @@
   "name": "sus-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "(tsc || true) && node index.js"
+    "start": "ts-node index.ts",
+    "jsStart": "(tsc || true) && node index.js"
   },
   "repository": {
     "type": "git",

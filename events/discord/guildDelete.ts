@@ -1,7 +1,7 @@
-import guildModel from "../../schemas/guild.js";
+import guildModel from "../../schemas/guild";
 
 import { Guild, ApplicationCommandDataResolvable } from "discord.js";
-import Client from "../../types/client.js";
+import Client from "../../types/client";
 
 module.exports = async (client: Client<true>, guild: Guild) => {
     console.info("Deleting MongoDB entry for guild " + guild.name);

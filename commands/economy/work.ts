@@ -17,7 +17,7 @@ module.exports = {
         required: true,
     }],
 
-    run(client, message, args, guildData, userData, isSlashCommand) {
+    run(_client, message, _args, _guildData, userData, _isSlashCommand) {
         if (userData.economy) {
             let earned = Math.round(Math.random() * (jobs[userData.jobinfo.id - 1].salary)) + Math.floor(jobs[userData.jobinfo.id - 1].salary / 3);
             userData.economy.wallet += earned;

@@ -1,12 +1,11 @@
 import { Command } from "../../types/command";
-import { ApplicationCommandOptionType } from "discord.js";
 
 const { EmbedBuilder, Colors } = require("discord.js");
 
 module.exports = {
     description: "Shows information about the server",
 
-    async run(client, message, args, guildData, userData, isSlashCommand) {
+    async run(_client, message, _args, _guildData, _userData, _isSlashCommand) {
         const sEmbed = new EmbedBuilder()
             .setColor(Colors.Red)
             .setTitle("Server Info")

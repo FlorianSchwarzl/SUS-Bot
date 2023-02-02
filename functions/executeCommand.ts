@@ -1,6 +1,6 @@
 import { PermissionResolvable, Message } from "discord.js";
-import { Command, CommandReturnWithoutString } from "../types/command.js";
-import Client from "../types/client.js";
+import { Command, CommandReturnWithoutString } from "../types/command";
+import Client from "../types/client";
 
 // TODO: Add automated argument checking
 
@@ -12,7 +12,6 @@ import sendMessage from "./sendMessage";
 
 
 module.exports = async (command: Command, client: Client<true>, interaction: Message, args: string[], isInteraction: boolean, isComponent = false) => {
-    console.log(interaction)
     if (command === void 0) return;
 
     // @ts-expect-error
@@ -44,11 +43,11 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 
     // makes reply unavailable so two replies can't be sent
     const reply = interaction.reply;
-    interaction.reply = () => { throw new Error("Cannot reply outside of executeCommand.js. Use return or message.channel.send() instead!") };
+    interaction.reply = () => { throw new Error("Cannot reply outside of executeCommand. Use return or message.channel.send() instead!") };
     // @ts-expect-error
     const deferReply = interaction.deferReply;
     // @ts-expect-error
-    interaction.deferReply = () => { throw new Error("Cannot defer reply outside of executeCommand.js. Use return null instead!") };
+    interaction.deferReply = () => { throw new Error("Cannot defer reply outside of executeCommand. Use return null instead!") };
 
     try {
         if (command!.commandOptions?.guildOnly && interaction.guildId === null) return interaction.reply("This command can only be used in a server.");

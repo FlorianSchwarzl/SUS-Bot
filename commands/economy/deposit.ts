@@ -18,7 +18,7 @@ module.exports = {
     ],
 
 
-    run: (_client, message, args, _guildInfo, userInfo) => {
+    run: (_client, _message, args, _guildInfo, userInfo) => {
         if (!args[0]) return "Please provide the amount you want to deposit.";
 
         const current = userInfo.economy;

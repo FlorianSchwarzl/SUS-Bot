@@ -1,7 +1,7 @@
 import Client from "../../types/client";
 import { GuildMember } from "discord.js";
 
-const fetchData = require("../../config.js").fetchData;
+const fetchData = require("../../config").fetchData;
 const welcomeMessages = fetchData.get("messages").welcome;
 import guilds from "../../schemas/guild";
 
