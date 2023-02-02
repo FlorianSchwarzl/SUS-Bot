@@ -37,5 +37,10 @@
     "mongoose": "^6.7.5",
     "play-dl": "^1.9.6",
     "sussy-util": "^1.9.0-dev.0.0.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^8.33.0"
   }
 }
