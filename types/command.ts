@@ -1,5 +1,6 @@
 import { CommandInteraction, ApplicationCommandOption, CacheType, Message, InteractionReplyOptions, MessageReplyOptions } from "discord.js";
 import Client from "./client";
+import { UserData, GuildData } from "./data";
 
 export interface Command {
 	ignore?: boolean;
@@ -10,7 +11,7 @@ export interface Command {
 	default_member_permissions?: string;
 	commandOptions?: CommandOptions;
 	category?: string;
-	run: (client: Client<true>, message: CommandInteraction<CacheType> | Message<boolean>, args: string[], guildData: any, userData: any, isInteraction: boolean) => CommandReturns;
+	run: (client: Client<true>, message: CommandInteraction<CacheType> | Message<boolean>, args: string[], guildData: GuildData, userData: UserData, isInteraction: boolean) => CommandReturns;
 }
 
 interface CommandOptions {

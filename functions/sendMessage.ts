@@ -1,8 +1,9 @@
 import { Message, Component, ButtonComponent, BaseSelectMenuComponent } from "discord.js";
 import Client from "../types/client";
 import { Command, CommandReturnWithoutString } from "../types/command";
+import { GuildData, UserData } from "../types/data";
 
-export default async (messageToSend: CommandReturnWithoutString, command: Command, client: Client<true>, message: Message, args: string[], isInteraction: boolean, guildData: any /*idfk*/, userData: any /*same here*/, isDM: boolean) => {
+export default async (messageToSend: CommandReturnWithoutString, command: Command, client: Client<true>, message: Message, args: string[], isInteraction: boolean, guildData: GuildData, userData: UserData, isDM: boolean) => {
 	let sentMessage: Message;
 
 	if (messageToSend === null) return;
@@ -44,7 +45,9 @@ export default async (messageToSend: CommandReturnWithoutString, command: Comman
 	if (messageToSend.disable) {
 		if (messageToSend.disable === true) messageToSend.disable = 5;
 		setTimeout(() => {
-			messageToSend.components!.forEach((actionRow: any) => {
+			if (messageToSend.components === undefined) return;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Idk the type... It'll be fine, I hope
+			messageToSend.components.forEach((actionRow: any) => {
 				actionRow.components.forEach((component: Component) => {
 					if (component instanceof ButtonComponent || component instanceof BaseSelectMenuComponent) {
 						// @ts-expect-error // I do, in fact, know what I'm doing TS... Idfc if it's read-only or not

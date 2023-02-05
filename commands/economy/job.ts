@@ -17,11 +17,11 @@ module.exports = {
 	}],
 
 	run(client, _message, args, _guildData, userData) {
-		if (args[0] === void 0) {
+		if (args[0] === undefined) {
 			const embed = new EmbedBuilder()
 				.setTimestamp(new Date())
 				.setTitle("Jobs panel")
-				// @ts-expect-error
+				// @ts-expect-error // something wrong here, idfk
 				.setFooter(client.config.embedFooter(client))
 				.addFields(
 					{
@@ -78,7 +78,7 @@ module.exports = {
 			}
 
 			userData.jobinfo.id = args[0];
-			userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err: Error, data: any) => {
+			userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err: Error, data: unknown) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";
 			});

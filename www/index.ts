@@ -15,7 +15,7 @@ for (const file of files) {
 }
 
 module.exports = {
-	startServer: (client: Client<true>, port: number, callback: Function) => {
+	startServer: (client: Client<true>, port: number, callback: () => unknown) => {
 		app.listen(port, callback);
 	}
-}
+};

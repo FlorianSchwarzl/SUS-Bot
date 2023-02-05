@@ -35,7 +35,7 @@ module.exports = {
 			moneys = +args[0];
 		}
 
-		users.findByIdAndUpdate(userInfo._id, { economy: current }, (err: Error, data: any) => {
+		users.findByIdAndUpdate(userInfo._id, { economy: current }, (err: Error, data: unknown) => {
 			if (err) console.error(err);
 			if (!data) return "Error: User not found.";
 		});

@@ -28,25 +28,25 @@ module.exports = {
 		const embed = new EmbedBuilder()
 			.setTimestamp(new Date())
 			.setTitle("Help panel")
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
-		if (commandName === void 0 || commandName.length === 0) {
+		if (commandName === undefined || commandName.length === 0) {
 			embed
 				.setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
-			fs.readdirSync(`${__dirname}/../`).forEach((d: any) => {
+			fs.readdirSync(`${__dirname}/../`).forEach((d: unknown) => {
 				embed.addFields({
 					name: StringUtil.capitalize(d),
 					value: "Type `" + client.config.prefix + "help " + d + "` to see more information",
-				})
+				});
 				menu.addOptions({ label: StringUtil.capitalize(d), value: d });
-			});;
+			});
 		} else {
 			const cmd = client.commands.get(`command:${commandName}`) ||
 				client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-			if (cmd === void 0) {
+			if (cmd === undefined) {
 				return "No command found for: `" + commandName + "`";
 			}
 
@@ -69,13 +69,15 @@ module.exports = {
 					inline: true
 				},
 				{
-					name: cmd.aliases?.length! > 1 ? "Aliases" : "Alias",
-					value: cmd.aliases?.length! > 0 ? cmd.aliases!.join(", ") : "None",
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					name: cmd.aliases!.length > 1 ? "Aliases" : "Alias",
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					value: cmd.aliases!.length > 0 ? cmd.aliases?.join(", ") : "None",
 					inline: true
 				},
 				{
 					name: "Cooldown",
-					// @ts-expect-error
+					// @ts-expect-error // I'm checking if it exists, so it should be fine
 					value: cmd.commandOptions?.defaultReturn?.cooldown ? `${cmd.cooldown}seconds` : "None",
 					inline: true
 				}

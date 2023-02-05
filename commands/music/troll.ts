@@ -1,3 +1,4 @@
+import { CommandInteraction } from "discord.js";
 import { Command } from "../../types/command";
 
 module.exports = {
@@ -7,9 +8,8 @@ module.exports = {
 	description: "A wild troll appeared.",
 	connectedToVC: true,
 
-	run(client, message, _args, _guildData, _userData, isSlashCommand) {
-		// @ts-expect-error
-		if (!isSlashCommand) message.delete();
+	run(client, message, _args, _guildData, _userData, _isSlashCommand) {
+		if (!(message instanceof CommandInteraction)) message.delete();
 
 		// @ts-expect-error // Log the user using the command cause roteKlaue
 		console.log(`${message.author.username} used the troll command.`);

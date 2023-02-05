@@ -22,19 +22,23 @@ module.exports = {
 		}
 	],
 
+	commandOptions: {
+		guildOnly: true,
+	},
+
 	default_member_permissions: permissionStrings.ManageNicknames,
 
 	async run(_client, message, args, _guildData, _userData, _isSlashCommand) {
-		// @ts-expect-error
-		let mentionedMember = message.mentions.members.first() || message.guild!.members.cache.get(args[0]);
+		// @ts-expect-error // TODO: fix line above
+		let mentionedMember = message.mentions.members.first() || message.guild?.members.cache.get(args[0]);
 		let nickName;
-		if (mentionedMember === void 0) {
+		if (mentionedMember === undefined) {
 			nickName = args.slice(0).join(" ");
 			mentionedMember = message.member;
 		}
 		else nickName = args.slice(1).join(" ");
 
-		if (nickName === void 0) return "Please provide a nickname for me to change this users nickname";
+		if (nickName === undefined) return "Please provide a nickname for me to change this users nickname";
 
 		try {
 			const username = mentionedMember.nickname || mentionedMember.user.username;

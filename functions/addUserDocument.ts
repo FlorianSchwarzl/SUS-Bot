@@ -6,4 +6,4 @@ export default (userId: string) => {
 		_id: Types.ObjectId(),
 		userId: userId,
 	})).save();
-}
+};

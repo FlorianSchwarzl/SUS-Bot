@@ -16,20 +16,25 @@ module.exports = {
 		}
 	],
 
+	commandOptions: {
+		guildOnly: true
+	},
+
+
 	default_member_permissions: permissionStrings.BanMembers,
 
 	async run(_client, message, args, _guildData, _userData, _isSlashCommand) {
-		if (args[0] === void 0)
+		if (args[0] === undefined)
 			return "Please Give Me Member ID That You Want To Unban!";
 
-		const bans = await message.guild!.bans.fetch();
-		const member = bans.find(b => b.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || bans.get(args[0]) || bans.find(bm => bm.user.tag.toLowerCase() === args[0].toLocaleLowerCase());
+		const bans = await message.guild?.bans.fetch();
+		const member = bans?.find(b => b.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || bans?.get(args[0]) || bans?.find(bm => bm.user.tag.toLowerCase() === args[0].toLocaleLowerCase());
 
-		if (member === void 0)
+		if (member === undefined)
 			return "Please Give Valid Member ID Or Member Is Not Banned!";
 
 		try {
-			await message.guild!.members.unban(member.user.id, args[1] || "No Reason Provided!");
+			await message.guild?.members.unban(member.user.id, args[1] || "No Reason Provided!");
 			return `Unbanned <@!${args[0]}>. With reason: ${args[1] || "No Reason Provided!"}`;
 		} catch (error) {
 			return "I Can't Unban That Member Maybe Member Is Not Banned Or Some Error!";

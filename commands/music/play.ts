@@ -18,6 +18,9 @@ module.exports = {
 	async run(client, message, args, _guildData, _userData, _isSlashCommand) {
 		// @ts-expect-error // cause it's getting caught anyway
 		try { message.suppressEmbeds(true); } catch (e) { }
-		return client.player.addTrack(message, args);
+		const startMillis = Date.now();
+		const returnVar = await client.player.addTrack(message, args);
+		console.debug(`Command ${this.name} took ${Date.now() - startMillis}ms to execute`);
+		return returnVar;
 	}
 } as Command;

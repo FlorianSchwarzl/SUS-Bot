@@ -40,4 +40,4 @@ export default {
 	SendMessagesInThreads: "0x0000004000000000",
 	UseEmbeddedActivities: "0x0000008000000000",
 	ModerateMembers: "0x0000010000000000"
-}
+};

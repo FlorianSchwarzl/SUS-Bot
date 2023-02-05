@@ -1,5 +1,5 @@
 import { Connection } from "mongoose";
 
-module.exports = (client: Connection) => {
+module.exports = (_client: Connection) => {
 	console.info("Connecting to MongoDB...");
-}
+};

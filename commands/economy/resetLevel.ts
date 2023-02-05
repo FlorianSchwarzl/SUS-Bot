@@ -11,7 +11,7 @@ module.exports = {
 			.setTitle("Reset Level")
 			.setDescription("Are you sure you want to reset your level?")
 			.setColor(Colors.Red)
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
 		if (isInteraction) {
@@ -28,7 +28,7 @@ module.exports = {
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setCustomId(`resetLevel`)
+						.setCustomId("resetLevel")
 						.setLabel("Confirm")
 						.setStyle(ButtonStyle.Danger),
 				);

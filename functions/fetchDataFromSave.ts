@@ -8,7 +8,7 @@ module.exports = {
 	get: (key: string) => {
 		return data[key];
 	},
-	set: (key: string, value: any) => {
+	set: (key: string, value: unknown) => {
 		data[key] = value;
 	},
 	write: () => {
@@ -16,4 +16,4 @@ module.exports = {
 		wStream.write(JSON.stringify(data));
 		wStream.end();
 	}
-}
+};

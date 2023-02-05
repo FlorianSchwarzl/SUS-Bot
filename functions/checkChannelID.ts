@@ -1,9 +1,8 @@
-import { Guild, Message } from "discord.js";
+import { Message } from "discord.js";
+import { GuildData } from "../types/data";
 
-const fetchData = require("./fetchDataFromSave");
-
-module.exports = (message: Message, guildData: any) => {
-	if (guildData?.channels?.allowed === void 0) return true;
+module.exports = (message: Message, guildData: GuildData) => {
+	if (guildData?.channels?.allowed === undefined) return true;
 	const allowedChannelsIDS = guildData.channels.allowed;
 	if (Array.isArray(allowedChannelsIDS)) {
 		if (allowedChannelsIDS.length === 0) return true;
@@ -11,4 +10,4 @@ module.exports = (message: Message, guildData: any) => {
 	} else {
 		return allowedChannelsIDS === message.channel.id;
 	}
-}
+};

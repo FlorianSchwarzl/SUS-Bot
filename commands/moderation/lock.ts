@@ -21,22 +21,23 @@ module.exports = {
 	default_member_permissions: permissionStrings.ManageChannels,
 
 	run(client, message, args, _guildData, _userData, _isSlashCommand) {
-		// @ts-expect-error
 		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
 		channel ||= message.channel;
 
-		if (!channel.permissionsFor(message.guild!.roles.everyone).has(permissionBitField.SendMessages))
+		if (message.guild === null) throw new Error("Guild is null");
+
+		if (!channel.permissionsFor(message.guild.roles.everyone).has(permissionBitField.SendMessages))
 			return "Channel is already locked";
 
-		channel.permissionOverwrites.edit(message.guild!.roles.everyone, { SEND_MESSAGES: false });
+		channel.permissionOverwrites.edit(message.guild.roles.everyone, { SEND_MESSAGES: false });
 
 		const embed = new EmbedBuilder()
 			.setTitle("Channel Updates")
 			.setDescription(`<#${channel.id}> in now locked!`)
 			.setColor(Colors.Red)
-			// @ts-expect-error
+			// @ts-expect-error // FIXME: Fix this
 			.setFooter(client.config.embedFooter(client))
-			.setTimestamp(new Date())
+			.setTimestamp(new Date());
 
 		return { embeds: [embed] };
 	}

@@ -20,7 +20,7 @@ const after = (client: Client<true>, message: Message, sentMessage: Message, sta
 		sentMessage.delete();
 		return { embeds: [embed] };
 	}
-}
+};
 
 //TODO: I implemented returning null for a reason... So ig I should use it here
 
@@ -39,9 +39,9 @@ module.exports = {
 				after(client, message, msg, StartDate, true);
 			});
 		} else {
-			return message.channel!.send(sendObj)
+			return message.channel?.send(sendObj)
 				// @ts-expect-error // FIXME pls, this is pure agony
-				.then((msg) => { return after(client, message, msg, StartDate) });
+				.then((msg) => { return after(client, message, msg, StartDate); });
 		}
 	}
 } as Command;

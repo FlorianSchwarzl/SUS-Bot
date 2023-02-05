@@ -2,6 +2,7 @@ import guildModel from "../schemas/guild";
 import { Types } from "mongoose";
 
 export default (guildId: string) => {
+	if (!guildId) throw new Error("No guildId provided.");
 	(new guildModel({
 		_id: new Types.ObjectId(),
 		guildId: guildId,
@@ -21,4 +22,4 @@ export default (guildId: string) => {
 		warns: [],
 		tempBans: [],
 	})).save();
-}
+};

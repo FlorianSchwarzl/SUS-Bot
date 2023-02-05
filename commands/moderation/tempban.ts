@@ -26,7 +26,7 @@ module.exports = {
 
 	default_member_permissions: permissionStrings.BanMembers,
 
-	run(client, message, args, guildData, userData, isSlashCommand) {
+	run(_client, _message, _args, _guildData, _userData, _isSlashCommand) {
 
 
 	}

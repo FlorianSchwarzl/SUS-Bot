@@ -19,19 +19,19 @@ module.exports = {
 
 	run(_client, message, _args, _guildData, userData, _isSlashCommand) {
 		if (userData.economy) {
-			let earned = Math.round(Math.random() * (jobs[userData.jobinfo.id - 1].salary)) + Math.floor(jobs[userData.jobinfo.id - 1].salary / 3);
+			const earned = Math.round(Math.random() * (jobs[userData.jobinfo.id - 1].salary)) + Math.floor(jobs[userData.jobinfo.id - 1].salary / 3);
 			userData.economy.wallet += earned;
-			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: any) => {
+			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: unknown) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";
 			});
 			userData.level.xp += 5;
-			userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err: Error, data: any) => {
+			userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err: Error, data: unknown) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";
 			});
 			if (!(Math.floor(userData.level.xp / 50) === (Math.floor((userData.level.xp - 5) / 50)))) {
-				message!.channel!.send(`<@${userData.userId}>` + " just levelled up!")
+				message.channel?.send(`<@${userData.userId}>` + " just levelled up!");
 			}
 			return { content: "Congratulations! You earned " + earned + " gold as a " + jobs[userData.jobinfo.id - 1].jobname + ". \nNow you have: " + userData.economy.wallet + "!", setCooldown: [this] };
 		}

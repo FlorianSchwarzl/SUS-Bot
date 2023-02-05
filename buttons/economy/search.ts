@@ -12,9 +12,9 @@ module.exports = {
 		const amount = Random.randomInt(900, 1600);
 		const current = userData.economy;
 		current.wallet += amount;
-		userList.findByIdAndUpdate(userData._id, { economy: current }, (err: Error, data: any) => { err; data; });
+		userList.findByIdAndUpdate(userData._id, { economy: current }, (_err: Error, _data: unknown) => { });
 		userData.level.xp += 2;
-		userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err: Error, data: any) => { err; data; });
+		userList.findByIdAndUpdate(userData._id, { level: userData.level }, (_err: Error, _data: unknown) => { });
 		return { content: `You found ${amount} gold in the ${args[0]}.`, disableOriginal: true, success: ["command:search", this] };
 	}
 } as Component;

@@ -12,7 +12,7 @@ module.exports = {
 		const embed = new EmbedBuilder()
 			.setTimestamp(new Date())
 			.setTitle("Casino")
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
 		if (!(IsSomething.isNumber(args[0]))) {
@@ -58,7 +58,7 @@ module.exports = {
 					);
 					break;
 			}
-			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: any) => {
+			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: unknown) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";
 			});

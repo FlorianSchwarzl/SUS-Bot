@@ -1,8 +1,7 @@
 import { Command } from "../../types/command";
 
 const { StringUtil } = require("sussy-util");
-const { EmbedBuilder, Colors, ActionRowBuilder, StringSelectMenuBuilder, SelectMenuOptionBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
-const userList = require("../../schemas/user");
+const { EmbedBuilder, Colors, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
 
 module.exports = {
 	description: "Search in a few places for money.",
@@ -129,7 +128,7 @@ module.exports = {
 			"aquarium",
 			"circus"];
 
-		const actionRow = new ActionRowBuilder()
+		const actionRow = new ActionRowBuilder();
 
 		const embed = new EmbedBuilder(true)
 			.setTitle("Search")

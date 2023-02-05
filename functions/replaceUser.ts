@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
 
-module.exports = (message: string, member: GuildMember) => {
+export default (message: string, member: GuildMember) => {
 	return message.replace("{user}", "**" + member.user.username + "#" + member.user.discriminator + "**");
-}
+};

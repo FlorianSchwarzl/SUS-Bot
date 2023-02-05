@@ -28,7 +28,7 @@ module.exports = {
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setCustomId(`resetBalance`)
+						.setCustomId("resetBalance")
 						.setLabel("Confirm")
 						.setStyle(ButtonStyle.Danger),
 				);

@@ -26,9 +26,8 @@ module.exports = {
 	run(_client, message, args, _guildData, _userData, _isSlashCommand) {
 		let rate;
 
-		// @ts-expect-error
 		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
-		if (channel === void 0) {
+		if (channel === undefined) {
 			channel = message.channel;
 			rate = args[0];
 		} else rate = args[1];

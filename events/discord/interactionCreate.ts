@@ -55,11 +55,10 @@ module.exports = async (client: Client<true>, interaction: Interaction) => {
 			return;
 	}
 
-	const modifiedInteraction = interaction as any;
+	const modifiedInteraction = interaction as unknown;
 	// console.log(typeof modifiedInteraction)
 	// modifiedInteraction.channel = client.channels.cache.get(modifiedInteraction.channelId);
 	// modifiedInteraction.author = modifiedInteraction.user;
 
-	// @ts-expect-error // i gotta stop doing this
 	global.functions.executeCommand(cmd, client, modifiedInteraction, args, true, isComponent);
-}
+};

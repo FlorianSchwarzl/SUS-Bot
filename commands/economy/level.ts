@@ -1,6 +1,5 @@
 import { Command } from "../../types/command";
 
-const { IsSomething } = require("sussy-util");
 const { EmbedBuilder } = require("discord.js");
 module.exports = {
 	description: "Shows the level of your account",
@@ -10,7 +9,7 @@ module.exports = {
 		const embed = new EmbedBuilder()
 			.setTimestamp(new Date())
 			.setTitle("Level panel")
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
 		embed.addFields(

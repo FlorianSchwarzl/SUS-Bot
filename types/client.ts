@@ -1,17 +1,20 @@
 import { Client as DiscordClient, Collection } from "discord.js";
 import { Command } from "./command";
-// @ts-ignore: Unreachable code error
+// @ts-expect-error // I wrote it so I can have it as a js or ts file // FIXME
 import Player from "../music/player";
 import { connection } from "mongoose";
 
-export default interface Client<T extends boolean> extends DiscordClient<T> {
+interface Client<T extends boolean> extends DiscordClient<T> {
 	commands: Collection<string, Command>;
 	player: Player;
 	commandCooldowns: Collection<string, Collection<string, number>>;
 	config: ClientConfig;
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	functions?: Function[];
 	connection: typeof connection;
 }
+
+export default Client;
 
 type ClientConfig = {
 	token: string;

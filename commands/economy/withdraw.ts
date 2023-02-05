@@ -1,5 +1,6 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
+import { UserData } from "../../types/data";
 
 const { IsSomething } = require("sussy-util");
 const userList = require("../../schemas/user");
@@ -19,7 +20,7 @@ module.exports = {
 			if (amount > userData.economy.bank) amount = userData.economy.bank;
 			userData.economy.bank -= +amount;
 			userData.economy.wallet += +amount;
-			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: any) => {
+			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: UserData) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";
 			});

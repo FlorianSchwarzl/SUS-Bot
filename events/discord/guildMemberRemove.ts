@@ -11,4 +11,4 @@ module.exports = async (client: Client<true>, member: GuildMember) => {
 	const channel = client.channels.cache.get(guild?.channels?.goodbye);
 	// @ts-expect-error // I hate this // FIXME: PLS!!! // i gotta stop doing this
 	channel.send(global.functions.replaceUser(goodbyeMessages[Math.floor(Math.random() * goodbyeMessages.length)], member));
-}
+};

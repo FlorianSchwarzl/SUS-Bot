@@ -7,22 +7,22 @@ module.exports = {
 		const choice = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
-					.setLabel('GitHub')
+					.setLabel("GitHub")
 					.setStyle(ButtonStyle.Link)
-					.setURL('https://github.com/plastik_flasche/SUS-Bot'),
+					.setURL("https://github.com/plastik-flasche/SUS-Bot"),
 				new ButtonBuilder()
-					.setLabel('Patreon')
+					.setLabel("Patreon")
 					.setStyle(ButtonStyle.Link)
-					.setURL('https://patreon.com/stupid-useless-patreon'),
+					.setURL("https://patreon.com/stupid-useless-patreon"),
 				new ButtonBuilder()
-					.setLabel('PayPal')
+					.setLabel("PayPal")
 					.setStyle(ButtonStyle.Link)
-					.setURL('https://paypal.me/stupiduselesspaypal'),
+					.setURL("https://paypal.me/stupiduselesspaypal"),
 				// new ButtonBuilder()
-				//     .setLabel('Crypto')
-				//     .setStyle('LINK')
-				//     .setURL('')
+				//     .setLabel("Crypto")
+				//     .setStyle("LINK")
+				//     .setURL("")
 			);
-		return { content: 'If you can code, help us out on our Github, if not, maybe buy us some more processing power!', components: [choice] };
+		return { content: "If you can code, help us out on our Github, if not, maybe buy us some more processing power!", components: [choice] };
 	}
 } as Component;

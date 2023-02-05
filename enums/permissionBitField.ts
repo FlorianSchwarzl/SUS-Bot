@@ -40,4 +40,4 @@ export default {
 	SendMessagesInThreads: 1n << 38n,
 	UseEmbeddedActivities: 1n << 39n,
 	ModerateMembers: 1n << 40n,
-}
+};

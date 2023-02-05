@@ -21,22 +21,21 @@ module.exports = {
 	default_member_permissions: permissionStrings.ManageChannels,
 
 	run(client, message, args, _guildData, _userData, _isSlashCommand) {
-		// @ts-expect-error
 		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
 		channel ||= message.channel;
 
-		if (channel.permissionsFor(message.guild!.roles.everyone).has(permissionBitField.SendMessages))
+		if (channel.permissionsFor(message.guild?.roles.everyone).has(permissionBitField.SendMessages))
 			return "Channel isn't locked";
 
-		channel.permissionOverwrites.edit(message.guild!.roles.everyone, { SEND_MESSAGES: true });
+		channel.permissionOverwrites.edit(message.guild?.roles.everyone, { SEND_MESSAGES: true });
 
 		const embed = new EmbedBuilder()
 			.setTitle("Channel Updates")
 			.setDescription(`<#${channel.id}> is now unlocked!`)
 			.setColor(Colors.Red)
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client))
-			.setTimestamp(new Date())
+			.setTimestamp(new Date());
 
 		return { embeds: [embed] };
 	}
