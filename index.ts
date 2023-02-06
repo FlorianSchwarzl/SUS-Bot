@@ -14,6 +14,13 @@ set("strictQuery", false);
 
 require("better-cl").setup(console, [], "./logs");
 
+
+declare global {
+	interface Console {
+		success: (message: string) => void;
+	}
+}
+
 console.clear();
 
 const client = new Client({
@@ -79,11 +86,11 @@ export default client;
 
 /* Logging the bot in. */
 client.login(process.env.TOKEN);
+console.info("Logging the bot in...");
 /* Connect to the mongodb database */
 connect(process.env.MONGODB);
 /* Starting the Webserver */
-console.log("Starting webserver...");
-// @ts-expect-error // TODO: I gotta find a way to add functions to the console object
+console.info("Starting webserver...");
 require("./www/index").startServer(client, process.env.PORT, () => console.success("Webserver ready!"));
 
 // makes sure the bot doesn't crash
