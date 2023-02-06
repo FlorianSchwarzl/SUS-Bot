@@ -24,6 +24,7 @@ module.exports = {
 	async run(_client, message, args, guildData, _userData, _isSlashCommand) {
 		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
 		if (channel === undefined) channel = message.channel;
+		if (guildData === null) return "Error: Guild not found.";
 		const current = guildData.channels;
 		current.counter = channel.id;
 

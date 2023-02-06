@@ -2,7 +2,7 @@ import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
 const { IsSomething } = require("sussy-util");
-const users = require("../../schemas/user");
+import users from "../../schemas/user";
 
 module.exports = {
 	description: "Deposit money into your bank account",
@@ -20,6 +20,8 @@ module.exports = {
 
 	run: (_client, _message, args, _guildInfo, userInfo) => {
 		if (!args[0]) return "Please provide the amount you want to deposit.";
+		if (userInfo === null) return "Error: User not found.";
+		if (userInfo.economy === null) return "Error: User not found.";
 
 		const current = userInfo.economy;
 		let moneys = current.wallet;

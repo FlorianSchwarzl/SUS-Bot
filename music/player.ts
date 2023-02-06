@@ -106,7 +106,7 @@ module.exports = class Player {
 		if (guildInfo.lastNowPlayingMessage !== undefined) {
 			guildInfo.lastNowPlayingMessage.delete().catch((e: Error) => { e; });
 		}
-		// @ts-expect-error
+		// @ts-expect-error // MiMiMiMiMi i don't care
 		guildInfo.lastNowPlayingMessage = await track.channel.send({ embeds: [await this.#createEmbed(track, "Now playing")], components: [playerControls] });
 	}
 
@@ -115,7 +115,7 @@ module.exports = class Player {
 			.setURL(info.url)
 			.setColor(Colors.Red)
 			.setTimestamp(new Date())
-			// @ts-expect-error
+			// @ts-expect-error // something wrong here, idfk
 			.setFooter(this.#client.config.embedFooter(this.#client));
 
 		if (info.title) {
@@ -133,8 +133,9 @@ module.exports = class Player {
 	}
 
 	async addTrack(message: Message, args: string[]) {
-		let startMillis;
 		let info = false as YouTubeVideo | false;
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 		if (message.member?.voice.channel === undefined || message.member.voice.channel === null) return "Connect to a Voice Channel";
 
 		const videoName = args.map(e => e.trim()).join(" ").trim();
@@ -145,20 +146,14 @@ module.exports = class Player {
 		if (videoName.startsWith("https") && yt_validate(videoName) === "video") {
 			url = videoName;
 		} else {
-			startMillis = Date.now();
 			const yt_infos = await search(args.join(" "), { limit: 10 });
-			console.debug("Search took " + (Date.now() - startMillis) + "ms");
 			let currentInfo = 0;
-			startMillis = Date.now();
 			do {
 				url = yt_infos[currentInfo].url;
 				currentInfo++;
 				info = await isNotAgeRestricted(url);
 			} while (info === false && currentInfo < yt_infos.length);
-			console.debug("Age check took " + (Date.now() - startMillis) + "ms");
 		}
-
-		startMillis = Date.now();
 
 		if (info === false) {
 			try {
@@ -166,23 +161,22 @@ module.exports = class Player {
 			} catch (err) { }
 		}
 		if (info === undefined) {
-			if (this.#queue.get(message.guild!.id)?.queue.length === 0) return;
+			if (this.#queue.get(message.guild.id)?.queue.length === 0) return;
 			const returnValue = this.skip(message) as CommandReturnWithoutString;
-			returnValue!.content = "Can't play tracks requiring age verification! Skipping...";
+			if (returnValue === null) throw new Error("CommandReturn is null");
+			returnValue.content = "Can't play tracks requiring age verification! Skipping...";
 			return returnValue;
 		}
 
 		info = info as YouTubeVideo;
 
-		console.debug("Getting info took " + (Date.now() - startMillis) + "ms");
-
-		if (!this.#queue.has(message.guild!.id)) {
-			this.#newQueue(message.guild!.id);
-			const queue = this.#queue.get(message.guild!.id);
+		if (!this.#queue.has(message.guild.id)) {
+			this.#newQueue(message.guild.id);
+			const queue = this.#queue.get(message.guild.id);
 			const connection = joinVoiceChannel({
-				channelId: message.member!.voice.channel.id,
-				guildId: message.guild!.id,
-				adapterCreator: message.guild!.voiceAdapterCreator
+				channelId: message.member.voice.channel.id,
+				guildId: message.guild.id,
+				adapterCreator: message.guild.voiceAdapterCreator
 			});
 
 			const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause } });
@@ -190,8 +184,8 @@ module.exports = class Player {
 
 			queue.connection = connection;
 			queue.player = player;
-			queue.voiceChannel = message.member!.voice.channel.id;
-			queue.guildId = message.guild!.id;
+			queue.voiceChannel = message.member.voice.channel.id;
+			queue.guildId = message.guild.id;
 
 			queue.connection.on(VoiceConnectionStatus.Disconnected, async () => {
 				try {
@@ -206,29 +200,32 @@ module.exports = class Player {
 			});
 
 			queue.player.on("error", (err: Error) => {
+				if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 				message.channel.send("An error occurred while playing the track.");
-				this.#destroyQueue(message.guild!.id);
+				this.#destroyQueue(message.guild.id);
 				err;
 			});
 
 			queue.player.on(AudioPlayerStatus.Idle, () => {
+				if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 				if (queue.loop) queue.queue.push(queue.current);
 				const queueElement = queue.queue.shift();
 				if (queueElement === undefined) {
-					this.#destroyQueue(message.guild!.id);
+					if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+					this.#destroyQueue(message.guild.id);
 					return { content: "Played all tracks leaving the channel.", announce: true };
 				}
-				this.play(message.guild!.id, queueElement);
+				this.play(message.guild.id, queueElement);
 			});
 
 			// @ts-expect-error // I gotta make a type for this
-			this.play(message.guild!.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
+			this.play(message.guild.id, { url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
 			return "Started playing track!";
 		}
 
-		const queue = this.#queue.get(message.guild!.id);
+		const queue = this.#queue.get(message.guild.id);
 
-		if (queue.voiceChannel !== message.member!.voice.channel.id) {
+		if (queue.voiceChannel !== message.member.voice.channel.id) {
 			return "You have to be in the same voice channel as the bot to add new tracks.";
 		}
 
@@ -238,46 +235,54 @@ module.exports = class Player {
 	}
 
 	skip(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+		if (message.member.voice?.channel === null || message.member.voice.channel === undefined) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to skip tracks.";
 
 		const queueElement = queue.queue.shift();
 
 		if (queueElement === undefined && !queue.loop) {
 			if (queue.loop) {
-				this.play(message.guild!.id, queueElement || queue.current);
+				this.play(message.guild.id, queueElement || queue.current);
 			} else {
-				this.#destroyQueue(message.guild!.id);
+				this.#destroyQueue(message.guild.id);
 			}
 			return { content: "Skipped last track. Leaving channel!", announce: true };
 		} else {
-			this.play(message.guild!.id, queueElement || queue.current);
+			this.play(message.guild.id, queueElement || queue.current);
 			return { content: "Skipped track.", announce: true };
 		}
 	}
 
 	stop(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to stop the bot.";
 
-		this.#destroyQueue(message.guild!.id);
+		this.#destroyQueue(message.guild.id);
 		return { content: "Leaving channel.", announce: true };
 	}
 
 	shuffle(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to shuffle the queue.";
 
 		queue.queue.shuffle();
@@ -293,11 +298,14 @@ module.exports = class Player {
 	}
 
 	clearQueue(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined || queue.queue.length == 0) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to clear the queue.";
 
 		queue.queue.clear();
@@ -310,20 +318,24 @@ module.exports = class Player {
 	}
 
 	troll(message: Message) {
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return;
 		queue.queue.clear();
 		/* Playing Never Gonna Give You Up bc we do miniscule amounts of trolling */
 		// @ts-expect-error // I gotta make a type for this
-		this.play(message.guild!.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
+		this.play(message.guild.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
 	}
 
 	toggleLoop(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to toggle looping.";
 
 		queue.loop = !queue.loop;
@@ -335,11 +347,14 @@ module.exports = class Player {
 	}
 
 	pause(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "You have to be in the same voice channel as the bot to pause the track";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "There is nothing playing";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to pause the track";
 
 		if (queue.player.state.status == "playing") {
@@ -351,11 +366,14 @@ module.exports = class Player {
 	}
 
 	resume(message: Message) {
-		if (message.member!.voice?.channel === undefined) return "Connect to a Voice Channel";
-		const queue = this.#queue.get(message.guild!.id);
+		if (message.member === null) throw new Error("Member is null");
+		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
+
+		if (message.member.voice?.channel === undefined || message.member.voice?.channel === null) return "Connect to a Voice Channel";
+		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return "No queue for guild.";
 
-		if (queue.voiceChannel !== message.member!.voice.channel!.id)
+		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to pause";
 
 		if (queue.player.state.status == "paused") {
@@ -383,5 +401,6 @@ type QueueElement = {
 	channel: BaseChannel;
 	title: string;
 	duration?: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idk what type this is
 	thumbnails: any[];
 };

@@ -1,4 +1,4 @@
-const { loadImage, createCanvas } = require("canvas");
+import { loadImage, createCanvas } from "canvas";
 const express = require("express");
 const path = require("path");
 

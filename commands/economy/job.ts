@@ -77,7 +77,7 @@ module.exports = {
 				return "Level too low for this job";
 			}
 
-			userData.jobinfo.id = args[0];
+			userData.jobinfo.id = +args[0];
 			userList.findByIdAndUpdate(userData._id, { jobinfo: userData.jobinfo }, (err: Error, data: unknown) => {
 				if (err) console.error(err);
 				if (!data) return "Error: User not found.";

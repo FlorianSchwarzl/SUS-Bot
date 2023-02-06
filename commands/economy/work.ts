@@ -1,7 +1,7 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
-const userList = require("../../schemas/user");
+import userList from "../../schemas/user";
 const jobs = require("./resources/jobs.json").jobs;
 
 module.exports = {

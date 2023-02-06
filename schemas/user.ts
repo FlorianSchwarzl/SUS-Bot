@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
 	_id: Schema.Types.ObjectId,
@@ -19,3 +19,21 @@ const userSchema = new Schema({
 });
 
 export default model("user", userSchema, "users");
+
+export interface UserScheme {
+	_id: Schema.Types.ObjectId;
+	userId: string;
+
+	level: {
+		xp: number;
+	};
+
+	economy: {
+		wallet: number;
+		bank: number;
+	};
+
+	jobinfo: {
+		id: number;
+	};
+}

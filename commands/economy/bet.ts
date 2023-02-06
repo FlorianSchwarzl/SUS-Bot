@@ -24,7 +24,7 @@ module.exports = {
 				}
 			);
 		}
-		else if (args[0] > userData.economy.wallet) {
+		else if (+args[0] > userData.economy.wallet) {
 			embed.addFields(
 				{
 					name: "Bet failed!",
@@ -48,7 +48,7 @@ module.exports = {
 					);
 					break;
 				default:
-					userData.economy.wallet += args[0];
+					userData.economy.wallet += +args[0];
 					embed.addFields(
 						{
 							name: "You won!",

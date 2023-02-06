@@ -17,7 +17,7 @@ module.exports = {
 	run(_client, _message, args, _guildData, userData, _isSlashCommand) {
 		let amount = args[0];
 		if (amount && IsSomething.isNumber(amount)) {
-			if (amount > userData.economy.bank) amount = userData.economy.bank;
+			if (+amount > userData.economy.bank) amount = "" + userData.economy.bank;
 			userData.economy.bank -= +amount;
 			userData.economy.wallet += +amount;
 			userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: UserData) => {

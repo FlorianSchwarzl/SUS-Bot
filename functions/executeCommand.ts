@@ -56,9 +56,10 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 	try {
 		if (command.commandOptions?.guildOnly && interaction.guildId === null) return interaction.reply("This command can only be used in a server.");
 
-		let guildData;
+		let guildData = null;
 		if (interaction.guild)
 			guildData = await getGuildData(interaction.guild.id);
+		if (guildData === undefined) guildData = null;
 
 		const userData = await getUserData(interaction.author.id);
 
@@ -77,7 +78,7 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 		// @ts-expect-error // cause if it's undefined, it's not doing anything anyway
 		const success = returnValue.success || command.commandOptions?.defaultReturn?.success;
 
-		if (success) {
+		if (!(success === false) && command.commandOptions?.cooldown) {
 			if (returnValue.setCooldown)
 				returnValue.setCooldown.push(command);
 			else

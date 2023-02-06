@@ -22,6 +22,7 @@ module.exports = {
 	default_member_permissions: permissionStrings.ManageChannels,
 
 	async run(_client, message, args, guildData, _userData, _isSlashCommand) {
+		if (guildData === null) return "Error: Guild not found.";
 		let channel = global.functions.getChannelFromMention(message.guild, args[0]);
 		channel ||= message.channel;
 		const current = guildData.channels;

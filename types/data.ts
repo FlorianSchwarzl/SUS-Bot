@@ -1,5 +1,5 @@
-import userModel from "../schemas/user";
-import guildModel from "../schemas/guild";
+import { UserScheme } from "../schemas/user";
+import { GuildScheme } from "../schemas/guild";
 
-export type UserData = typeof userModel;
-export type GuildData = typeof guildModel;
+export type UserData = UserScheme;
+export type GuildData = GuildScheme | null;

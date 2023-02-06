@@ -5,11 +5,10 @@ import messages from "../../resources/messages.json";
 import { UserData } from "../../types/data";
 
 module.exports = {
-	ignore: true, // the messages is kinda broken
-	//TODO: fix the messages
-
 	description: "Beg to earn money",
-	cooldown: 60,
+	commandOptions: {
+		cooldown: 60
+	},
 
 	run(_client, message, _args, _guildData, userData, _isSlashCommand) {
 		if (userData.economy?.wallet < 200)
@@ -18,12 +17,12 @@ module.exports = {
 		userData.economy.wallet += earned;
 		userList.findByIdAndUpdate(userData._id, { economy: userData.economy }, (err: Error, data: UserData) => {
 			if (err) console.error(err);
-			if (!data) return "Error: User not found.";
+			if (!data) return { content: "Error: User not found.", success: false };
 		});
 		userData.level.xp += 2;
 		userList.findByIdAndUpdate(userData._id, { level: userData.level }, (err: Error, data: UserData) => {
 			if (err) console.error(err);
-			if (!data) return "Error: User not found.";
+			if (!data) return { content: "Error: User not found.", success: false };
 		});
 		if (!(Math.floor(userData.level.xp / 50 /*0.5*/) === (Math.floor((userData.level.xp - 5) / 50) /*0.6*/))) {
 			message.channel?.send(`<@${userData.userId}>` + " just levelled up!");
