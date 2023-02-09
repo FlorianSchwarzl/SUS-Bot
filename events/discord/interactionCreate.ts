@@ -25,26 +25,24 @@ module.exports = async (client: Client<true>, interaction: Interaction) => {
 			// @ts-expect-error // same as above
 			args = interaction.options?._hoistedOptions.map(e => e.value);
 			break;
-		case "BUTTON":
+		case "BUTTON": {
 			// @ts-expect-error // same as above
-			if (interaction.customId.startsWith("command:")) {
-				// @ts-expect-error // same as above
-				cmd = client.commands.get("command:" + interaction.customId.slice(8));
-				// @ts-expect-error // same as above
-				args = interaction.customId.slice(8).split(" ");
-				args.shift();
-			} else {
-				// @ts-expect-error // same as above
-				cmd = client.commands.get("button:" + interaction.customId.split(" ")[0]);
-				// @ts-expect-error // same as above
-				args = interaction.customId.split(" ");
-				args.shift();
+			const commandString = interaction.customId;
+			let commandName = commandString.split(" ")[0];
+			if (!(/^.*:.*/.test(commandName))) {
+				commandName = "button:" + commandName;
 			}
+			args = commandString.split(" ");
+			args.shift();
+			console.debug(commandName);
+			cmd = client.commands.get(commandName);
+			console.debug(cmd, client.commands);
 			isComponent = true;
 			break;
+		}
 		case "SELECT_MENU":
 			// @ts-expect-error // same as above
-			cmd = client.commands.get("selectMenu:" + interaction.customId);
+			cmd = client.commands.get("selectmenu:" + interaction.customId);
 			// @ts-expect-error // same as above
 			args = interaction.customId.split(" ");
 			// @ts-expect-error // same as above

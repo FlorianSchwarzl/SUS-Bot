@@ -110,6 +110,7 @@ function loadCommands(dirName: string, removeTrailingS = true) {
 			return console.warn(`./${dirName}/${dir} is not a directory.`);
 		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
 			const command = require(`./${dirName}/${dir}/${file}`);
+			dirNameCollection = dirNameCollection.toLocaleLowerCase();
 			command.category = `${dirNameCollection}:` + dir;
 			command.name ||= file.replace(/(\.ts)$/, "");
 			command.name = `${dirNameCollection}:` + command.name.toLowerCase();

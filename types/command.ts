@@ -11,6 +11,7 @@ export interface Command {
 	default_member_permissions?: string;
 	commandOptions?: CommandOptions;
 	category?: string;
+	usage?: string;
 	run: (client: Client<true>, message: CommandInteraction<CacheType> | Message<boolean>, args: string[], guildData: GuildData, userData: UserData, isInteraction: boolean) => CommandReturns;
 }
 
