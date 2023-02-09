@@ -5,7 +5,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = r
 
 module.exports = {
 	description: "Clears your level",
-	aliases: ["cll", "clearlevel", "resetlevel", "rl", "resetlvl", "clearlvl"],
+	aliases: ["clearXP", "resetXP", "clearLevel", "resetLevel"],
 
 	run(client, message, _args, _guildData, _userData, _isInteraction) {
 		const embed = new EmbedBuilder()
