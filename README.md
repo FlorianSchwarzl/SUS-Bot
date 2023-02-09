@@ -8,7 +8,7 @@ SUS-Bot is a Bot we made for our Discord Server "Stupid Useless Server" (SUS). I
 
 Disclaimer! The Bot is currently under heavy development so it might not be online all the time.
 
-1. Go to the [Invite Page](https://discord.com/api/oauth2/authorize?client_id=1043594673614225429&permissions=8&scope=bot)
+1. Go to the [Invite Page](https://discord.com/api/oauth2/authorize?client_id=1043594673614225429&permissions=8&scope=bot%20applications.commands)
 2. Select your Server
 3. Grant the Permissions
 4. Enjoy
