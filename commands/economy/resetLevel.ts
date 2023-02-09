@@ -1,3 +1,4 @@
+import { BaseInteraction, DMChannel } from "discord.js";
 import { Command } from "../../types/command";
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require("discord.js");
@@ -6,7 +7,7 @@ module.exports = {
 	description: "Clears your level",
 	aliases: ["cll", "clearlevel", "resetlevel", "rl", "resetlvl", "clearlvl"],
 
-	run(client, _message, _args, _guildData, _userData, isInteraction) {
+	run(client, message, _args, _guildData, _userData, _isInteraction) {
 		const embed = new EmbedBuilder()
 			.setTitle("Reset Level")
 			.setDescription("Are you sure you want to reset your level?")
@@ -14,7 +15,7 @@ module.exports = {
 			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
-		if (isInteraction) {
+		if (message instanceof BaseInteraction || message.channel instanceof DMChannel) {
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()

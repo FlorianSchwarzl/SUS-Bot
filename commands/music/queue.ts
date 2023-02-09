@@ -4,7 +4,8 @@ module.exports = {
 	description: "Shows the song queue",
 	aliases: ["q"],
 	commandOptions: {
-		connectedToSameVC: true
+		connectedToSameVC: true,
+		guildOnly: true
 	},
 
 	async run(client, message, _args, _guildData, _userData, _isSlashCommand) {

@@ -6,7 +6,10 @@ module.exports = {
 	aliases: ["t"],
 	category: "Music",
 	description: "A wild troll appeared.",
-	connectedToVC: true,
+	commandOptions: {
+		connectedToSameVC: true,
+		guildOnly: true
+	},
 
 	run(client, message, _args, _guildData, _userData, _isSlashCommand) {
 		if (!(message instanceof CommandInteraction)) message.delete();

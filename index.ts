@@ -4,8 +4,9 @@
 import { Command } from "./types/command";
 import ModifiedClient from "./types/client";
 import getFiles from "./functions/getFiles";
+import { Partials } from "discord.js";
 
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, Collection, IntentsBitField } = require("discord.js");
 const { connect, connection, set } = require("mongoose");
 const Player = require("./music/player");
 const fs = require("fs");
@@ -23,14 +24,17 @@ declare global {
 
 console.clear();
 
+const intents = new IntentsBitField();
+intents.add(IntentsBitField.Flags.Guilds);
+intents.add(IntentsBitField.Flags.GuildMembers);
+intents.add(IntentsBitField.Flags.GuildMessages);
+intents.add(IntentsBitField.Flags.GuildVoiceStates);
+intents.add(IntentsBitField.Flags.MessageContent);
+intents.add(IntentsBitField.Flags.DirectMessages);
+
 const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildVoiceStates,
-		GatewayIntentBits.MessageContent
-	]
+	intents: intents,
+	partials: [Partials.Channel],
 }) as ModifiedClient<true>;
 
 /* add important stuff to client */

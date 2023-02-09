@@ -4,7 +4,8 @@ module.exports = {
 	description: "Shows the current song",
 	aliases: ["current"],
 	commandOptions: {
-		connectedToSameVC: true
+		connectedToSameVC: true,
+		guildOnly: true
 	},
 
 	async run(client, message, _args, _guildData, _userData, _isSlashCommand) {

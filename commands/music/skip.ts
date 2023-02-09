@@ -4,7 +4,8 @@ module.exports = {
 	description: "Skips current track",
 	aliases: ["next"],
 	commandOptions: {
-		connectedToSameVC: true
+		connectedToSameVC: true,
+		guildOnly: true
 	},
 
 	run(client, message, _args, _guildData, _userData, _isSlashCommand) {

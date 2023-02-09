@@ -1,3 +1,4 @@
+import { BaseInteraction, DMChannel } from "discord.js";
 import { Command } from "../../types/command";
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require("discord.js");
@@ -6,7 +7,7 @@ module.exports = {
 	description: "Clears your balance",
 	aliases: ["clb", "clearbalance", "resetbalance", "rb", "resetbal", "clearbal"],
 
-	run(client, _message, _args, _guildData, _userData, isInteraction) {
+	run(client, message, _args, _guildData, _userData, _isInteraction) {
 		const embed = new EmbedBuilder()
 			.setTitle("Reset Balance")
 			.setDescription("Are you sure you want to reset your balance?")
@@ -14,7 +15,7 @@ module.exports = {
 			// @ts-expect-error // TODO: Fix this
 			.setFooter(client.config.embedFooter(client));
 
-		if (isInteraction) {
+		if (message instanceof BaseInteraction || message.channel instanceof DMChannel) {
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()

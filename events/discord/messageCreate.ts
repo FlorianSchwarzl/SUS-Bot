@@ -1,16 +1,19 @@
-import { Message } from "discord.js";
+import { ChannelType, Message } from "discord.js";
 import Client from "../../types/client";
 
 import guildModel from "../../schemas/guild";
 
 module.exports = async (client: Client<true>, message: Message) => {
 	if (message.author.bot) return;                                                 // Ignore bots
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const guildData = await getGuildData(message.guild!.id);
 
-	if (global.functions.counter(message, guildData)) return;                                        // Check if the message is in the counter channel, if so, run the counter function
+	if (message.channel.type !== ChannelType.DM) {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const guildData = await getGuildData(message.guild!.id);
 
-	if (!global.functions.checkChannelID(message, guildData)) return;                                  // Ignore messages not in allowed channels
+		if (global.functions.counter(message, guildData)) return;                                        // Check if the message is in the counter channel, if so, run the counter function
+
+		if (!global.functions.checkChannelID(message, guildData)) return;                                  // Ignore messages not in allowed channels
+	}
 
 	const prefix = client.config.prefix;                                            // Get the prefix from the .env file
 

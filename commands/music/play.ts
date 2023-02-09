@@ -4,7 +4,10 @@ import { ApplicationCommandOptionType } from "discord.js";
 module.exports = {
 	description: "Adds a song to the queue",
 	aliases: ["p"],
-	connectedToVC: true,
+	commandOptions: {
+		connectedToVC: true,
+		guildOnly: true
+	},
 
 	options: [
 		{

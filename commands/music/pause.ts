@@ -4,7 +4,8 @@ module.exports = {
 	aliases: [],
 	description: "Pauses the current song",
 	commandOptions: {
-		connectedToSameVC: true
+		connectedToSameVC: true,
+		guildOnly: true
 	},
 
 	run(client, message, _args, _guildData, _userData, _isSlashCommand) {

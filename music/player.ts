@@ -48,27 +48,32 @@ module.exports = class Player {
 		this.#client = client;
 
 		this.#client.on("voiceStateUpdate", (oldState, newState) => {
+			let channelId = newState.channelId;
+			if (channelId === undefined) channelId = oldState.channelId;
+
 			const queue = this.getQueue(newState.guild.id);
 
-			if (queue === undefined || oldState.channelId === null) {
-				return;
-			}
+			if (queue === undefined) return;
 
-			if (oldState.id !== this.#client.user.id) {
-				if (this.#channelEmpty(oldState.channelId)) {
-					queue.current.channel.send("Leaving channel because it is empty.");
-					this.#destroyQueue(newState.guild.id);
-				}
-				return;
-			}
-			if (newState.channelId === undefined) {
-				queue.current.channel.send("I have been kicked from the channel.");
+			if (channelId === null) channelId = queue.voiceChannel;
+
+			channelId = channelId as string;
+
+			if (channelId === null) return;
+
+			if (this.#channelEmpty(channelId)) {
+				queue.current.channel.send("Leaving channel because it is empty.");
 				this.#destroyQueue(newState.guild.id);
 			}
 
-			if (oldState.channelId !== newState.channelId) {
-				queue.voiceChannel = newState.channelId;
-			}
+			// @ts-expect-error // MiMiMiMiMi i don't care
+			if (newState.guild.voiceAdapterCreator.channel) return queue.current.channel.send("I have been kicked from the channel.");
+
+			if (queue === undefined) return;
+
+			if (oldState.id !== this.#client.user.id) return;
+
+			queue.voiceChannel = channelId;
 		});
 	}
 
@@ -99,7 +104,19 @@ module.exports = class Player {
 		if (guildInfo === undefined) return;
 		guildInfo.current = track;
 
-		const streamReturn = await stream(track.url);
+		let streamReturn;
+		try {
+			streamReturn = await stream(track.url);
+		} catch (e: any) {
+			if (e.message.includes("Private")) {
+				// @ts-expect-error // MiMiMiMiMi i don't care
+				track.channel.send("This video is private. Skipping.");
+			} else
+				// @ts-expect-error // MiMiMiMiMi i don't care
+				track.channel.send("An error occurred while playing the track. Skipping.");
+			this.skipTrack(guildId);
+			return;
+		}
 		const resource = createAudioResource(streamReturn.stream, { inputType: streamReturn.type });
 
 		guildInfo.player.play(resource);
@@ -244,17 +261,24 @@ module.exports = class Player {
 		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to skip tracks.";
 
+		this.skipTrack(message.guild.id, queue);
+	}
+
+	skipTrack(guildId: string, queue?: any) {
+		if (queue === undefined) queue = this.#queue.get(guildId);
+		if (queue === undefined) return "No queue for guild.";
+
 		const queueElement = queue.queue.shift();
 
 		if (queueElement === undefined && !queue.loop) {
 			if (queue.loop) {
-				this.play(message.guild.id, queueElement || queue.current);
+				this.play(guildId, queueElement || queue.current);
 			} else {
-				this.#destroyQueue(message.guild.id);
+				this.#destroyQueue(guildId);
 			}
 			return { content: "Skipped last track. Leaving channel!", announce: true };
 		} else {
-			this.play(message.guild.id, queueElement || queue.current);
+			this.play(guildId, queueElement || queue.current);
 			return { content: "Skipped track.", announce: true };
 		}
 	}
@@ -314,7 +338,7 @@ module.exports = class Player {
 
 	#channelEmpty(channelId: string) {
 		// @ts-expect-error // I gotta make this compatible with DM Channels
-		return this.#client.channels.cache.get(channelId)?.members.filter((member: GuildMember) => !member.user.bot).size === 0;
+		return this.#client.channels.cache.get(channelId)?.members.filter((member: GuildMember) => !member.user.bot).size < 1;
 	}
 
 	troll(message: Message) {

@@ -1,4 +1,4 @@
-import { PermissionResolvable, Message, ActionRowBuilder } from "discord.js";
+import { PermissionResolvable, Message, ActionRowBuilder, ButtonInteraction } from "discord.js";
 import { Command, CommandReturns, CommandReturnWithoutString } from "../types/command";
 import Client from "../types/client";
 import logTime from "../logTime";
@@ -13,17 +13,23 @@ import sendMessage from "./sendMessage";
 module.exports = async (command: Command, client: Client<true>, interaction: Message, args: string[], isInteraction: boolean, isComponent = false) => {
 	if (command === undefined) return;
 	if (interaction === undefined) return;
-	if (interaction.member === null) return interaction.reply("You need to be in a server to use this command.");
+	if (interaction.member === null && command.commandOptions?.guildOnly) return interaction.reply("You need to be in a server to use this command.");
 	if (client === undefined) return interaction.reply("The bot is currently restarting. Please try again in a few seconds.");
 
-	// @ts-expect-error // It will only use the .message property if it's a component interaction
-	interaction.author ||= interaction.message.author;
+	let userId: string;
+
+	if (interaction instanceof Message) {
+		userId = interaction.author.id;
+	} else {
+		// @ts-expect-error // why would it ever be never?
+		userId = interaction.user.id;
+	}
 
 	if (command.ignore) return interaction.reply("This command is currently disabled.");
 
 	if (command.default_member_permissions
 		&& !isInteraction
-		&& !interaction.member.permissions.has(command.default_member_permissions as PermissionResolvable)) {
+		&& !interaction.member?.permissions.has(command.default_member_permissions as PermissionResolvable)) {
 		const permissionString = getPermissionsString(command.default_member_permissions);
 		const moreThanOne = (permissionString.match(/,/g) || []).length;
 		const outputString = `You don't have the permission to use this command. You need the following permission${moreThanOne ? "s" : ""}: ${permissionString}`;
@@ -33,16 +39,16 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 	if (command.commandOptions?.connectedToSameVC)
 		command.commandOptions.connectedToVC = true;
 
-	if (command.commandOptions?.connectedToVC && !interaction.member.voice?.channel)
+	if (command.commandOptions?.connectedToVC && !interaction.member?.voice?.channel)
 		return interaction.reply("You need to be in a voice channel to use this command.");
 
-	if (command.commandOptions?.connectedToSameVC && client.player?.getQueue(interaction.guildId)?.voiceChannel !== interaction.member.voice?.channel?.id) {
+	if (command.commandOptions?.connectedToSameVC && client.player?.getQueue(interaction.guildId)?.voiceChannel !== interaction.member?.voice?.channel?.id) {
 		if (client.player.getQueue(interaction.guildId)?.voiceChannel === undefined)
 			return interaction.reply("I am not in a voice channel.");
 		return interaction.reply("You need to be in the same voice channel as me to use this command.");
 	}
 
-	const cooldownReturn = checkCooldown(command, interaction, client);
+	const cooldownReturn = checkCooldown(command, userId, client);
 	if (typeof cooldownReturn === "string") return interaction.reply(cooldownReturn);
 
 	// makes reply unavailable so two replies can't be sent
@@ -61,7 +67,7 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 			guildData = await getGuildData(interaction.guild.id);
 		if (guildData === undefined) guildData = null;
 
-		const userData = await getUserData(interaction.author.id);
+		const userData = await getUserData(userId);
 
 		const startTime = process.hrtime();
 		const returnValue: CommandReturnWithoutString = await formatCommandReturn(command.run(client, interaction, args, guildData, userData, isInteraction), command);
@@ -90,7 +96,7 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 
 		if (cooldownArray !== undefined)
 			cooldownArray.forEach(commandObject => {
-				setCooldown(commandObject, interaction, client);
+				setCooldown(commandObject, userId, client);
 			});
 
 		// makes reply available again
@@ -170,7 +176,7 @@ function getPermissionsString(permissionString: string) {
 	return perms.join(", ");
 }
 
-function setCooldown(commandString: Command | string, interaction: Message, client: Client<true>) {
+function setCooldown(commandString: Command | string, userId: string, client: Client<true>) {
 	let command: Command;
 	if (typeof commandString === "string") {
 		const getCommand = client.commands.get(commandString);
@@ -182,13 +188,13 @@ function setCooldown(commandString: Command | string, interaction: Message, clie
 	if (command.name === undefined) return console.error("Could not set cooldown, command has no name: " + command.name);
 	const cooldown = client.commandCooldowns.get(command.name);
 	if (cooldown === undefined) throw new Error("Could not set cooldown, command not found: " + command.name);
-	cooldown.set(interaction.author.id, Date.now() + command.commandOptions?.cooldown * 1000);
+	cooldown.set(userId, Date.now() + command.commandOptions?.cooldown * 1000);
 	setTimeout(() => {
-		cooldown.delete(interaction.author.id);
+		cooldown.delete(userId);
 	}, command.commandOptions?.cooldown * 1000);
 }
 
-function checkCooldown(commandString: Command | string, interaction: Message, client: Client<true>): string | boolean {
+function checkCooldown(commandString: Command | string, userId: string, client: Client<true>): string | boolean {
 	let command: Command;
 	if (typeof commandString === "string") {
 		const getCommand = client.commands.get(commandString);
@@ -199,12 +205,12 @@ function checkCooldown(commandString: Command | string, interaction: Message, cl
 	if (command.name === undefined) throw new Error("Could not check cooldown, command has no name: " + command.name);
 	const cooldown = client.commandCooldowns.get(command.name);
 	if (cooldown === undefined) throw new Error("Could not set cooldown, command not found: " + command.name);
-	const authorCooldown = cooldown.get(interaction.author.id);
+	const authorCooldown = cooldown.get(userId);
 	if (authorCooldown === undefined) return false;
 	let timeLeft = authorCooldown - Date.now();
 	timeLeft /= 1000;
 	if (timeLeft < 0) {
-		cooldown.delete(interaction.author.id);
+		cooldown.delete(userId);
 		return false;
 	}
 	const timeString = global.functions.convertTime(timeLeft);

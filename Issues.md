@@ -19,7 +19,7 @@
 - [ ] make a leaderboard command
 - [x] coinflip returns nothing
 - [x] coinflip has no right to exist in the current state
-- [ ] clear works only when deleting under 50 messages, else it times out
+- [x] clear works only when deleting under 50 messages, else it times out
 - [ ] all set-*-channel commands are broken as they don't work with slash commands
 - [ ] tempban "guildInfo" is not defined
 - [ ] unban doesn't work at all
@@ -56,3 +56,5 @@ message_reference: Unknown message
 - [x] search gives you a cooldown even when you didn't search anything
 - [ ] job doesn't display which level is required to get the job
 - [ ] coinflip "You are victorious!"... Like WTF?! Mb think 5 secs before writing that
+- [ ] when adding videos via an url, the bot doesn't check if the url is valid, so the queue element could be undefined, when trying to skip and it's undefined the bot prints an error to the console and doesn't skip the song, when asked to skip again it skips to the song after the undefined one
+- [ ] when joining from another channel, the bot says "Leaving channel because it is empty" and leaves the channel

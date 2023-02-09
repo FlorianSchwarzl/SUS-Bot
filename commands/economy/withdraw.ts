@@ -3,7 +3,8 @@ import { ApplicationCommandOptionType } from "discord.js";
 import { UserData } from "../../types/data";
 
 const { IsSomething } = require("sussy-util");
-const userList = require("../../schemas/user");
+import userList from "../../schemas/user";
+
 module.exports = {
 	description: "Withdraw money from your bank account",
 	aliases: ["with", "wth"],
