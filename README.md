@@ -1,6 +1,8 @@
 # SUS-Bot
 
-SUS-Bot is a Bot we made for our Discord Server "Stupid Useless Server" (SUS). It is written in JavaScript and uses the Discord.js Library. Any help is appreciated. Just make a Pull Request and we will check it out.
+An all in one open-source discord bot currently under heavy develpment!
+
+The bot can play songs from youtube, moderate and add a economy system to your server! Or it can be used as a framework for your custom commands.
 
 ## How to use
 
