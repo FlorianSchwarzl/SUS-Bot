@@ -80,7 +80,6 @@ module.exports = async (command: ProcessedCommands, client: Client<true>, intera
 		const userData = await getUserData(userId);
 
 		const startTime = process.hrtime();
-		// @ts-expect-error // I just set it to runnable commands
 		const returnValue: CommandReturnWithoutString = await formatCommandReturn(command.run(client, interaction, args, guildData, userData, isInteraction), command);
 		logTime(command, process.hrtime(startTime));
 

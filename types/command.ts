@@ -70,10 +70,14 @@ export type ProcessedCommand = Command & { name: string };
 
 export type ProcessedCommandRedirect = CommandRedirect & { name: string };
 
+export type ComponentRedirect = Omit<Component, "run"> & { redirect: string };
+
+export type ProcessedComponentRedirect = ComponentRedirect & { name: string };
+
 export type ProcessedComponent = Component & { name: string };
 
-export type ProcessedCommands = ProcessedCommand | ProcessedCommandRedirect | ProcessedComponent;
+export type ProcessedCommands = ProcessedCommand | ProcessedCommandRedirect | ProcessedComponent | ProcessedComponentRedirect;
 
-export type ProcessedRunnableCommands = ProcessedCommand | ProcessedCommandRedirect;
+export type ProcessedRunnableCommands = ProcessedCommand;
 
-export type Commands = Command | CommandRedirect | Component;
+export type Commands = Command | CommandRedirect | Component | ComponentRedirect;
