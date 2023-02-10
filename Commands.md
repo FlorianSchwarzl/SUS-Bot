@@ -3,30 +3,30 @@
 ## Economy
 
 - [x] balance
-- [ ] beg
+- [x] beg
 - [x] bet
 - [x] deposit
 - [x] job
 - [x] level
-- [x] resetBalance
-- [x] resetLevel
+- [ ] resetBalance
+- [ ] resetLevel
 - [x] search
 - [x] withdraw
 - [x] work
 
 ## Games
 
-- [x] coinflip
-- [x] numberGuess
+- [ ] coinflip
+- [ ] numberGuess
 
 ## General
 
 - [ ] help
-- [x] info
-- [x] invite
-- [x] inviteBot
-- [x] serverInfo
-- [x] userInfo
+- [ ] info
+- [ ] invite
+- [ ] inviteBot
+- [ ] serverInfo
+- [ ] userInfo
 
 ## Moderation
 
@@ -45,15 +45,15 @@
 
 ## Music
 
-- [x] clear-queue
-- [x] loop
-- [x] nowPlaying
-- [x] pause
-- [x] play
-- [x] queue
+- [ ] clear-queue
+- [ ] loop
+- [ ] nowPlaying
+- [ ] pause
+- [ ] play
+- [ ] queue
 COMING SOON! - [ ] remove
-- [x] resume
-- [x] shuffle
-- [x] skip
-- [x] stop
+- [ ] resume
+- [ ] shuffle
+- [ ] skip
+- [ ] stop
 - [ ] troll

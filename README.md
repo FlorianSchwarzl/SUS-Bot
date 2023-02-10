@@ -4,24 +4,6 @@ SUS-Bot is a Bot we made for our Discord Server "Stupid Useless Server" (SUS). I
 
 ## How to use
 
-### Self Hosting
-
-1. Clone the Repository
-2. Create the `.env` file and fill it with the following content:
-
-```env
-TOKEN= # Your Discord Bot Token
-PREFIX= # The Prefix you want to use. For example: !
-PORT= # Port you want your Website to run on. Example: 80 (http)
-MONGODB= # Your mongodb connection string
-```
-
-3. Open CMD
-4. Navigate to the Repository
-5. Install the Dependencies with `npm i`
-6. Run the Bot with `node .`
-7. Enjoy
-
 ### Invite the Bot
 
 Disclaimer! The Bot is currently under heavy development so it might not be online all the time.
@@ -34,6 +16,24 @@ Disclaimer! The Bot is currently under heavy development so it might not be onli
 P.S. If you want to invite the Bot to your Server, you need to have the `Manage Server` Permission.
 
 P.P.S. The prefix for the hosted Version is `!`
+
+### Self Hosting
+
+1. Clone the Repository
+2. Create the `.env` file and fill it with the following content:
+
+    ```env
+    TOKEN= # Your Discord Bot Token
+    PREFIX= # The Prefix you want to use. For example: !
+    PORT= # Port you want your Website to run on. Example: 80 (http)
+    MONGODB= # Your mongodb connection string
+    ```
+
+3. Open CMD
+4. Navigate to the Repository
+5. Install the Dependencies with `npm i`
+6. Run the Bot with `node .`
+7. Enjoy
 
 ## Commands
 

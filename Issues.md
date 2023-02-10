@@ -1,8 +1,8 @@
 # Issues
 
-- [ ] When outputting time, format seconds to seconds, minutes, hours, days, ...
+- [x] When outputting time, format seconds to seconds, minutes, hours, days, ...
 - [x] When resetting balance/level the YES/NO message can be seen by everyone which would reset the balance of everyone clicking on the button
-- [ ] Fix help command
+- [x] Fix help command
 - [x] Fix coinflip: returned nothing
 - [x] Fix !numberguess:
  Number was generated! The number is: NaN
@@ -10,16 +10,16 @@
  __returned nothing__
 - [x] Fix queue: if queue is too long it could exceed the 2000 character limit imposed by discord
 - [x] deferReply() will crash the bot
-- [ ] beg is currently broken
+- [x] beg is currently broken
 - [ ] fix bet messages, kinda ugly and overcrowded imo
 - [x] search returns nothing
-- [ ] rewrite search so it used buttons instead of having to listen for messages sent by the user
+- [x] rewrite search so it used buttons instead of having to listen for messages sent by the user
 - [x] withdraw returns nothing
 - [ ] can't check balance of other users
 - [ ] make a leaderboard command
 - [x] coinflip returns nothing
 - [x] coinflip has no right to exist in the current state
-- [ ] clear works only when deleting under 50 messages, else it times out
+- [x] clear works only when deleting under 50 messages, else it times out
 - [ ] all set-*-channel commands are broken as they don't work with slash commands
 - [ ] tempban "guildInfo" is not defined
 - [ ] unban doesn't work at all
@@ -53,6 +53,8 @@ message_reference: Unknown message
   }
 }
 - [x] troll returns nothing
-- [ ] search gives you a cooldown even when you didn't search anything
+- [x] search gives you a cooldown even when you didn't search anything
 - [ ] job doesn't display which level is required to get the job
 - [ ] coinflip "You are victorious!"... Like WTF?! Mb think 5 secs before writing that
+- [x] when adding videos via an url, the bot doesn't check if the url is valid, so the queue element could be undefined, when trying to skip and it's undefined the bot prints an error to the console and doesn't skip the song, when asked to skip again it skips to the song after the undefined one
+- [x] when joining from another channel, the bot says "Leaving channel because it is empty" and leaves the channel
