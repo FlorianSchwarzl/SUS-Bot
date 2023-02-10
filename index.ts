@@ -51,7 +51,11 @@ declare global {
 	var functions: any;
 }
 
+console.log("Loading functions...");
+
 global.functions = getFiles("./functions");
+
+console.log("Loading commands...");
 
 /* Loading all the commands. */
 [
