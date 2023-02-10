@@ -1,4 +1,4 @@
-import { PermissionResolvable, Message, ActionRowBuilder, ButtonInteraction } from "discord.js";
+import { PermissionResolvable, Message, ActionRowBuilder } from "discord.js";
 import { ProcessedCommands, CommandReturns, CommandReturnWithoutString, ProcessedRunnableCommands, ProcessedCommandRedirect } from "../types/command";
 import Client from "../types/client";
 import logTime from "../logTime";
@@ -145,7 +145,7 @@ module.exports = async (command: ProcessedCommands, client: Client<true>, intera
 	}
 };
 
-// function that converts default_member_permissions bitfield to a human readable string
+// function that converts default_member_permissions bitField to a human readable string
 
 function getPermissionsString(permissionString: string) {
 	const permissions = parseInt(permissionString);
