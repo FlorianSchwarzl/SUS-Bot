@@ -1,7 +1,7 @@
-import { Command } from "./types/command";
+import { ProcessedCommands } from "./types/command";
 import fs from "fs";
 
-export default (command: Command, tookTime: number[]) => {
+export default (command: ProcessedCommands, tookTime: number[]) => {
 	if (!command.name) return;
 	const timeMs = tookTime[0] * 1000 + tookTime[1] / 1000000;
 	try {

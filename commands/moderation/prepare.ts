@@ -1,4 +1,4 @@
-import { Command } from "../../types/command";
+import { ProcessedCommands, Commands } from "../../types/command";
 import Client from "../../types/client";
 import { CommandInteraction, Message } from "discord.js";
 import permissionStrings from "../../enums/permissionStrings";
@@ -9,7 +9,7 @@ const registering = (client: Client<true>, message: CommandInteraction | Message
 	const embed = new EmbedBuilder()
 		.setTitle("Success");
 
-	client.commands.forEach((command: Command) => {
+	client.commands.forEach((command: ProcessedCommands) => {
 		if (command.name === "prepare") return;
 		// @ts-expect-error // cause name can't be undefined, look at index.ts
 		message.guild?.commands?.create(command).catch((error: Error) => {
@@ -31,4 +31,4 @@ module.exports = {
 		const embed = registering(client, message);
 		return { embeds: [embed] };
 	}
-} as Command;
+} as Commands;

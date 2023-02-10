@@ -1,7 +1,7 @@
 //TODO: Add a command to change the prefix
 //TODO: Add automated testing
 //TODO: Add the ability to automatically give members with a certain level a role
-import { Command } from "./types/command";
+import { ProcessedCommands } from "./types/command";
 import ModifiedClient from "./types/client";
 import getFiles from "./functions/getFiles";
 import { Partials } from "discord.js";
@@ -61,7 +61,7 @@ global.functions = getFiles("./functions");
 ].forEach((name) => loadCommands(name, true));
 
 client.commandCooldowns = new Collection();
-client.commands.forEach((command: Command) => {
+client.commands.forEach((command: ProcessedCommands) => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- I just set it a few lines above
 	client.commandCooldowns.set(command.name!, new Collection());
 });
@@ -109,11 +109,12 @@ function loadCommands(dirName: string, removeTrailingS = true) {
 		if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
 			return console.warn(`./${dirName}/${dir} is not a directory.`);
 		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
-			const command = require(`./${dirName}/${dir}/${file}`);
+			let command = require(`./${dirName}/${dir}/${file}`);
 			dirNameCollection = dirNameCollection.toLocaleLowerCase();
 			command.category = `${dirNameCollection}:` + dir;
 			command.name ||= file.replace(/(\.ts)$/, "");
 			command.name = `${dirNameCollection}:` + command.name.toLowerCase();
+			command = command as ProcessedCommands;
 			client.commands.set(command.name, command);
 		});
 	});

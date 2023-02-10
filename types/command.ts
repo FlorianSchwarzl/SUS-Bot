@@ -4,7 +4,6 @@ import { UserData, GuildData } from "./data";
 
 export interface Command {
 	ignore?: boolean;
-	name?: string;
 	aliases?: string[];
 	description: string;
 	options?: ApplicationCommandOption[];
@@ -27,7 +26,7 @@ interface CommandOptions {
 interface extensionWithoutDM {
 	announce?: boolean;
 	success?: boolean;
-	setCooldown?: Command[];
+	setCooldown?: Commands[];
 	disableOriginal?: boolean;
 	deleteMessage?: boolean | number;
 	deleteReply?: boolean | number;
@@ -63,4 +62,18 @@ export type CommandReturns = CommandReturn | AsyncCommandReturn;
 
 // type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
-export type Component = Omit<Command, "description" | "name" | "aliases" | "options" | "default_member_permissions" | "commandOptions" | "category">;
+export type Component = Omit<Command, "description" | "name" | "aliases" | "options">;
+
+export type CommandRedirect = Omit<Command, "run"> & { redirect: string };
+
+export type ProcessedCommand = Command & { name: string };
+
+export type ProcessedCommandRedirect = CommandRedirect & { name: string };
+
+export type ProcessedComponent = Component & { name: string };
+
+export type ProcessedCommands = ProcessedCommand | ProcessedCommandRedirect | ProcessedComponent;
+
+export type ProcessedRunnableCommands = ProcessedCommand | ProcessedCommandRedirect;
+
+export type Commands = Command | CommandRedirect | Component;

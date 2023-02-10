@@ -23,7 +23,8 @@ module.exports = async (client: Client<true>, message: Message) => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const commandString = args.shift()!.toLowerCase();                               // Get the command name
 	const command = client.commands.get("command:" + commandString) ||                           // Get the command from the commands collection
-		client.commands.find(command => command.aliases && command.aliases.includes(commandString));
+		// @ts-expect-error // If it not defined, it won't be called
+		client.commands.find(command => command.aliases && command.aliases?.includes(commandString));
 	// @ts-expect-error // I am God, I can create whatever I want TS!
 	message.followUp = message.reply;
 

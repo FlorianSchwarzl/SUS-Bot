@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder, StringSelectMenuBuilder } from "discord.js";
 import { StringUtil } from "sussy-util";
 import Client from "../../types/client";
-import { Command, Component } from "../../types/command";
+import { ProcessedCommands, Command, Component } from "../../types/command";
 const convertTime = require("../../functions/convertTime");
 
 // TODO: edit the help menu instead of sending a new one every time to keep the chat clean
@@ -29,14 +29,15 @@ module.exports = {
 	}
 } as Component;
 
-function isCommand(commandName: string, client: Client<true>): Command | false {
+function isCommand(commandName: string, client: Client<true>): ProcessedCommands | false {
 	const cmd = client.commands.get(`command:${commandName}`) ||
-		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+		// @ts-expect-error // it won't trigger if it's undefined
+		client.commands.find(cmd => cmd.aliases && cmd.aliases?.includes(commandName));
 	if (cmd === undefined) return false;
 	return cmd;
 }
 
-function isCategory(categoryName: string, client: Client<true>): Collection<string, Command> | false {
+function isCategory(categoryName: string, client: Client<true>): Collection<string, ProcessedCommands> | false {
 	const commands = client.commands.filter(cmd => cmd.category === "command:" + categoryName);
 	console.debug(client.commands.get("command:help")?.category);
 	if (commands.size === 0) return false;
@@ -81,15 +82,15 @@ function helpMenuDefault(client: Client<true>) {
 	return { embeds: [embed], components: [component] };
 }
 
-function helpMenuCommand(client: Client<true>, commandName: Command | string) {
-	let cmd: Command | false;
+function helpMenuCommand(client: Client<true>, commandName: ProcessedCommands | string) {
+	let cmd: ProcessedCommands | false;
 	if (typeof commandName === "string") {
 		cmd = isCommand(commandName, client);
 		if (cmd === false) return "No command found for: `" + commandName + "`";
 	} else {
 		cmd = commandName;
 	}
-	cmd = cmd as Command;
+	cmd = cmd as ProcessedCommands;
 
 	if (cmd.name === undefined) return "No command found for: `" + commandName + "`";
 
@@ -117,11 +118,13 @@ function helpMenuCommand(client: Client<true>, commandName: Command | string) {
 		},
 		{
 			name: "Description",
-			value: cmd.description,
+			// @ts-expect-error // I am checking if it's undefined
+			value: cmd.description ? cmd.description : "None",
 			inline: true
 		},
 		{
 			name: "Aliases",
+			// @ts-expect-error // I am checking if it's undefined
 			value: cmd.aliases ? cmd.aliases.join(", ") : "None",
 			inline: true
 		},
@@ -150,15 +153,15 @@ function helpMenuCommand(client: Client<true>, commandName: Command | string) {
 	return { embeds: [embed], components: [component] };
 }
 
-function helpMenuCategory(client: Client<true>, commandName: Collection<string, Command> | string) {
-	let cmd: Collection<string, Command> | false;
+function helpMenuCategory(client: Client<true>, commandName: Collection<string, ProcessedCommands> | string) {
+	let cmd: Collection<string, ProcessedCommands> | false;
 	if (typeof commandName === "string") {
 		cmd = isCategory(commandName, client);
 		if (cmd === false) return "No category found for: `" + commandName + "`";
 	} else {
 		cmd = commandName;
 	}
-	cmd = cmd as Collection<string, Command>;
+	cmd = cmd as Collection<string, ProcessedCommands>;
 
 	const backButton = new ButtonBuilder()
 		.setCustomId("selectMenu:help")
@@ -187,7 +190,8 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 		const name = command.name.replace("command:", "");
 		embed.addFields({
 			name: name,
-			value: command.description,
+			// @ts-expect-error // I am checking if it's undefined
+			value: command.description ? command.description : "None",
 		});
 		menu.addOptions({ label: name, value: name });
 		i++;

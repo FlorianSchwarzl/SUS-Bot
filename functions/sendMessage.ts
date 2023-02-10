@@ -1,9 +1,9 @@
 import { Message, Component, ButtonComponent, BaseSelectMenuComponent } from "discord.js";
 import Client from "../types/client";
-import { Command, CommandReturnWithoutString } from "../types/command";
+import { ProcessedCommands, CommandReturnWithoutString } from "../types/command";
 import { GuildData, UserData } from "../types/data";
 
-export default async (messageToSend: CommandReturnWithoutString, command: Command, client: Client<true>, message: Message, args: string[], isInteraction: boolean, guildData: GuildData, userData: UserData, isDM: boolean) => {
+export default async (messageToSend: CommandReturnWithoutString, command: ProcessedCommands, client: Client<true>, message: Message, args: string[], isInteraction: boolean, guildData: GuildData, userData: UserData, isDM: boolean) => {
 	let sentMessage: Message;
 
 	if (messageToSend === null) return;

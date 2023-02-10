@@ -1,5 +1,5 @@
 import { PermissionResolvable, Message, ActionRowBuilder, ButtonInteraction } from "discord.js";
-import { Command, CommandReturns, CommandReturnWithoutString } from "../types/command";
+import { ProcessedCommands, CommandReturns, CommandReturnWithoutString, ProcessedRunnableCommands, ProcessedCommandRedirect } from "../types/command";
 import Client from "../types/client";
 import logTime from "../logTime";
 
@@ -10,11 +10,21 @@ import getUserData from "./getUserData";
 import sendMessage from "./sendMessage";
 
 
-module.exports = async (command: Command, client: Client<true>, interaction: Message, args: string[], isInteraction: boolean, isComponent = false) => {
+module.exports = async (command: ProcessedCommands, client: Client<true>, interaction: Message, args: string[], isInteraction: boolean, isComponent = false) => {
 	if (command === undefined) return;
 	if (interaction === undefined) return;
 	if (interaction.member === null && command.commandOptions?.guildOnly) return interaction.reply("You need to be in a server to use this command.");
 	if (client === undefined) return interaction.reply("The bot is currently restarting. Please try again in a few seconds.");
+
+	// @ts-expect-error // I am literally checking if it's a redirect
+	if (command.redirect) {
+		command = command as ProcessedCommandRedirect;
+		const redirect = command.redirect.toLowerCase();
+		command = client.commands.get(redirect) as ProcessedRunnableCommands;
+		if (command === undefined) throw new Error(`Redirected command ${redirect} does not exist.`);
+	}
+
+	command = command as ProcessedRunnableCommands;
 
 	let userId: string;
 
@@ -70,6 +80,7 @@ module.exports = async (command: Command, client: Client<true>, interaction: Mes
 		const userData = await getUserData(userId);
 
 		const startTime = process.hrtime();
+		// @ts-expect-error // I just set it to runnable commands
 		const returnValue: CommandReturnWithoutString = await formatCommandReturn(command.run(client, interaction, args, guildData, userData, isInteraction), command);
 		logTime(command, process.hrtime(startTime));
 
@@ -176,8 +187,8 @@ function getPermissionsString(permissionString: string) {
 	return perms.join(", ");
 }
 
-function setCooldown(commandString: Command | string, userId: string, client: Client<true>) {
-	let command: Command;
+function setCooldown(commandString: ProcessedCommands | string, userId: string, client: Client<true>) {
+	let command: ProcessedCommands;
 	if (typeof commandString === "string") {
 		const getCommand = client.commands.get(commandString);
 		if (getCommand === undefined) return console.error("Could not set cooldown, command not found: " + commandString);
@@ -194,8 +205,8 @@ function setCooldown(commandString: Command | string, userId: string, client: Cl
 	}, command.commandOptions?.cooldown * 1000);
 }
 
-function checkCooldown(commandString: Command | string, userId: string, client: Client<true>): string | boolean {
-	let command: Command;
+function checkCooldown(commandString: ProcessedCommands | string, userId: string, client: Client<true>): string | boolean {
+	let command: ProcessedCommands;
 	if (typeof commandString === "string") {
 		const getCommand = client.commands.get(commandString);
 		if (getCommand === undefined) throw new Error("Could not check cooldown, command not found: " + commandString);
@@ -217,7 +228,7 @@ function checkCooldown(commandString: Command | string, userId: string, client: 
 	return `You are on cooldown for this command, please wait ${timeString}.`;
 }
 
-async function formatCommandReturn(returnValue: CommandReturns, command: Command): Promise<CommandReturnWithoutString> {
+async function formatCommandReturn(returnValue: CommandReturns, command: ProcessedCommands): Promise<CommandReturnWithoutString> {
 	// eslint-disable-next-line no-async-promise-executor
 	return await new Promise(async (resolve, reject) => {
 		if (returnValue instanceof Promise) {

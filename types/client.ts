@@ -1,11 +1,11 @@
 import { Client as DiscordClient, Collection } from "discord.js";
-import { Command } from "./command";
+import { ProcessedCommands } from "./command";
 // @ts-expect-error // I wrote it so I can have it as a js or ts file // FIXME
 import Player from "../music/player";
 import { connection } from "mongoose";
 
 interface Client<T extends boolean> extends DiscordClient<T> {
-	commands: Collection<string, Command>;
+	commands: Collection<string, ProcessedCommands>;
 	player: Player;
 	commandCooldowns: Collection<string, Collection<string, number>>;
 	config: ClientConfig;
