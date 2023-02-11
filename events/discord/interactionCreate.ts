@@ -6,9 +6,7 @@ module.exports = async (client: Client<true>, interaction: Interaction) => {
 	let args = [];
 	let isComponent = false;
 
-	// @ts-expect-error // "doEs NoT eXiSt"... Fuck u TS, that's y I'm checking if it exists
-	if (interaction.customId)
-		// @ts-expect-error // same as above
+	if (interaction.isButton() || interaction.isStringSelectMenu())
 		interaction.customId = interaction.customId.toLowerCase();
 
 	let type;

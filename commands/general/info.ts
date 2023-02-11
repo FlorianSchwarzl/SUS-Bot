@@ -24,7 +24,7 @@ module.exports = {
 					{ name: "Cached Data", value: `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`, inline: true },
 					{ name: "Node", value: `${process.version} on ${process.platform} ${process.arch}`, inline: true }
 				)
-				// @ts-expect-error // something wrong here, idfk
+
 				.setFooter(client.config.embedFooter(client))
 				.setTimestamp(new Date())
 			]

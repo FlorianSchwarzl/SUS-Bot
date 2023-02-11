@@ -12,7 +12,7 @@ module.exports = {
 			.setTitle("Reset Level")
 			.setDescription("Are you sure you want to reset your level?")
 			.setColor(Colors.Red)
-			// @ts-expect-error // something wrong here, idfk
+
 			.setFooter(client.config.embedFooter(client));
 
 		if (message instanceof BaseInteraction || message.channel instanceof DMChannel) {

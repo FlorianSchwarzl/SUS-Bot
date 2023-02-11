@@ -132,7 +132,7 @@ module.exports = class Player {
 			.setURL(info.url)
 			.setColor(Colors.Red)
 			.setTimestamp(new Date())
-			// @ts-expect-error // something wrong here, idfk
+
 			.setFooter(this.#client.config.embedFooter(this.#client));
 
 		if (info.title) {

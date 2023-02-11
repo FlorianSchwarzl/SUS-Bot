@@ -9,7 +9,7 @@ module.exports = {
 		const embed = new EmbedBuilder()
 			.setTimestamp(new Date())
 			.setTitle("Level panel")
-			// @ts-expect-error // something wrong here, idfk
+
 			.setFooter(client.config.embedFooter(client));
 
 		embed.addFields(

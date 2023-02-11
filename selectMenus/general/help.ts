@@ -53,7 +53,7 @@ function helpMenuDefault(client: Client<true>) {
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed
@@ -104,7 +104,7 @@ function helpMenuCommand(client: Client<true>, commandName: ProcessedCommands | 
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed
@@ -177,7 +177,7 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed

@@ -12,7 +12,6 @@ module.exports = {
 		const embed = new EmbedBuilder()
 			.setTimestamp(new Date())
 			.setTitle("Casino")
-			// @ts-expect-error // something wrong here, idfk
 			.setFooter(client.config.embedFooter(client));
 
 		if (!(IsSomething.isNumber(args[0]))) {

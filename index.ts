@@ -45,9 +45,8 @@ client.connection = connection;
 
 console.log(`Version: ${client.config.version} by ${client.config.authorsString}`);
 
-// att the functions object to the "global" object so that it can be accessed from anywhere and make it type safe and read-only
 declare global {
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any
 	var functions: any;
 }
 
@@ -76,15 +75,13 @@ const eventToClientMap = {
 };
 
 /* Loading all the events. */
-fs.readdirSync("./events").forEach((dir: string) => {
+fs.readdirSync("./events").forEach((dir: keyof typeof eventToClientMap) => {
 	if (!fs.lstatSync("./events/" + dir).isDirectory())
 		return console.warn(`The file ./events/${dir} is not a directory.`);
-	// @ts-expect-error
 	if (!eventToClientMap[dir])
 		return console.warn(`The event folder ${dir} is not valid!`);
 	console.log(`Loading ${dir} events...`);
 	fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".ts")).forEach((event: string) => {
-		// @ts-expect-error
 		eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
 	});
 });

@@ -11,9 +11,13 @@ module.exports = {
 			name: "query",
 			type: ApplicationCommandOptionType.Integer,
 			description: "amount of messages to clear",
-			required: true
+			required: true,
 		}
 	],
+
+	commandOptions: {
+		guildOnly: true,
+	},
 
 	default_member_permissions: permissionStrings.ManageMessages,
 
@@ -26,15 +30,13 @@ module.exports = {
 		if (args[0] === "all") {
 			clearAllMessages(message, isSlashCommand).then(deletedMessagesCount => {
 				if (message.channel === null) throw new Error("Channel is null");
-				if (isSlashCommand)
-					// @ts-expect-error // look at the FIXME below
+				if (message instanceof CommandInteraction)
 					message.followUp(`Deleted ${deletedMessagesCount} messages from <#${message.channel.id}>. Please keep in mind, I can't delete messages older than two weeks!`).then(msg => setTimeout(() => msg.delete(), 5000));
 				else
 					message.channel.send(`Deleted ${deletedMessagesCount} messages from <#${message.channel.id}>. Please keep in mind, I can't delete messages older than two weeks!`).then(msg => setTimeout(() => msg.delete(), 5000));
 			}).catch((err: string) => {
 				if (message.channel === null) throw new Error("Channel is null");
-				if (isSlashCommand)
-					// @ts-expect-error // look at the FIXME below
+				if (message instanceof CommandInteraction)
 					message.followUp(err);
 				else
 					message.channel.send(err);
@@ -48,15 +50,13 @@ module.exports = {
 		clearMessages(message, amount, isSlashCommand).then(deletedMessagesCount => {
 			// FIXME: isSlashCommand is kinda unnecessary here when working with TypeScript cause we can check if message is a CommandInteraction
 			if (message.channel === null) throw new Error("Channel is null");
-			if (isSlashCommand)
-				// @ts-expect-error // look at the FIXME above
+			if (message instanceof CommandInteraction)
 				message.followUp(`Deleted ${deletedMessagesCount} messages from <#${message.channel.id}>. Please keep in mind, I can't delete messages older than two weeks!`).then(msg => setTimeout(() => msg.delete(), 5000));
 			else
 				message.channel.send(`Deleted ${deletedMessagesCount} messages from <#${message.channel.id}>. Please keep in mind, I can't delete messages older than two weeks!`).then(msg => setTimeout(() => msg.delete(), 5000));
 		}).catch(err => {
 			if (message.channel === null) throw new Error("Channel is null");
-			if (isSlashCommand)
-				// @ts-expect-error // look at the FIXME above
+			if (message instanceof CommandInteraction)
 				message.followUp(err);
 			else
 				message.channel.send(err);
@@ -72,7 +72,7 @@ function clearMessages(message: Message | CommandInteraction, amount: number, is
 		let deletedMessagesCount = isSlashCommand ? 0 : -1;
 		while (deletedMessagesCount < amount) {
 			const deleteThisTime = Math.min(...[100, amount - deletedMessagesCount]);
-			// @ts-expect-error // I just can't be bothered to fix this
+			// @ts-expect-error // I just can't be bothered to fix this, rn at least
 			const deletedMessages = await message.channel.bulkDelete(deleteThisTime, true)
 				.catch((_err: Error) => reject("Cannot delete messages older than two weeks."));
 			if (deletedMessages === undefined || deletedMessages.size === 0) break;
