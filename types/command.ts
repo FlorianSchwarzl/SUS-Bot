@@ -22,7 +22,6 @@ interface CommandOptions {
 	cooldown?: number;
 }
 
-
 interface extensionWithoutDM {
 	announce?: boolean;
 	success?: boolean;
@@ -62,7 +61,7 @@ export type CommandReturns = CommandReturn | AsyncCommandReturn;
 
 // type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
-export type Component = Omit<Command, "description" | "name" | "aliases" | "options">;
+export type Component = Omit<Command, "description" | "aliases" | "options">;
 
 export type CommandRedirect = Omit<Command, "run"> & { redirect: string };
 
