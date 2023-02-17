@@ -6,10 +6,10 @@ import ModifiedClient from "./types/client";
 import getFiles from "./functions/getFiles";
 import { Partials } from "discord.js";
 
-const { Client, Collection, IntentsBitField } = require("discord.js");
-const { connect, connection, set } = require("mongoose");
-const Player = require("./music/player");
-const fs = require("fs");
+import { Client, Collection, IntentsBitField } from "discord.js";
+import { connect, connection, set } from "mongoose";
+import Player from "./music/player";
+import fs from "fs";
 require("dotenv").config();
 set("strictQuery", false);
 
@@ -75,14 +75,13 @@ const eventToClientMap = {
 };
 
 /* Loading all the events. */
-fs.readdirSync("./events").forEach((dir: keyof typeof eventToClientMap) => {
+fs.readdirSync("./events").forEach((dir: string) => {
 	if (!fs.lstatSync("./events/" + dir).isDirectory())
 		return console.warn(`The file ./events/${dir} is not a directory.`);
-	if (!eventToClientMap[dir])
-		return console.warn(`The event folder ${dir} is not valid!`);
+	if (!(dir in eventToClientMap)) return console.warn(`The event folder ${dir} is not valid!`);
 	console.log(`Loading ${dir} events...`);
 	fs.readdirSync(`./events/${dir}`).filter((e: string) => e.endsWith(".ts")).forEach((event: string) => {
-		eventToClientMap[dir].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
+		eventToClientMap[dir as keyof typeof eventToClientMap].on(event.split(".")[0], require(`./events/${dir}/${event}`).bind(null, client));
 	});
 });
 
@@ -93,6 +92,7 @@ export default client;
 client.login(process.env.TOKEN);
 console.info("Logging the bot in...");
 /* Connect to the mongodb database */
+if (!process.env.MONGODB) throw new Error("No MONGODB environment variable found!");
 connect(process.env.MONGODB);
 /* Starting the Webserver */
 console.info("Starting webserver...");
