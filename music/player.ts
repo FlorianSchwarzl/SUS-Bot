@@ -261,7 +261,7 @@ module.exports = class Player {
 		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to skip tracks.";
 
-		this.skipTrack(message.guild.id, queue);
+		return this.skipTrack(message.guild.id, queue);
 	}
 
 	skipTrack(guildId: string, queue?: any) {
