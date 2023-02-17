@@ -2,9 +2,8 @@ import { GuildMember, Message, BaseChannel } from "discord.js";
 import { CommandReturnWithoutString } from "../types/command";
 
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
-import { stream, video_basic_info, search, yt_validate, YouTubeVideo } from "play-dl";
+import { stream, video_basic_info, search, yt_validate, YouTubeVideo, YouTubeChannel } from "play-dl";
 import Client from "../types/client";
-import { ImprovedArray } from "sussy-util";
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } from "discord.js";
 
 const playerControls = new ActionRowBuilder()
@@ -85,7 +84,7 @@ module.exports = class Player {
 			current: null,
 			loop: false,
 			guildId: null,
-			queue: new ImprovedArray()
+			queue: Array<QueueElement>(),
 		});
 	}
 
@@ -247,7 +246,6 @@ module.exports = class Player {
 		}
 
 		queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
-		// @ts-expect-error // idfk, it's getting ignored anyway
 		return ({ embeds: [await this.#createEmbed(info, "Added")], deleteReply: 10, announce: true });
 	}
 
@@ -318,7 +316,7 @@ module.exports = class Player {
 	}
 
 	getCurrent(guildId: string) {
-		return this.#queue.get(guildId)?.current;
+		return this.getQueue(guildId)?.current;
 	}
 
 	clearQueue(message: Message) {
@@ -422,8 +420,8 @@ async function isNotAgeRestricted(url: string) {
 
 type QueueElement = {
 	url: string;
-	channel: BaseChannel;
-	title: string;
+	channel?: YouTubeChannel | undefined;
+	title?: string | undefined;
 	duration?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idk what type this is
 	thumbnails: any[];

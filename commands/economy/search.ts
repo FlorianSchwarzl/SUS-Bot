@@ -1,6 +1,5 @@
 import { Command } from "../../types/command";
 
-const { StringUtil } = require("sussy-util");
 const { EmbedBuilder, Colors, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
 
 module.exports = {
@@ -126,7 +125,7 @@ module.exports = {
 			"concert hall",
 			"stadium",
 			"aquarium",
-			"circus"];
+			"circus"] as ExtendedString[];
 
 		const actionRow = new ActionRowBuilder();
 
@@ -139,7 +138,7 @@ module.exports = {
 
 		randomElements.forEach(place => {
 			const button = new ButtonBuilder()
-				.setLabel(StringUtil.capitalize(place))
+				.setLabel(place.capitalize())
 				.setCustomId(`search ${place}`)
 				.setStyle(ButtonStyle.Primary);
 
@@ -149,3 +148,12 @@ module.exports = {
 		return { embeds: [embed], components: [actionRow] };
 	}
 } as Command;
+
+Object.defineProperty(String.prototype, "capitalize", {
+	value: function () {
+		return this.charAt(0).toUpperCase() + this.slice(1);
+	},
+	enumerable: false
+});
+
+type ExtendedString = string & { capitalize: () => string };

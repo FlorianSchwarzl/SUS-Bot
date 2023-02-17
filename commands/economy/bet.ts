@@ -2,7 +2,6 @@ import { Command } from "../../types/command";
 
 import userList from "../../schemas/user";
 import { EmbedBuilder } from "discord.js";
-import { IsSomething } from "sussy-util";
 
 module.exports = {
 	description: "Bet your money and win!",
@@ -14,7 +13,7 @@ module.exports = {
 			.setTitle("Casino")
 			.setFooter(client.config.embedFooter(client));
 
-		if (!(IsSomething.isNumber(args[0]))) {
+		if (Number.isNaN(+args[0])) {
 			embed.addFields(
 				{
 					name: "Bet failed!",

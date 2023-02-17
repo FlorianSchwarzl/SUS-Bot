@@ -1,7 +1,6 @@
 import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 
-const { IsSomething } = require("sussy-util");
 import users from "../../schemas/user";
 
 module.exports = {
@@ -30,7 +29,8 @@ module.exports = {
 			current.bank += current.wallet;
 			current.wallet = 0;
 		} else {
-			if (!IsSomething.isNumber(args[0])) return "Please provide the amount you want to deposit as a number.";
+			if (Number.isNaN(+args[0]))
+				return "Please provide the amount you want to deposit as a number.";
 			if (+args[0] > current.wallet) return "You do not have enough money to deposit " + args[0] + " gold.";
 			current.bank += +args[0];
 			current.wallet -= +args[0];
