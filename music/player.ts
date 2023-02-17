@@ -428,3 +428,5 @@ type QueueElement = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idk what type this is
 	thumbnails: any[];
 };
+
+export default module.exports;
