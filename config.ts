@@ -16,4 +16,8 @@ authors.forEach((author: string, index: number) => {
 module.exports.authorsString = module.exports.authorsString.replace(/, and/, " and");
 module.exports.version = require("./package.json")["version"];
 
-module.exports.embedFooter = (client: Client<true>) => ({ text: `Running as ${client.user.tag} on version ${module.exports.version} of the SUS-Bot by ${module.exports.authorsString}` });
+module.exports.embedFooter = (client: Client<true>): { text: string } => {
+	return { text: `Running as ${client.user.tag} on version ${module.exports.version} of the SUS-Bot by ${module.exports.authorsString}` };
+};
+
+export default module.exports;

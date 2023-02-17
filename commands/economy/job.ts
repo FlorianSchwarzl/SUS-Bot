@@ -21,7 +21,7 @@ module.exports = {
 			const embed = new EmbedBuilder()
 				.setTimestamp(new Date())
 				.setTitle("Jobs panel")
-				// @ts-expect-error // something wrong here, idfk
+
 				.setFooter(client.config.embedFooter(client))
 				.addFields(
 					{

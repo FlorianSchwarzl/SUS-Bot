@@ -23,5 +23,5 @@ type ClientConfig = {
 	mongoURI: string;
 	authorsString: string;
 	version: string;
-	embedFooter: { text: string };
+	embedFooter: (client: Client<true>) => { text: string };
 }

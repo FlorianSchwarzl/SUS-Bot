@@ -132,7 +132,7 @@ module.exports = class Player {
 			.setURL(info.url)
 			.setColor(Colors.Red)
 			.setTimestamp(new Date())
-			// @ts-expect-error // something wrong here, idfk
+
 			.setFooter(this.#client.config.embedFooter(this.#client));
 
 		if (info.title) {
@@ -261,7 +261,7 @@ module.exports = class Player {
 		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to skip tracks.";
 
-		this.skipTrack(message.guild.id, queue);
+		return this.skipTrack(message.guild.id, queue);
 	}
 
 	skipTrack(guildId: string, queue?: any) {
@@ -428,3 +428,5 @@ type QueueElement = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idk what type this is
 	thumbnails: any[];
 };
+
+export default module.exports;

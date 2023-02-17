@@ -12,7 +12,6 @@ module.exports = {
 			.setTitle("Reset Balance")
 			.setDescription("Are you sure you want to reset your balance?")
 			.setColor(Colors.Red)
-			// @ts-expect-error // TODO: Fix this
 			.setFooter(client.config.embedFooter(client));
 
 		if (message instanceof BaseInteraction || message.channel instanceof DMChannel) {

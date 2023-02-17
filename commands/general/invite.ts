@@ -7,7 +7,8 @@ module.exports = {
 	},
 
 	async run(_client, message, _args, _guildData, _userData, _isSlashCommand) {
-		// @ts-expect-error // It can't even get to this point if it's not a guild
+		if (message.channel === null) throw new Error("Channel is null");
+		// @ts-expect-error // I won't get to this point if the channel is a DMChannel
 		const invite = await message.channel.createInvite({ unique: true, temporary: true });
 		return "https://discord.gg/" + invite.code;
 	}

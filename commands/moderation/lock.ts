@@ -35,7 +35,6 @@ module.exports = {
 			.setTitle("Channel Updates")
 			.setDescription(`<#${channel.id}> in now locked!`)
 			.setColor(Colors.Red)
-			// @ts-expect-error // FIXME: Fix this
 			.setFooter(client.config.embedFooter(client))
 			.setTimestamp(new Date());
 

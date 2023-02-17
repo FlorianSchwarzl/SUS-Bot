@@ -1,20 +1,17 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder, StringSelectMenuBuilder } from "discord.js";
 import { StringUtil } from "sussy-util";
 import Client from "../../types/client";
-import { ProcessedCommands, Command, Component } from "../../types/command";
+import { ProcessedCommands, Component } from "../../types/command";
 const convertTime = require("../../functions/convertTime");
 
 // TODO: edit the help menu instead of sending a new one every time to keep the chat clean
 
 module.exports = {
-	run(client, interaction, args, guildData, userData) {
-		console.debug("Help command ran");
+	run(client, _interaction, args, _guildData, _userData) {
 		const commandName = args[0];
 
 		const command = isCommand(commandName, client);
 		const category = isCategory(commandName, client);
-
-		console.debug("Command: " + command, "Category: " + category);
 
 		if (commandName === undefined || commandName.length === 0) {
 			return helpMenuDefault(client);
@@ -23,7 +20,7 @@ module.exports = {
 		} else if (category) {
 			return helpMenuCategory(client, category);
 		} else {
-			console.debug("No command found for: `" + commandName + "`");
+			console.error("No command found for: `" + commandName + "`");
 			return "No command found for: `" + commandName + "`";
 		}
 	}
@@ -39,13 +36,11 @@ function isCommand(commandName: string, client: Client<true>): ProcessedCommands
 
 function isCategory(categoryName: string, client: Client<true>): Collection<string, ProcessedCommands> | false {
 	const commands = client.commands.filter(cmd => cmd.category === "command:" + categoryName);
-	console.debug(client.commands.get("command:help")?.category);
 	if (commands.size === 0) return false;
 	return commands;
 }
 
 function helpMenuDefault(client: Client<true>) {
-	console.debug("Help menu default ran");
 	const menu = new StringSelectMenuBuilder()
 		.setCustomId("help")
 		.setPlaceholder("Select a category");
@@ -53,7 +48,7 @@ function helpMenuDefault(client: Client<true>) {
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed
@@ -104,7 +99,7 @@ function helpMenuCommand(client: Client<true>, commandName: ProcessedCommands | 
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed
@@ -177,13 +172,11 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 	const embed = new EmbedBuilder()
 		.setTimestamp(new Date())
 		.setTitle("Help panel")
-		// @ts-expect-error // something wrong here, idfk
+
 		.setFooter(client.config.embedFooter(client));
 
 	embed
 		.setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
-
-	let i = 0;
 
 	cmd.forEach((command) => {
 		if (command.name === undefined) return;
@@ -194,7 +187,6 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 			value: command.description ? command.description : "None",
 		});
 		menu.addOptions({ label: name, value: name });
-		i++;
 	});
 
 	const component2 = new ActionRowBuilder()

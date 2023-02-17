@@ -33,7 +33,7 @@ module.exports = {
 			.setTitle("Channel Updates")
 			.setDescription(`<#${channel.id}> is now unlocked!`)
 			.setColor(Colors.Red)
-			// @ts-expect-error // something wrong here, idfk
+
 			.setFooter(client.config.embedFooter(client))
 			.setTimestamp(new Date());
 
