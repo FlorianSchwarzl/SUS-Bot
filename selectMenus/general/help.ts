@@ -8,13 +8,10 @@ const convertTime = require("../../functions/convertTime");
 
 module.exports = {
 	run(client, interaction, args, guildData, userData) {
-		console.debug("Help command ran");
 		const commandName = args[0];
 
 		const command = isCommand(commandName, client);
 		const category = isCategory(commandName, client);
-
-		console.debug("Command: " + command, "Category: " + category);
 
 		if (commandName === undefined || commandName.length === 0) {
 			return helpMenuDefault(client);
@@ -23,7 +20,7 @@ module.exports = {
 		} else if (category) {
 			return helpMenuCategory(client, category);
 		} else {
-			console.debug("No command found for: `" + commandName + "`");
+			console.error("No command found for: `" + commandName + "`");
 			return "No command found for: `" + commandName + "`";
 		}
 	}
@@ -39,13 +36,11 @@ function isCommand(commandName: string, client: Client<true>): ProcessedCommands
 
 function isCategory(categoryName: string, client: Client<true>): Collection<string, ProcessedCommands> | false {
 	const commands = client.commands.filter(cmd => cmd.category === "command:" + categoryName);
-	console.debug(client.commands.get("command:help")?.category);
 	if (commands.size === 0) return false;
 	return commands;
 }
 
 function helpMenuDefault(client: Client<true>) {
-	console.debug("Help menu default ran");
 	const menu = new StringSelectMenuBuilder()
 		.setCustomId("help")
 		.setPlaceholder("Select a category");

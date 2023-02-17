@@ -32,9 +32,7 @@ module.exports = async (client: Client<true>, interaction: Interaction) => {
 			}
 			args = commandString.split(" ");
 			args.shift();
-			console.debug(commandName);
 			cmd = client.commands.get(commandName);
-			console.debug(cmd, client.commands);
 			isComponent = true;
 			break;
 		}
