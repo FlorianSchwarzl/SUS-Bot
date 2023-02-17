@@ -9,6 +9,6 @@ module.exports = {
 	},
 
 	run(client, message, _args, _guildData, _userData, _isSlashCommand) {
-		return client.player.skip(message);                                        // call the skip function from the player
+		return client.player.skip(message);
 	}
 } as Command;
