@@ -1,13 +1,13 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder, StringSelectMenuBuilder } from "discord.js";
 import { StringUtil } from "sussy-util";
 import Client from "../../types/client";
-import { ProcessedCommands, Command, Component } from "../../types/command";
+import { ProcessedCommands, Component } from "../../types/command";
 const convertTime = require("../../functions/convertTime");
 
 // TODO: edit the help menu instead of sending a new one every time to keep the chat clean
 
 module.exports = {
-	run(client, interaction, args, guildData, userData) {
+	run(client, _interaction, args, _guildData, _userData) {
 		const commandName = args[0];
 
 		const command = isCommand(commandName, client);
@@ -178,8 +178,6 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 	embed
 		.setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
 
-	let i = 0;
-
 	cmd.forEach((command) => {
 		if (command.name === undefined) return;
 		const name = command.name.replace("command:", "");
@@ -189,7 +187,6 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 			value: command.description ? command.description : "None",
 		});
 		menu.addOptions({ label: name, value: name });
-		i++;
 	});
 
 	const component2 = new ActionRowBuilder()
