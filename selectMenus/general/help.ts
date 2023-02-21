@@ -34,7 +34,8 @@ function isCommand(commandName: string, client: Client<true>): ProcessedCommands
 }
 
 function isCategory(categoryName: string, client: Client<true>): Collection<string, ProcessedCommands> | false {
-	const commands = client.commands.filter(cmd => cmd.category === "command:" + categoryName);
+	const commands = client.categories.get("command:" + categoryName)?.commands;
+	if (commands === undefined) return false;
 	if (commands.size === 0) return false;
 	return commands;
 }
@@ -57,19 +58,31 @@ function helpMenuDefault(client: Client<true>) {
 
 	const categories: ExtendedString[] = [];
 
-	commands.forEach((cmd) => {
-		if (!categories.includes((cmd.category?.replace("command:", "") ?? "") as ExtendedString)) {
-			categories.push((cmd.category?.replace("command:", "") ?? "") as ExtendedString);
-		}
-	});
+	// commands.forEach((cmd) => {
+	// 	if (!categories.includes((cmd.category?.replace("command:", "") ?? "") as ExtendedString)) {
+	// 		categories.push((cmd.category?.replace("command:", "") ?? "") as ExtendedString);
+	// 	}
+	// });
 
-	categories.forEach((category) => {
-		embed.addFields({
-			name: category.capitalize(),
-			value: "Type `" + client.config.prefix + "help " + category + "` to see more information",
-		});
-		menu.addOptions({ label: category.capitalize(), value: category });
-	});
+	// categories.forEach((category) => {
+	// 	embed.addFields({
+	// 		name: category.capitalize(),
+	// 		value: "Type `" + client.config.prefix + "help " + category + "` to see more information",
+	// 	});
+	// 	menu.addOptions({ label: category.capitalize(), value: category });
+	// });
+
+	for (const [key, value] of client.categories) {
+		if (value.ignore === true) continue;
+		if (key.startsWith("command:")) {
+			const category = key.replace("command:", "") as ExtendedString;
+			embed.addFields({
+				name: category.capitalize(),
+				value: "Type `" + client.config.prefix + "help " + category + "` to see more information",
+			});
+			menu.addOptions({ label: category.capitalize(), value: category });
+		}
+	}
 
 	component.addComponents([menu]);
 
@@ -139,7 +152,7 @@ function helpMenuCommand(client: Client<true>, commandName: ProcessedCommands | 
 		},
 		{
 			name: "Usage",
-			value: cmd.usage ? cmd.usage : "None",
+			value: cmd.usage ? cmd.usage : "Unknown",
 			inline: true
 		}
 	);
