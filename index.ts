@@ -11,16 +11,26 @@ import { connect, connection, set } from "mongoose";
 import Player from "./music/player";
 import fs from "fs";
 import dotenv from "dotenv";
+import betterCl from "better-cl";
 
 dotenv.config();
 set("strictQuery", false);
 
-require("better-cl").setup(console, [], "./logs");
+const addToConsole = {
+	success: {
+		value: 4,
+		color: "green",
+		notIntoFile: false
+	},
+};
+
+betterCl.setup(console, addToConsole, "./logs");
+
+type ConsoleExtension = { [Key in keyof typeof addToConsole]: (...message: unknown[]) => void };
 
 declare global {
-	interface Console {
-		success: (message: string) => void;
-	}
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface Console extends ConsoleExtension { }
 }
 
 console.clear();
