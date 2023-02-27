@@ -3,6 +3,10 @@ import { Command } from "../../types/command";
 module.exports = {
 	description: "Plays a random song from a list",
 	aliases: ["pt"],
+	commandOptions: {
+		guildOnly: true,
+		connectedToVC: true,
+	},
 
 	async run(client, message, _args, guildData, userData, isSlashCommand) {
 		const pickedSong = songList[Math.floor(Math.random() * songList.length)];
