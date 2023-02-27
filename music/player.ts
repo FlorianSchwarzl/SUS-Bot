@@ -330,8 +330,12 @@ module.exports = class Player {
 		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to clear the queue.";
 
-		queue.queue.clear();
+		this.clearArray(queue.queue);
 		return { content: "Cleared queue.", announce: true };
+	}
+
+	clearArray(array: any[]) {
+		array.splice(0, array.length);
 	}
 
 	#channelEmpty(channelId: string) {
@@ -343,7 +347,7 @@ module.exports = class Player {
 		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return;
-		queue.queue.clear();
+		this.clearArray(queue.queue);
 		/* Playing Never Gonna Give You Up bc we do miniscule amounts of trolling */
 		// @ts-expect-error // I gotta make a type for this
 		this.play(message.guild.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
