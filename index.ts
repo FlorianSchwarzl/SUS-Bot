@@ -122,7 +122,7 @@ function loadCommands(dirName: string, removeTrailingS = true) {
 		const tempCommands: commandCollection = new Collection();
 		if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
 			return console.warn(`./${dirName}/${dir} is not a directory.`);
-		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
+		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts") || file.endsWith(".ignore")).forEach((file: string) => {
 			if (file === ".ignore") return ignore = true;
 			let command = require(`./${dirName}/${dir}/${file}`);
 			dirNameCollection = dirNameCollection.toLocaleLowerCase();
