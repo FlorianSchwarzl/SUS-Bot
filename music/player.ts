@@ -1,4 +1,4 @@
-import { GuildMember, Message, BaseChannel } from "discord.js";
+import { GuildMember, Message } from "discord.js";
 import { CommandReturnWithoutString } from "../types/command";
 
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
@@ -106,7 +106,8 @@ module.exports = class Player {
 		let streamReturn;
 		try {
 			streamReturn = await stream(track.url);
-		} catch (e: any) {
+		} catch (e: unknown) {
+			if (!(e instanceof Error)) return;
 			if (e.message.includes("Private")) {
 				// @ts-expect-error // MiMiMiMiMi i don't care
 				track.channel.send("This video is private. Skipping.");
@@ -262,6 +263,7 @@ module.exports = class Player {
 		return this.skipTrack(message.guild.id, queue);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idfk what type this is, roteKlaue made this and it's horrible and not documented
 	skipTrack(guildId: string, queue?: any) {
 		if (queue === undefined) queue = this.#queue.get(guildId);
 		if (queue === undefined) return "No queue for guild.";
@@ -334,7 +336,7 @@ module.exports = class Player {
 		return { content: "Cleared queue.", announce: true };
 	}
 
-	clearArray(array: any[]) {
+	clearArray(array: unknown[]) {
 		array.splice(0, array.length);
 	}
 
