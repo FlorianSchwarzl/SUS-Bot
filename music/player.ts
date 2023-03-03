@@ -1,5 +1,5 @@
 import { GuildMember, Message } from "discord.js";
-import { CommandReturnWithoutString } from "../types/command";
+import { CommandReturn, CommandReturnWithoutString } from "../types/command";
 
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
 import { stream, video_basic_info, search, yt_validate, YouTubeVideo, YouTubeChannel } from "play-dl";
@@ -283,7 +283,7 @@ module.exports = class Player {
 		}
 	}
 
-	stop(message: Message) {
+	stop(message: Message): CommandReturn {
 		if (message.member === null) throw new Error("Member is null");
 		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 
