@@ -1,5 +1,4 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder, StringSelectMenuBuilder } from "discord.js";
-import { StringUtil } from "sussy-util";
 import Client from "../../types/client";
 import { ProcessedCommands, Component } from "../../types/command";
 const convertTime = require("../../functions/convertTime");
@@ -35,7 +34,8 @@ function isCommand(commandName: string, client: Client<true>): ProcessedCommands
 }
 
 function isCategory(categoryName: string, client: Client<true>): Collection<string, ProcessedCommands> | false {
-	const commands = client.commands.filter(cmd => cmd.category === "command:" + categoryName);
+	const commands = client.categories.get("command:" + categoryName)?.commands;
+	if (commands === undefined) return false;
 	if (commands.size === 0) return false;
 	return commands;
 }
@@ -56,21 +56,33 @@ function helpMenuDefault(client: Client<true>) {
 
 	const commands = client.commands.filter(cmd => cmd.category?.startsWith("command:"));
 
-	const categories: string[] = [];
+	const categories: ExtendedString[] = [];
 
-	commands.forEach((cmd) => {
-		if (!categories.includes(cmd.category?.replace("command:", "") ?? "")) {
-			categories.push(cmd.category?.replace("command:", "") ?? "");
+	// commands.forEach((cmd) => {
+	// 	if (!categories.includes((cmd.category?.replace("command:", "") ?? "") as ExtendedString)) {
+	// 		categories.push((cmd.category?.replace("command:", "") ?? "") as ExtendedString);
+	// 	}
+	// });
+
+	// categories.forEach((category) => {
+	// 	embed.addFields({
+	// 		name: category.capitalize(),
+	// 		value: "Type `" + client.config.prefix + "help " + category + "` to see more information",
+	// 	});
+	// 	menu.addOptions({ label: category.capitalize(), value: category });
+	// });
+
+	for (const [key, value] of client.categories) {
+		if (value.ignore === true) continue;
+		if (key.startsWith("command:")) {
+			const category = key.replace("command:", "") as ExtendedString;
+			embed.addFields({
+				name: category.capitalize(),
+				value: "Type `" + client.config.prefix + "help " + category + "` to see more information",
+			});
+			menu.addOptions({ label: category.capitalize(), value: category });
 		}
-	});
-
-	categories.forEach((d) => {
-		embed.addFields({
-			name: StringUtil.capitalize(d),
-			value: "Type `" + client.config.prefix + "help " + d + "` to see more information",
-		});
-		menu.addOptions({ label: StringUtil.capitalize(d), value: d });
-	});
+	}
 
 	component.addComponents([menu]);
 
@@ -140,7 +152,7 @@ function helpMenuCommand(client: Client<true>, commandName: ProcessedCommands | 
 		},
 		{
 			name: "Usage",
-			value: cmd.usage ? cmd.usage : "None",
+			value: cmd.usage ? cmd.usage : "Unknown",
 			inline: true
 		}
 	);
@@ -195,91 +207,4 @@ function helpMenuCategory(client: Client<true>, commandName: Collection<string, 
 	return { embeds: [embed], components: [component2, component], menu };
 }
 
-
-
-// const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder } = require("discord.js");
-
-// const { StringUtil } = require("sussy-util");
-// const fs = require("fs");
-
-// module.exports = {
-// 	description: "Displays all commands / more information about one command",
-// 	aliases: ["h"],
-
-// 	options: [
-// 		{
-// 			name: "query",
-// 			description: "name of the command",
-// 			type: "STRING",
-// 			required: false,
-// 		}
-// 	],
-
-// 	run(client, message, args, guildData, userData, isSlashCommand) {
-// 		const menu = new StringSelectMenuBuilder()
-// 			.setCustomId("help")
-// 			.setPlaceholder("Select a category");
-// 		const component = new ActionRowBuilder();
-// 		const commandName = args[0];
-// 		const embed = new EmbedBuilder()
-// 			.setTimestamp(new Date())
-// 			.setTitle("Help panel")
-// 			.setFooter(client.config.embedFooter(client));
-
-// 		if (commandName === undefined || commandName.length === 0) {
-// 			embed
-// 				.setDescription(`To see more information type **${client.config.prefix}help {command name}**`);
-
-// 			fs.readdirSync(`${__dirname}/../`).forEach((d) => {
-// 				embed.addFields({
-// 					name: StringUtil.capitalize(d),
-// 					value: "Type `" + client.config.prefix + "help " + d + "` to see more information",
-// 				})
-// 				menu.addOptions({ label: StringUtil.capitalize(d), value: d });
-// 			});;
-// 		} else {
-// 			const cmd = client.commands.get(`command:${commandName}`) ||
-// 				client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-// 			if (cmd === undefined) {
-// 				return "No command found for: `" + commandName + "`";
-// 			}
-
-// 			// TODO: Add more information
-
-// 			embed.addFields(
-// 				{
-// 					name: "Name",
-// 					value: cmd.name,
-// 					inline: true
-// 				},
-// 				{
-// 					name: "Description",
-// 					value: cmd.description,
-// 					inline: true
-// 				},
-// 				{
-// 					name: "Category",
-// 					value: cmd.category,
-// 					inline: true
-// 				},
-// 				{
-// 					name: cmd.aliases?.length > 1 ? "Aliases" : "Alias",
-// 					value: cmd.aliases?.length > 0 ? cmd.aliases.join(", ") : "None",
-// 					inline: true
-// 				},
-// 				{
-// 					name: "Cooldown",
-// 					value: cmd.cooldown ? `${cmd.cooldown}seconds` : "None",
-// 					inline: true
-// 				}
-// 			);
-// 		}
-// 		if (menu.options.length > 0) {
-// 			component.addComponents(menu);
-// 			return { embeds: [embed], components: [component] };
-// 		} else {
-// 			return { embeds: [embed] };
-// 		}
-// 	}
-// }
+type ExtendedString = string & { capitalize: () => string };

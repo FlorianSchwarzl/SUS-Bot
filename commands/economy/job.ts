@@ -4,7 +4,6 @@ import { ApplicationCommandOptionType } from "discord.js";
 const userList = require("../../schemas/user");
 const { EmbedBuilder } = require("discord.js");
 const jobs = require("./resources/jobs.json").jobs;
-const { IsSomething } = require("sussy-util");
 
 module.exports = {
 	description: "Panel which shows jobs",
@@ -67,7 +66,7 @@ module.exports = {
 			return { embeds: [embed] };
 		} else {
 			const currentID = userData.jobinfo.id;
-			if (!IsSomething.isNumber(+args[0]))
+			if (Number.isNaN(+args[0]))
 				return "Provide a valid number as job ID";
 			if (currentID === +args[0])
 				return "You are already a " + jobs[currentID - 1].jobname;

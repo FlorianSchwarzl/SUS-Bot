@@ -2,7 +2,7 @@
 //TODO: Add automated testing
 //TODO: Add the ability to automatically give members with a certain level a role
 import { ProcessedCommands } from "./types/command";
-import ModifiedClient from "./types/client";
+import ModifiedClient, { commandCollection } from "./types/client";
 import getFiles from "./functions/getFiles";
 import { Partials } from "discord.js";
 
@@ -10,16 +10,27 @@ import { Client, Collection, IntentsBitField } from "discord.js";
 import { connect, connection, set } from "mongoose";
 import Player from "./music/player";
 import fs from "fs";
-require("dotenv").config();
+import dotenv from "dotenv";
+import betterCl from "better-cl";
+
+dotenv.config();
 set("strictQuery", false);
 
-require("better-cl").setup(console, [], "./logs");
+const addToConsole = {
+	success: {
+		value: 4,
+		color: "green",
+		notIntoFile: false
+	},
+};
 
+betterCl.setup(console, addToConsole, "./logs");
+
+type ConsoleExtension = { [Key in keyof typeof addToConsole]: (...message: unknown[]) => void };
 
 declare global {
-	interface Console {
-		success: (message: string) => void;
-	}
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface Console extends ConsoleExtension { }
 }
 
 console.clear();
@@ -40,13 +51,14 @@ const client = new Client({
 /* add important stuff to client */
 client.player = new Player(client);
 client.commands = new Collection();
+client.categories = new Collection();
 client.config = require("./config");
 client.connection = connection;
 
 console.log(`Version: ${client.config.version} by ${client.config.authorsString}`);
 
 declare global {
-	// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any
+	// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any -- I have to use var here
 	var functions: any;
 }
 
@@ -65,8 +77,7 @@ console.log("Loading commands...");
 
 client.commandCooldowns = new Collection();
 client.commands.forEach((command: ProcessedCommands) => {
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- I just set it a few lines above
-	client.commandCooldowns.set(command.name!, new Collection());
+	client.commandCooldowns.set(command.name, new Collection());
 });
 
 const eventToClientMap = {
@@ -107,16 +118,30 @@ function loadCommands(dirName: string, removeTrailingS = true) {
 	let dirNameCollection = dirName;
 	if (removeTrailingS) dirNameCollection = dirName.replace(/s$/, "");
 	fs.readdirSync(`./${dirName}`).forEach((dir: string) => {
+		let ignore = false;
+		const tempCommands: commandCollection = new Collection();
 		if (!fs.lstatSync(`./${dirName}/` + dir).isDirectory())
 			return console.warn(`./${dirName}/${dir} is not a directory.`);
-		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts")).forEach((file: string) => {
+		fs.readdirSync(`./${dirName}/${dir}`).filter((file: string) => file.endsWith(".ts") || file.endsWith(".ignore")).forEach((file: string) => {
+			if (file === ".ignore") return ignore = true;
 			let command = require(`./${dirName}/${dir}/${file}`);
 			dirNameCollection = dirNameCollection.toLocaleLowerCase();
 			command.category = `${dirNameCollection}:` + dir;
-			command.name ||= file.replace(/(\.ts)$/, "");
-			command.name = `${dirNameCollection}:` + command.name.toLowerCase();
+			command.name ||= file.replace(/(\.ts)$/, "").replace(/(\.js)$/, "");
+			command.name = dirNameCollection + ":" + command.name.toLowerCase();
+			tempCommands.set(command.name, command);
 			command = command as ProcessedCommands;
 			client.commands.set(command.name, command);
 		});
+		for (const [_name, command] of tempCommands) {
+			// @ts-expect-error // I am checking if it exists
+			if (command.aliases) {
+				// @ts-expect-error // same here
+				command.aliases.forEach((alias) => {
+					client.commands.set(dirNameCollection + ":" + alias, command);
+				});
+			}
+		}
+		client.categories.set(dirNameCollection + ":" + dir, { ignore: ignore, commands: tempCommands });
 	});
 }

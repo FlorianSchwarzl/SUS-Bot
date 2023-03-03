@@ -2,7 +2,6 @@ import { Command } from "../../types/command";
 import { ApplicationCommandOptionType } from "discord.js";
 import { UserData } from "../../types/data";
 
-const { IsSomething } = require("sussy-util");
 import userList from "../../schemas/user";
 
 module.exports = {
@@ -17,7 +16,7 @@ module.exports = {
 
 	run(_client, _message, args, _guildData, userData, _isSlashCommand) {
 		let amount = args[0];
-		if (amount && IsSomething.isNumber(amount)) {
+		if (+amount !== 0 && Number.isNaN(+amount)) {
 			if (+amount > userData.economy.bank) amount = "" + userData.economy.bank;
 			userData.economy.bank -= +amount;
 			userData.economy.wallet += +amount;

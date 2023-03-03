@@ -22,7 +22,7 @@ interface CommandOptions {
 	cooldown?: number;
 }
 
-interface extensionWithoutDM {
+interface extensionWithoutDMOrEdit {
 	announce?: boolean;
 	success?: boolean;
 	setCooldown?: Commands[];
@@ -35,18 +35,36 @@ interface extensionWithoutDM {
 }
 
 
-interface MessageExtensionsWithoutDMMessage extends MessageReplyOptions, extensionWithoutDM { }
+interface MessageExtensionsWithoutDMorEditMessage extends MessageReplyOptions, extensionWithoutDMOrEdit { }
 
-interface MessageExtensionsMessage extends MessageExtensionsWithoutDMMessage {
-	DM?: MessageExtensionsWithoutDMMessage;
+interface MessageExtensionsWithoutEditMessage extends MessageExtensionsWithoutDMorEditMessage {
+	DM?: MessageExtensionsWithoutDMorEditMessage;
 }
 
-
-interface MessageExtensionsWithoutDMInteraction extends InteractionReplyOptions, extensionWithoutDM { }
-
-interface MessageExtensionsInteraction extends MessageExtensionsWithoutDMInteraction {
-	DM?: MessageExtensionsWithoutDMInteraction;
+interface MessageExtensionWithoutDMMessage extends MessageExtensionsWithoutDMorEditMessage {
+	edit?: MessageExtensionsWithoutEditMessage;
 }
+
+interface MessageExtensionsMessage extends MessageExtensionWithoutDMMessage, MessageExtensionsWithoutEditMessage { }
+
+
+// interface MessageExtensionsWithoutDMInteraction extends InteractionReplyOptions, extensionWithoutDMOrEdit { }
+
+// interface MessageExtensionsInteraction extends MessageExtensionsWithoutDMInteraction {
+// 	DM?: MessageExtensionsWithoutDMInteraction;
+// }
+
+interface MessageExtensionsWithoutDMorEditInteraction extends InteractionReplyOptions, extensionWithoutDMOrEdit { }
+
+interface MessageExtensionsWithoutEditInteraction extends MessageExtensionsWithoutDMorEditInteraction {
+	DM?: MessageExtensionsWithoutDMorEditInteraction;
+}
+
+interface MessageExtensionWithoutDMInteraction extends MessageExtensionsWithoutDMorEditInteraction {
+	edit?: MessageExtensionsWithoutEditInteraction;
+}
+
+interface MessageExtensionsInteraction extends MessageExtensionWithoutDMInteraction, MessageExtensionsWithoutEditInteraction { }
 
 
 type MessageExtensions = MessageExtensionsMessage | MessageExtensionsInteraction;

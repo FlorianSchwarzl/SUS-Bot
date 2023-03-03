@@ -1,10 +1,9 @@
-import { GuildMember, Message, BaseChannel } from "discord.js";
-import { CommandReturnWithoutString } from "../types/command";
+import { GuildMember, Message } from "discord.js";
+import { CommandReturn, CommandReturnWithoutString } from "../types/command";
 
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, entersState, NoSubscriberBehavior, AudioPlayerStatus, VoiceConnectionStatus } = require("@discordjs/voice");
-import { stream, video_basic_info, search, yt_validate, YouTubeVideo } from "play-dl";
+import { stream, video_basic_info, search, yt_validate, YouTubeVideo, YouTubeChannel } from "play-dl";
 import Client from "../types/client";
-import { ImprovedArray } from "sussy-util";
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } from "discord.js";
 
 const playerControls = new ActionRowBuilder()
@@ -85,7 +84,7 @@ module.exports = class Player {
 			current: null,
 			loop: false,
 			guildId: null,
-			queue: new ImprovedArray()
+			queue: Array<QueueElement>(),
 		});
 	}
 
@@ -107,7 +106,8 @@ module.exports = class Player {
 		let streamReturn;
 		try {
 			streamReturn = await stream(track.url);
-		} catch (e: any) {
+		} catch (e: unknown) {
+			if (!(e instanceof Error)) return;
 			if (e.message.includes("Private")) {
 				// @ts-expect-error // MiMiMiMiMi i don't care
 				track.channel.send("This video is private. Skipping.");
@@ -247,7 +247,6 @@ module.exports = class Player {
 		}
 
 		queue.queue.push({ url: url, channel: message.channel, title: info.title, duration: info.durationRaw, thumbnails: info.thumbnails });
-		// @ts-expect-error // idfk, it's getting ignored anyway
 		return ({ embeds: [await this.#createEmbed(info, "Added")], deleteReply: 10, announce: true });
 	}
 
@@ -264,6 +263,7 @@ module.exports = class Player {
 		return this.skipTrack(message.guild.id, queue);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idfk what type this is, roteKlaue made this and it's horrible and not documented
 	skipTrack(guildId: string, queue?: any) {
 		if (queue === undefined) queue = this.#queue.get(guildId);
 		if (queue === undefined) return "No queue for guild.";
@@ -283,7 +283,7 @@ module.exports = class Player {
 		}
 	}
 
-	stop(message: Message) {
+	stop(message: Message): CommandReturn {
 		if (message.member === null) throw new Error("Member is null");
 		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 
@@ -318,7 +318,7 @@ module.exports = class Player {
 	}
 
 	getCurrent(guildId: string) {
-		return this.#queue.get(guildId)?.current;
+		return this.getQueue(guildId)?.current;
 	}
 
 	clearQueue(message: Message) {
@@ -332,8 +332,12 @@ module.exports = class Player {
 		if (queue.voiceChannel !== message.member.voice.channel.id)
 			return "You have to be in the same voice channel as the bot to clear the queue.";
 
-		queue.queue.clear();
+		this.clearArray(queue.queue);
 		return { content: "Cleared queue.", announce: true };
+	}
+
+	clearArray(array: unknown[]) {
+		array.splice(0, array.length);
 	}
 
 	#channelEmpty(channelId: string) {
@@ -345,7 +349,7 @@ module.exports = class Player {
 		if (message.guild === null) throw new Error("Member is not using the command in a guild!");
 		const queue = this.#queue.get(message.guild.id);
 		if (queue === undefined) return;
-		queue.queue.clear();
+		this.clearArray(queue.queue);
 		/* Playing Never Gonna Give You Up bc we do miniscule amounts of trolling */
 		// @ts-expect-error // I gotta make a type for this
 		this.play(message.guild.id, { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", channel: message.channel, title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", duration: "3:32" });
@@ -422,8 +426,8 @@ async function isNotAgeRestricted(url: string) {
 
 type QueueElement = {
 	url: string;
-	channel: BaseChannel;
-	title: string;
+	channel?: YouTubeChannel | undefined;
+	title?: string | undefined;
 	duration?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- idk what type this is
 	thumbnails: any[];
